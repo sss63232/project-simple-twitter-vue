@@ -1,0 +1,24 @@
+// reset scss
+@import './reset.scss';
+
+// import common style
+@import './variables.scss';
+@import './size.scss';
+@import './variables.scss';
+
+html {
+  font-size: 18px;
+  height   : 100%;
+}
+
+body {
+  height          : 100%;
+  background-color: $bgColor;
+  color           : $mainColor;
+  font-family     : "Noto Sans TC";
+}
+
+.container {
+  width : 80%;
+  margin: 0 auto;
+}

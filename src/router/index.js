@@ -6,6 +6,11 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/main',
+    name: 'main',
+    component: () => import('../views/main.vue'),
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound,
