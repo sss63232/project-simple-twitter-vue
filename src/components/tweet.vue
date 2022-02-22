@@ -13,6 +13,7 @@
       ></textarea>
       <button type="submit" class="btn-tweet">推文</button>
     </form>
+    <div class="divide"></div>
   </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ export default {};
 
 <style lang="scss" scoped>
 .container {
+  width: 600px;
   h1 {
     display: flex;
     align-items: center;
@@ -68,6 +70,11 @@ export default {};
       left: 520px;
       top: 70px;
     }
+  }
+  .divide {
+    height: 10px;
+    width: 600px;
+    background-color: #e6ecf0;
   }
 }
 </style>
