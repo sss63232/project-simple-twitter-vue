@@ -29,12 +29,23 @@
       </ul>
     </div>
     <!-- 推文按鈕要可以彈出視窗 -->
-    <button class="twit-button">推文</button>
+    <button class="twit-button" @click="showModal = true">推文</button>
+    <Modal :show="showModal" @close="showModal = false" />
   </nav>
 </template>
 <script>
+import Modal from "./TweetModal.vue";
+
 export default {
   name: "Navbar",
+  components: {
+    Modal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
 };
 </script>
 

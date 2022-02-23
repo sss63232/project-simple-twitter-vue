@@ -1,135 +1,45 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container" v-for="post in posts" :key="post.id">
       <div class="avatar">
-        <img
-          src="https://images.generated.photos/paSzVIM9g_eF8CS-oNx0jqJWapsLDU_VV-LuTRYxgvI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MjIyMzA0LmpwZw.jpg"
-          alt=""
-          class="avatar__pic"
-        />
+        <img :src="post.avatar" alt="" class="avatar__pic" />
       </div>
       <div class="tweet-content">
         <div class="title">
-          <h4 class="title__name">Apple</h4>
-          <h4 class="title__id">@apple</h4>
-          <h4 class="title__formNow">．3小時</h4>
+          <h4 class="title__name">{{ post.name }}</h4>
+          <h4 class="title__id">@{{ post.UserId }}</h4>
+          <h4 class="title__formNow">．{{ post.createdAt | fromNow }}</h4>
         </div>
         <p class="description">
-          He didn't say any more but we've always been unusually communicative
-          in a reserved way, and I understood that he meant a great deal more
-          than that. In consequence I'm inclined to reserve all judgmentsd that
-          he meant a great deal more than that. In consequence I'm inclined to
-          reserve all judgmentsd that he meant a great deal more than that. In
-          consequence I'm inclined to reserve all judgmentsd that he meant a
-          great deal more than that. In consequence I'm inclined to reserve all
-          judgments
+          {{ post.description }}
         </p>
         <div class="icon">
           <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>13</h5>
+          <h5>{{ post.replyCount }}</h5>
           <img src="../assets/like.png" class="icon__like" alt="" />
-          <h5>76</h5>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img
-          src="https://images.generated.photos/paSzVIM9g_eF8CS-oNx0jqJWapsLDU_VV-LuTRYxgvI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MjIyMzA0LmpwZw.jpg"
-          alt=""
-          class="avatar__pic"
-        />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Apple</h4>
-          <h4 class="title__id">@apple</h4>
-          <h4 class="title__formNow">．3小時</h4>
-        </div>
-        <p class="description">
-          He didn't say any more but we've always been unusually communicative
-          in a reserved way, and I understood that he meant a great deal more
-          than that. In consequence I'm inclined to reserve all judgmentsd that
-          he meant a great deal more than that. In consequence I'm inclined to
-          reserve all judgmentsd that he meant a great deal more than that. In
-          consequence I'm inclined to reserve all judgmentsd that he meant a
-          great deal more than that. In consequence I'm inclined to reserve all
-          judgments
-        </p>
-        <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>13</h5>
-          <img src="../assets/like.png" class="icon__like" alt="" />
-          <h5>76</h5>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img
-          src="https://images.generated.photos/paSzVIM9g_eF8CS-oNx0jqJWapsLDU_VV-LuTRYxgvI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MjIyMzA0LmpwZw.jpg"
-          alt=""
-          class="avatar__pic"
-        />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Apple</h4>
-          <h4 class="title__id">@apple</h4>
-          <h4 class="title__formNow">．3小時</h4>
-        </div>
-        <p class="description">
-          He didn't say any more but we've always been unusually communicative
-          in a reserved way, and I understood that he meant a great deal more
-          than that. In consequence I'm inclined to reserve all judgmentsd that
-          he meant a great deal more than that. In consequence I'm inclined to
-          reserve all judgmentsd that he meant a great deal more than that. In
-          consequence I'm inclined to reserve all judgmentsd that he meant a
-          great deal more than that. In consequence I'm inclined to reserve all
-          judgments
-        </p>
-        <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>13</h5>
-          <img src="../assets/like.png" class="icon__like" alt="" />
-          <h5>76</h5>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img
-          src="https://images.generated.photos/paSzVIM9g_eF8CS-oNx0jqJWapsLDU_VV-LuTRYxgvI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MjIyMzA0LmpwZw.jpg"
-          alt=""
-          class="avatar__pic"
-        />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Apple</h4>
-          <h4 class="title__id">@apple</h4>
-          <h4 class="title__formNow">．3小時</h4>
-        </div>
-        <p class="description">
-          He didn't say any more but we've always been unusually communicative
-          in a reserved way, and I understood that he meant a great deal more
-          than that. In consequence I'm inclined to reserve all judgmentsd that
-          he meant a great deal more than that. In consequence I'm inclined to
-          reserve all judgmentsd that he meant a great deal more than that. In
-          consequence I'm inclined to reserve all judgmentsd that he meant a
-          great deal more than that. In consequence I'm inclined to reserve all
-          judgments
-        </p>
-        <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>13</h5>
-          <img src="../assets/like.png" class="icon__like" alt="" />
-          <h5>76</h5>
+          <h5>{{ post.likeCount }}</h5>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+import moment from "moment";
+
+export default {
+  props: {
+    posts: {
+      type: Array,
+      required: false,
+    },
+  },
+  filters: {
+    fromNow(dateTime) {
+      return dateTime ? moment(dateTime).fromNow() : "-";
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .container {
