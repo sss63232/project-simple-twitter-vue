@@ -23,6 +23,8 @@ export default {};
 <style lang="scss" scoped>
 .container {
   width: 600px;
+  display: flex;
+  flex-direction: column;
   h1 {
     display: flex;
     align-items: center;
