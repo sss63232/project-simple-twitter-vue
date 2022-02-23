@@ -6,9 +6,20 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    name: 'root',
+    redirect: '/main',
+  },
+  {
     path: '/main',
     name: 'main',
     component: () => import('../views/main.vue'),
+  },
+  {
+    // 之後再更改
+    path: '/reply',
+    name: 'reply',
+    component: () => import('../views/reply.vue'),
   },
   {
     path: '*',

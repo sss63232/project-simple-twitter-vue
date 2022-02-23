@@ -137,8 +137,6 @@
   min-height: 100px;
   display: flex;
   border-top: 1px #e6ecf0 solid;
-  border-right: 1px #e6ecf0 solid;
-  border-left: 1px #e6ecf0 solid;
   margin-bottom: 5px;
   .description {
     font-size: 15px;
@@ -163,7 +161,6 @@
     }
   }
   .avatar {
-    // border-bottom: 1px #e6ecf0 solid;
     .avatar__pic {
       margin-right: 10px;
       margin-top: 15px;
@@ -175,7 +172,6 @@
   }
 
   .icon {
-    // border-bottom: 1px #e6ecf0 solid;
     margin-top: 0.5rem;
     display: flex;
     h5 {
