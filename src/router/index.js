@@ -1,57 +1,114 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import NotFound from '@/views/NotFound.vue';
-// import register from '../views/register.vue';
+import BlankPage from '@/views/BlankPage.vue';
+import register from '../views/register.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'root',
-  //   redirect: '/login'
-  // },
+
+  // 跟目錄
   {
     path: '/',
     name: 'root',
     redirect: '/main',
   },
+  // 首頁
+  // main
   {
     path: '/main',
     name: 'main',
     component: () => import('../views/main.vue'),
   },
+  // 首頁發推特
   {
-    // 之後再更改
-    path: '/reply',
+    path: '/main/tweet',
+    name: 'main',
+    component: BlankPage,
+  },
+  {
+    // 單一推文
+    // reply
+    path: '/reply/:id',
     name: 'reply',
     component: () => import('../views/reply.vue'),
+  },
+  {
+    path: '/reply_modal',
+    name: 'reply_modal',
+    component: BlankPage,
+  },
+  // Settings
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/login.vue'),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: register,
+  },
+  // user
+  {
+    path: '/user/:id',
+    component: () => import('@/views/User.vue'),
+    children: [
+      // 推文 tab
+      {
+        path: 'tweets',
+        name: 'user-tweets',
+        component: () => import('@/components/UserTweets.vue'),
+      },
+      // 推文與回覆 tab
+      {
+        path: 'replies',
+        name: 'user-replies',
+        component: BlankPage,
+      },
+      // 喜歡的內容 tab
+      {
+        path: 'likes',
+        name: 'user-likes',
+        component: BlankPage,
+      },
+      // 跟隨者
+      {
+        path: 'followers',
+        name: 'user-followers',
+        component: BlankPage,
+      },
+      // 正在跟隨者
+      {
+        path: '/following',
+        name: 'user-following',
+        component: BlankPage,
+      },
+    ],
+  },
+  // user setting
+  {
+    path: '/profile/setting',
+    name: 'setting',
+    component: BlankPage,
+  },
+  // admin
+  {
+    path: '/admin',
+    name: 'admin-root',
+    redirect: BlankPage,
+  },
+  {
+    path: '/admin/signin',
+    name: 'admin-signin',
+    component: BlankPage,
   },
   {
     path: '*',
     name: 'not-found',
     component: NotFound,
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/login.vue'),
-  },
-  // {
-  //   path: '/register',
-  //   name: 'register',
-  //   component: register,
-  // },
-//   {
-//     path: '/admin',
-//     name: 'admin-root',
-//     redirect: '/admin/signin',
-//   },
-//   {
-//     path: '/admin/signin',
-//     name: 'admin-signin',
-//     component: admin,
-//   },
 ];
 
 const router = new VueRouter({
