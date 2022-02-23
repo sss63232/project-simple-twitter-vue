@@ -2,7 +2,7 @@
   <nav>
     <div id="logo">
       <a href="#">
-        <img src="../assets/Logo.png" alt="logo">
+        <img src="../assets/Logo.png" alt="logo" />
       </a>
     </div>
     <div class="menu">
@@ -10,73 +10,86 @@
         <!-- 尚未設定路由 -->
         <li>
           <router-link to="/main" class="menu__item">
-            <img src="../assets/icon_index.png" alt="index" class="index">
+            <img src="../assets/icon_index.png" alt="index" class="index" />
             <span class="menu__item__title">首頁</span>
-          </router-link></li>
+          </router-link>
+        </li>
         <li>
           <router-link to="/profile" class="menu__item">
-            <img src="../assets/icon_user.png" alt="index" class="user">
+            <img src="../assets/icon_user.png" alt="index" class="user" />
             <span class="menu__item__title">個人資料</span>
-          </router-link></li>
+          </router-link>
+        </li>
         <li>
           <router-link to="/setting" class="menu__item active">
-            <img src="../assets/icon_cog.png" alt="index" class="setting">
+            <img src="../assets/icon_cog.png" alt="index" class="setting" />
             <span class="menu__item__title">設定</span>
-          </router-link></li>
+          </router-link>
+        </li>
       </ul>
     </div>
     <!-- 推文按鈕要可以彈出視窗 -->
-    <button class="twit-button">
-      推文
-    </button>
+    <button class="twit-button" @click="showModal = true">推文</button>
+    <Modal :show="showModal" @close="showModal = false" />
   </nav>
 </template>
 <script>
+import Modal from "./TweetModal.vue";
+
 export default {
-  name: 'Navbar',
+  name: "Navbar",
+  components: {
+    Modal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import './../styles/variables.scss';
-nav{
-  margin-top: 1rem;
+@import "./../styles/variables.scss";
+nav {
+  margin-right: 2rem;
+  margin-top: 0.7rem;
   position: relative;
-  width:378px;
+  // width:378px;
   height: 100%;
-  #logo{
-    width:50px;
-    height:50px;
+  #logo {
+    width: 50px;
+    height: 50px;
   }
-  .menu{
+  .menu {
     margin-top: 47.78px;
     &__item {
       display: flex;
       color: $mainColor;
       font-weight: 700;
       margin-top: 35px;
-      &__title{
+      &__title {
         margin-left: 20px;
       }
     }
-    .active{
-      color:$orange
+    .active {
+      color: $orange;
     }
   }
   .index,
   .user,
   .setting {
-    width: 22.75px
+    width: 22.75px;
   }
   .twit-button {
     margin-top: 24px;
-    width:210px;
+    width: 210px;
     height: 38px;
     background-color: $orange;
     border-radius: 100px;
     font-weight: 500;
     font-size: 1rem;
-    color:$white;
+    color: $white;
   }
 }
 </style>

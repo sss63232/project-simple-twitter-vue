@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="home-page">首頁</h1>
-    <form action="" class="form">
+    <form action="" class="form" @submit.stop.prevent="handleSubmit">
       <img src="https://i.imgur.com/aVE1Jo0.png" alt="" class="avatar" />
       <textarea
         name="tweet"
@@ -10,6 +10,7 @@
         rows="10"
         placeholder="有什麼新鮮事?"
         class="textarea"
+        v-model="text"
       ></textarea>
       <button type="submit" class="btn-tweet">推文</button>
     </form>
@@ -17,12 +18,31 @@
   </div>
 </template>
 <script>
-export default {};
+import { v4 as uuidv4 } from "uuid";
+
+export default {
+  data() {
+    return {
+      text: "",
+    };
+  },
+  methods: {
+    handleSubmit() {
+      this.$emit("after-create-tweet", {
+        tweetId: uuidv4(),
+        text: this.text,
+      });
+      this.text = "";
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .container {
   width: 600px;
+  display: flex;
+  flex-direction: column;
   h1 {
     display: flex;
     align-items: center;
@@ -54,6 +74,7 @@ export default {};
       width: 600px;
       height: 94px;
       border: none;
+      font-size: 25px;
     }
     textarea::-webkit-input-placeholder {
       font-size: 18px;

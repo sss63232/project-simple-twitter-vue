@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import NotFound from '@/views/NotFound.vue';
-import register from '../views/register.vue';
+// import register from '../views/register.vue';
 
 Vue.use(VueRouter);
 
@@ -37,11 +37,11 @@ const routes = [
     name: 'login',
     component: () => import('../views/login.vue'),
   },
-  {
-    path: '/register',
-    name: 'register',
-    component: register,
-  },
+  // {
+  //   path: '/register',
+  //   name: 'register',
+  //   component: register,
+  // },
 //   {
 //     path: '/admin',
 //     name: 'admin-root',
