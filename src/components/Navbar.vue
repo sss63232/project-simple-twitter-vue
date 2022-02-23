@@ -31,6 +31,10 @@
     <!-- 推文按鈕要可以彈出視窗 -->
     <button class="twit-button" @click="showModal = true">推文</button>
     <Modal :show="showModal" @close="showModal = false" />
+    <div id="log-out">
+      <img src="./../assets/Vector.png" alt="logoOut" class="icon">
+      <p>登出</p>
+    </div>
   </nav>
 </template>
 <script>
@@ -90,6 +94,19 @@ nav {
     font-weight: 500;
     font-size: 1rem;
     color: $white;
+  }
+  #log-out{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    .icon{
+      width:18px;
+      height:16px;
+    }
+    p {
+      margin-left: 23px;
+      font-weight: 700;
+    }
   }
 }
 </style>
