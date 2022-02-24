@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <Navbar />
+    <Navbar @after-create-tweet-modal="afterCreateTweetModal" />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
-      <Posts :posts="posts" />
+      <Posts :initial-post="post" v-for="post in posts" :key="post.UserId" />
     </div>
     <Popular />
   </div>
@@ -27,6 +27,55 @@ const dummyUser = {
     "Voluptatem ex asperiores doloribus et ullam sit sit quisquam. Officiis et ad eligendi architecto acc",
   cover: "https://loremflickr.com/320/240/nature?random=100",
 };
+const dummyData = [
+  {
+    name: 121,
+    UserId: 1,
+    description: "quis aut qui",
+    avatar: "https://i.imgur.com/Asq10RE.jpg",
+    replyCount: 0,
+    likeCount: 0,
+    liked: false,
+    createdAt: "2022-02-22T10:18:27.000Z",
+    updatedAt: "2022-02-22T10:17:28.000Z",
+  },
+  {
+    name: 120,
+    UserId: 2,
+    description: "consectetur",
+    avatar: "https://loremflickr.com/320/240/nature?random=100",
+    replyCount: 0,
+    likeCount: 0,
+    liked: false,
+    createdAt: "2022-02-12T10:18:26.000Z",
+    updatedAt: "2022-02-22T10:17:28.000Z",
+  },
+  {
+    name: 119,
+    UserId: 3,
+    description:
+      "Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.",
+    avatar: "https://loremflickr.com/320/240/nature?random=100",
+    replyCount: 0,
+    likeCount: 0,
+    liked: false,
+    createdAt: "2022-02-11T10:18:25.000Z",
+    updatedAt: "2022-02-22T10:17:28.000Z",
+    User: {
+      id: 2,
+      name: "user1",
+      email: "user1@example.com",
+      password: "12345678",
+      avatar: "https://i.imgur.com/RviCPVp.png",
+      introduction: "new introduction",
+      role: "",
+      account: "user1",
+      cover: "https://i.imgur.com/L9ZtBAb.png",
+      createdAt: "2022-02-15T13:50:02.000Z",
+      updatedAt: "2022-02-20T10:18:28.000Z",
+    },
+  },
+];
 
 export default {
   components: {
@@ -38,52 +87,13 @@ export default {
   data() {
     return {
       user: dummyUser,
-      posts: [
-        {
-          name: 121,
-          UserId: 1,
-          description: "quis aut qui",
-          avatar: "https://i.imgur.com/Asq10RE.jpg",
-          createdAt: "2022-02-22T10:18:27.000Z",
-          updatedAt: "2022-02-22T10:17:28.000Z",
-        },
-        {
-          name: 120,
-          UserId: 1,
-          description: "consectetur",
-          avatar: "https://loremflickr.com/320/240/nature?random=100",
-          createdAt: "2022-02-12T10:18:26.000Z",
-          updatedAt: "2022-02-22T10:17:28.000Z",
-        },
-        {
-          name: 119,
-          UserId: 2,
-          description:
-            "Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.",
-          avatar: "https://loremflickr.com/320/240/nature?random=100",
-          createdAt: "2022-02-11T10:18:25.000Z",
-          updatedAt: "2022-02-22T10:17:28.000Z",
-          User: {
-            id: 2,
-            name: "user1",
-            email: "user1@example.com",
-            password: "12345678",
-            avatar: "https://i.imgur.com/RviCPVp.png",
-            introduction: "new introduction",
-            role: "",
-            account: "user1",
-            cover: "https://i.imgur.com/L9ZtBAb.png",
-            createdAt: "2022-02-15T13:50:02.000Z",
-            updatedAt: "2022-02-20T10:18:28.000Z",
-          },
-        },
-      ],
+      posts: dummyData,
     };
   },
   methods: {
     afterCreateTweet(payload) {
       const { tweetId, text } = payload;
-      this.posts.push({
+      this.posts.unshift({
         tweetId,
         id: this.user.id,
         name: this.user.name,
@@ -95,6 +105,21 @@ export default {
         createdAt: new Date(),
       });
     },
+    afterCreateTweetModal(payload) {
+      const { tweetId, text } = payload;
+      this.posts.unshift({
+        tweetId,
+        id: this.user.id,
+        name: this.user.name,
+        avatar: this.user.avatar,
+        account: this.user.account,
+        description: text,
+        replyCount: 0,
+        likeCount: 0,
+        createdAt: new Date(),
+      });
+    },
+    addLike() {},
   },
 };
 </script>

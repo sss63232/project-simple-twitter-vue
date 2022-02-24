@@ -30,9 +30,13 @@
     </div>
     <!-- 推文按鈕要可以彈出視窗 -->
     <button class="twit-button" @click="showModal = true">推文</button>
-    <Modal :show="showModal" @close="showModal = false" />
+    <Modal
+      :show="showModal"
+      @close="showModal = false"
+      @after-create-tweet-modal="afterCreateTweetModal"
+    />
     <div id="log-out">
-      <img src="./../assets/Vector.png" alt="logoOut" class="icon">
+      <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
       <p>登出</p>
     </div>
   </nav>
@@ -49,6 +53,12 @@ export default {
     return {
       showModal: false,
     };
+  },
+  methods: {
+    afterCreateTweetModal(payload) {
+      this.$emit("after-create-tweet-modal", payload);
+      console.log(payload);
+    },
   },
 };
 </script>
@@ -95,13 +105,13 @@ nav {
     font-size: 1rem;
     color: $white;
   }
-  #log-out{
+  #log-out {
     position: absolute;
     bottom: 0;
     display: flex;
-    .icon{
-      width:18px;
-      height:16px;
+    .icon {
+      width: 18px;
+      height: 16px;
     }
     p {
       margin-left: 23px;
