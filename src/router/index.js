@@ -65,25 +65,25 @@ const routes = [
       {
         path: 'replies',
         name: 'user-replies',
-        component: BlankPage,
+        component: () => import('@/components/UserReplies.vue'),
       },
       // 喜歡的內容 tab
       {
         path: 'likes',
         name: 'user-likes',
-        component: BlankPage,
+        component: () => import('@/components/UserLikes.vue'),
       },
       // 跟隨者
       {
         path: 'followers',
         name: 'user-followers',
-        component: BlankPage,
+        component: () => import('@/components/Followers.vue'),
       },
       // 正在跟隨者
       {
-        path: '/following',
+        path: 'following',
         name: 'user-following',
-        component: BlankPage,
+        component: () => import('@/components/Following.vue'),
       },
     ],
   },
