@@ -99,7 +99,7 @@ export default {
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 #register {
-  max-width: 540px;
+  max-width: 540px; 
   margin: 0 auto;
   text-align: center;
   flex-direction: column;
