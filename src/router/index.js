@@ -65,13 +65,13 @@ const routes = [
       {
         path: 'replies',
         name: 'user-replies',
-        component: BlankPage,
+        component: () => import('@/components/UserReplies.vue'),
       },
       // 喜歡的內容 tab
       {
         path: 'likes',
         name: 'user-likes',
-        component: BlankPage,
+        component: () => import('@/components/UserLikes.vue'),
       },
       // 跟隨者
       {
