@@ -99,7 +99,7 @@ export default {
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 #register {
-  max-width: 540px; 
+  max-width: 540px;
   margin: 0 auto;
   text-align: center;
   flex-direction: column;
@@ -123,6 +123,7 @@ h1 {
   line-height: 33px;
   margin-bottom: 2.5rem;
 }
+
 .form-label-group {
   position: relative;
   label {
