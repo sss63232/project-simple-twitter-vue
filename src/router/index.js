@@ -77,13 +77,13 @@ const routes = [
       {
         path: 'followers',
         name: 'user-followers',
-        component: BlankPage,
+        component: () => import('@/components/Followers.vue'),
       },
       // 正在跟隨者
       {
-        path: '/following',
+        path: 'following',
         name: 'user-following',
-        component: BlankPage,
+        component: () => import('@/components/Following.vue'),
       },
     ],
   },
