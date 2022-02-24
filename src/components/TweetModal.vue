@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" class="modal-mask">
     <div class="modal-wrapper">
-      <form class="modal-container">
+      <form class="modal-container" @submit.stop.prevent="handleSubmit">
         <div class="modal-header">
           <button name="header" @click="$emit('close')">
             <img src="../assets/X.png" alt="" />
@@ -16,12 +16,11 @@
             cols="30"
             rows="10"
             placeholder="有什麼新鮮事?"
+            v-model="text"
           ></textarea>
         </div>
         <div class="modal-footer">
-          <button class="modal-default-button" @click="$emit('close')">
-            推文
-          </button>
+          <button class="modal-default-button">推文</button>
         </div>
       </form>
     </div>
@@ -29,9 +28,26 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
+
 export default {
   props: {
     show: Boolean,
+  },
+  data() {
+    return {
+      text: "",
+    };
+  },
+  methods: {
+    handleSubmit() {
+      this.$emit("after-create-tweet-modal", {
+        tweetId: uuidv4(),
+        text: this.text,
+      });
+      this.text = "";
+      this.$emit("close");
+    },
   },
 };
 </script>

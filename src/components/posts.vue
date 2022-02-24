@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container" v-for="post in posts" :key="post.id">
+    <div class="container">
       <div class="avatar">
         <img :src="post.avatar" alt="" class="avatar__pic" />
       </div>
@@ -16,7 +16,21 @@
         <div class="icon">
           <img src="../assets/reply.png" class="icon__reply" alt="" />
           <h5>{{ post.replyCount }}</h5>
-          <img src="../assets/like.png" class="icon__like" alt="" />
+          <img
+            src="../assets/likedx1.png"
+            class="icon__like"
+            alt=""
+            v-if="post.liked"
+            @click.stop.prevent="deleteLike"
+          />
+          <img
+            src="../assets/like.png"
+            class="icon__like"
+            alt=""
+            v-else
+            @click.stop.prevent="addLike"
+          />
+
           <h5>{{ post.likeCount }}</h5>
         </div>
       </div>
@@ -28,9 +42,30 @@ import moment from "moment";
 
 export default {
   props: {
-    posts: {
-      type: Array,
+    initialPost: {
+      type: Object,
       required: false,
+    },
+  },
+  data() {
+    return {
+      post: this.initialPost,
+    };
+  },
+  methods: {
+    addLike() {
+      this.post = {
+        ...this.post,
+        liked: true,
+      };
+      this.post.likeCount += 1;
+    },
+    deleteLike() {
+      this.post = {
+        ...this.post,
+        liked: false,
+      };
+      this.post.likeCount -= 1;
     },
   },
   filters: {
@@ -47,6 +82,8 @@ export default {
   min-height: 100px;
   display: flex;
   border-top: 1px #e6ecf0 solid;
+  border-right: 1px #e6ecf0 solid;
+  border-left: 1px #e6ecf0 solid;
   margin-bottom: 5px;
   .description {
     font-size: 15px;
@@ -94,6 +131,7 @@ export default {
       height: 15px;
       width: 15px;
       margin-top: 3px;
+      margin-right: 10px;
     }
   }
 }
