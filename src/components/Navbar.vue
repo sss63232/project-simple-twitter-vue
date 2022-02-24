@@ -36,7 +36,9 @@
       @after-create-tweet-modal="afterCreateTweetModal"
     />
     <div id="log-out">
-      <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
+      <div>
+        <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
+      </div>
       <p>登出</p>
     </div>
   </nav>
@@ -106,10 +108,14 @@ nav {
     color: $white;
   }
   #log-out {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    bottom: 1rem;
     display: flex;
+    justify-content: center;
+    cursor: pointer;
+
     .icon {
+      display: inline-block;
       width: 18px;
       height: 16px;
     }
