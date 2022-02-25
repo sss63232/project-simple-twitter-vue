@@ -6,54 +6,48 @@
       </div>
       <div class="tweet-content">
         <div class="title">
-          <router-link to="#" class="title__name">Mary Jane</router-link>
-          <router-link to="#" class="title__id">@mjjane</router-link>
-          <router-link to="#" class="title__formNow">．3小時</router-link>
+          <router-link to="#" class="title__name">{{
+            reply.User.name
+          }}</router-link>
+          <router-link to="#" class="title__id"
+            >@{{ reply.User.id }}</router-link
+          >
+          <router-link to="#" class="title__formNow"
+            >．{{ reply.createdAt | fromNow }}</router-link
+          >
         </div>
         <div class="hashtag">
           <router-link to="#" class="hashtag__reply">回覆</router-link>
           <router-link to="#" class="hashtag__userid">@apple</router-link>
         </div>
-        <p class="description">Good Job!</p>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img src="https://i.imgur.com/KvZWl8z.png" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <router-link to="#" class="title__name">Mary Jane</router-link>
-          <router-link to="#" class="title__id">@mjjane</router-link>
-          <router-link to="#" class="title__formNow">．3小時</router-link>
-        </div>
-        <div class="hashtag">
-          <router-link to="#" class="hashtag__reply">回覆</router-link>
-          <router-link to="#" class="hashtag__userid">@apple</router-link>
-        </div>
-        <p class="description">Good Job!</p>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img src="https://i.imgur.com/KvZWl8z.png" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <router-link to="#" class="title__name">Mary Jane</router-link>
-          <router-link to="#" class="title__id">@mjjane</router-link>
-          <router-link to="#" class="title__formNow">．3小時</router-link>
-        </div>
-        <div class="hashtag">
-          <router-link to="#" class="hashtag__reply">回覆</router-link>
-          <router-link to="#" class="hashtag__userid">@apple</router-link>
-        </div>
-        <p class="description">Good Job!</p>
+        <p class="description">{{ reply.comment }}</p>
       </div>
     </div>
   </div>
 </template>
-
+<script>
+import moment from "moment";
+//換moment語言到中文
+moment.locale("zh-tw");
+export default {
+  props: {
+    reply: {
+      type: Array,
+      required: true,
+    },
+  },
+  filters: {
+    fromNow(dateTime) {
+      return dateTime ? moment(dateTime).fromNow() : "-";
+    },
+  },
+  // data() {
+  //   return {
+  //     rely:
+  //   }
+  // }
+};
+</script>
 <style lang="scss" scoped>
 .container {
   width: 600px;

@@ -1,14 +1,29 @@
 <template>
   <div>
+    <!-- <router-link
+      class="router-to-reply"
+      :to="{ name: 'reply', params: { id: post.UserId } }"
+    > -->
     <div class="container">
-      <div class="avatar">
+      <router-link
+        class="avatar"
+        :to="{ name: 'user-tweets', params: { id: post.UserId } }"
+      >
         <img :src="post.avatar" alt="" class="avatar__pic" />
-      </div>
+      </router-link>
       <div class="tweet-content">
         <div class="title">
-          <h4 class="title__name">{{ post.name }}</h4>
-          <h4 class="title__id">@{{ post.UserId }}</h4>
-          <h4 class="title__formNow">．{{ post.createdAt | fromNow }}</h4>
+          <router-link
+            :to="{ name: 'user-tweets', params: { id: post.UserId } }"
+            class="title__name"
+            >{{ post.name }}</router-link
+          >
+          <router-link
+            :to="{ name: 'user-tweets', params: { id: post.UserId } }"
+            class="title__id"
+            >@{{ post.UserId }}．</router-link
+          >
+          <h4 class="title__formNow">{{ post.createdAt | fromNow }}</h4>
         </div>
         <p class="description">
           {{ post.description }}
@@ -37,13 +52,14 @@
             v-else
             @click.stop.prevent="addLike"
           />
-
           <h5>{{ post.likeCount }}</h5>
         </div>
       </div>
     </div>
+    <!-- </router-link> -->
   </div>
 </template>
+
 <script>
 import moment from "moment";
 import Modal from "./ReplyModal.vue";
@@ -97,14 +113,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.router-to-reply {
+  z-index: 1;
+}
 .container {
+  &:hover {
+    background-color: rgb(240, 240, 240);
+  }
   width: 600px;
   min-height: 100px;
   display: flex;
   border-top: 1px #e6ecf0 solid;
   border-right: 1px #e6ecf0 solid;
   border-left: 1px #e6ecf0 solid;
-  margin-bottom: 5px;
   .description {
     font-size: 15px;
   }
@@ -119,11 +140,20 @@ export default {
       &__name {
         margin-right: 5px;
         font-weight: bold;
+        &:hover {
+          text-decoration: underline;
+        }
       }
-      &__id,
+      &__id {
+        color: #657786;
+        font-weight: 500;
+      }
       &__formNow {
         color: #657786;
         font-weight: 500;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -135,19 +165,27 @@ export default {
       height: 50px;
       width: 50px;
       border-radius: 100%;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
-
   .icon {
     margin-top: 0.5rem;
     display: flex;
+    position: relative;
     h5 {
       font-size: 13px;
       margin-left: 5px;
       margin-right: 50px;
+      z-index: 5;
     }
     &__reply,
     &__like {
+      &:hover {
+        background-color: rgb(189, 189, 189);
+      }
+      z-index: 5;
       height: 15px;
       width: 15px;
       margin-top: 3px;
