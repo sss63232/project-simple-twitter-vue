@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="navbar">
-      <Navbar />
+      <Navbar :initial-current-status="currentStatus" />
     </div>
     <div class="main">
       <header class="header">
@@ -38,6 +38,15 @@ export default {
   components: {
     Navbar,
     PopularUsers,
+  },
+  data() {
+    return {
+      currentStatus: {
+        isIndex: false,
+        isUser: true,
+        isSetting: false,
+      },
+    };
   },
 };
 </script>

@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <Navbar @after-create-tweet-modal="afterCreateTweetModal" />
+    <Navbar
+      @after-create-tweet-modal="afterCreateTweetModal"
+      :initial-current-status="currentStatus"
+    />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
       <Posts :initial-post="post" v-for="post in posts" :key="post.UserId" />
@@ -78,6 +81,7 @@ const dummyData = [
 ];
 
 export default {
+  name: "main",
   components: {
     Tweet,
     Posts,
@@ -88,6 +92,11 @@ export default {
     return {
       user: dummyUser,
       posts: dummyData,
+      currentStatus: {
+        isIndex: true,
+        isUser: false,
+        isSetting: false,
+      },
     };
   },
   methods: {

@@ -1,34 +1,35 @@
 <template>
   <nav>
     <div id="logo">
-      <a href="#">
+      <router-link to="/main">
         <img src="../assets/Logo.png" alt="logo" />
-      </a>
+      </router-link>
     </div>
     <div class="menu">
       <ul>
-        <!-- 尚未設定路由 -->
-        <li>
+        <li :class="{ active: currentStatus.isIndex }">
           <router-link to="/main" class="menu__item">
             <img src="../assets/icon_index.png" alt="index" class="index" />
             <span class="menu__item__title">首頁</span>
           </router-link>
         </li>
-        <li>
-          <router-link to="/user/:id/tweets" class="menu__item">
+        <li :class="{ active: currentStatus.isUser }">
+          <router-link
+            :to="{ name: 'user', params: { id: currentUser.UserId } }"
+            class="menu__item"
+          >
             <img src="../assets/icon_user.png" alt="index" class="user" />
             <span class="menu__item__title">個人資料</span>
           </router-link>
         </li>
-        <li>
-          <router-link to="/setting" class="menu__item active">
+        <li :class="{ active: currentStatus.isSetting }">
+          <router-link to="/profile/setting" class="menu__item">
             <img src="../assets/icon_cog.png" alt="index" class="setting" />
             <span class="menu__item__title">設定</span>
           </router-link>
         </li>
       </ul>
     </div>
-    <!-- 推文按鈕要可以彈出視窗 -->
     <button class="twit-button" @click="showModal = true">推文</button>
     <Modal
       :show="showModal"
@@ -43,23 +44,62 @@
     </div>
   </nav>
 </template>
+
 <script>
 import Modal from "./TweetModal.vue";
+
+const dummyUser = {
+  UserId: 1,
+  account: "root",
+  password: "12345678",
+  name: "root",
+  email: "root@example.com",
+  role: "admin",
+  avatar: "https://loremflickr.com/140/140/people?random=100",
+  introduction:
+    "Voluptatem ex asperiores doloribus et ullam sit sit quisquam. Officiis et ad eligendi architecto acc",
+  cover: "https://loremflickr.com/600/200/nature?random=100",
+};
 
 export default {
   name: "Navbar",
   components: {
     Modal,
   },
+  props: {
+    initialCurrentStatus: {
+      type: Object,
+      required: true,
+    },
+  },
+  created() {
+    this.fetchCurrentUser();
+    this.fetchCurrentStatus();
+  },
   data() {
     return {
       showModal: false,
+      currentUser: {},
+      currentStatus: {
+        isIndex: true,
+        isUser: false,
+        isSetting: false,
+      },
     };
   },
   methods: {
     afterCreateTweetModal(payload) {
       this.$emit("after-create-tweet-modal", payload);
       console.log(payload);
+    },
+    fetchCurrentUser() {
+      this.currentUser = {
+        ...this.currentUser,
+        ...dummyUser,
+      };
+    },
+    fetchCurrentStatus() {
+      this.currentStatus = this.initialCurrentStatus;
     },
   },
 };
@@ -81,6 +121,7 @@ nav {
     margin-top: 47.78px;
     &__item {
       display: flex;
+      align-items: center;
       color: $mainColor;
       font-weight: 700;
       margin-top: 35px;
@@ -88,8 +129,24 @@ nav {
         margin-left: 20px;
       }
     }
-    .active {
-      color: $orange;
+  }
+  .active {
+    .menu__item {
+      .user {
+        filter: invert(47%) sepia(15%) saturate(7114%) hue-rotate(358deg)
+          brightness(98%) contrast(110%);
+      }
+      .index {
+        filter: invert(47%) sepia(15%) saturate(7114%) hue-rotate(358deg)
+          brightness(98%) contrast(110%);
+      }
+      .setting {
+        filter: invert(47%) sepia(15%) saturate(7114%) hue-rotate(358deg)
+          brightness(98%) contrast(110%);
+      }
+      &__title {
+        color: $orange;
+      }
     }
   }
   .index,
