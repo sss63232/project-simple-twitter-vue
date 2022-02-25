@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="home-page">首頁</h1>
+    <h1 class="home">首頁</h1>
     <form action="" class="form" @submit.stop.prevent="handleSubmit">
       <img src="https://i.imgur.com/aVE1Jo0.png" alt="" class="avatar" />
       <textarea
@@ -12,7 +12,13 @@
         class="textarea"
         v-model="text"
       ></textarea>
-      <button type="submit" class="btn-tweet">推文</button>
+      <button
+        type="submit"
+        :class="['btn-tweet', { disabled: text.length === 0 }]"
+        :disabled="text.length === 0"
+      >
+        推文
+      </button>
     </form>
     <div class="divide"></div>
   </div>
@@ -26,8 +32,14 @@ export default {
       text: "",
     };
   },
+  computed: {
+    handleBtnTweet() {
+      return this.text.length;
+    },
+  },
   methods: {
     handleSubmit() {
+      console.log(this.handleBtnTweet);
       this.$emit("after-create-tweet", {
         tweetId: uuidv4(),
         text: this.text,
@@ -43,7 +55,11 @@ export default {
   width: 600px;
   display: flex;
   flex-direction: column;
-  h1 {
+  .home {
+    z-index: 998;
+    position: fixed;
+    top: 0;
+    background-color: #fff;
     display: flex;
     align-items: center;
     width: 600px;
@@ -55,6 +71,7 @@ export default {
     font-weight: bold;
   }
   .form {
+    margin-top: 55px;
     position: relative;
     border: 1px solid #e6ecf0;
     width: 600px;
@@ -66,6 +83,7 @@ export default {
       position: relative;
       margin-top: 10px;
       margin-left: 15px;
+      border-radius: 100%;
     }
     textarea {
       margin-top: 20px;
@@ -90,6 +108,9 @@ export default {
       border-radius: 100px;
       left: 520px;
       top: 70px;
+      &.disabled {
+        opacity: 0.7;
+      }
     }
   }
   .divide {
