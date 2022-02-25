@@ -1,19 +1,14 @@
 <template>
   <div class="main">
     <ul class="tabs">
-      <router-link to="/user/:id/tweets">
-        <li class="tabs__posts active">
-          推文
+      <router-link to="/user/:id/followers">
+        <li class="tabs__followers active">
+          跟隨者
         </li>
       </router-link>
-       <router-link to="/user/:id/replies">
-        <li class="tabs__replies">
-          推文與回覆
-        </li>
-      </router-link>
-      <router-link to="/user/:id/likes">
-        <li class="tabs__likes">
-          喜歡的內容
+       <router-link to="/user/:id/following">
+        <li class="tabs__following">
+          正在跟隨
         </li>
       </router-link>
     </ul>

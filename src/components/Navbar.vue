@@ -15,7 +15,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/profile" class="menu__item">
+          <router-link to="/user/:id/tweets" class="menu__item">
             <img src="../assets/icon_user.png" alt="index" class="user" />
             <span class="menu__item__title">個人資料</span>
           </router-link>
@@ -36,7 +36,9 @@
       @after-create-tweet-modal="afterCreateTweetModal"
     />
     <div id="log-out">
-      <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
+      <div>
+        <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
+      </div>
       <p>登出</p>
     </div>
   </nav>
@@ -106,10 +108,14 @@ nav {
     color: $white;
   }
   #log-out {
-    position: absolute;
-    bottom: 0;
+    position: fixed;
+    bottom: 1rem;
     display: flex;
+    justify-content: center;
+    cursor: pointer;
+
     .icon {
+      display: inline-block;
       width: 18px;
       height: 16px;
     }
