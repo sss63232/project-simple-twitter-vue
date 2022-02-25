@@ -56,7 +56,7 @@ export default {
   display: flex;
   flex-direction: column;
   .home {
-    z-index: 998;
+    z-index: 995;
     position: fixed;
     top: 0;
     background-color: #fff;

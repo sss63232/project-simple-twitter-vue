@@ -24,8 +24,19 @@ const routes = [
   // 首頁發推特
   {
     path: '/main/tweet',
-    name: 'main',
+    name: 'mainTweet',
     component: BlankPage,
+  },
+  // navbar推文按鈕的的modal，怪怪的套不上去，之後再研究
+  {
+    path: '/tweet',
+    name: 'tweet',
+    component: () => import('../components/TweetModal.vue'),
+  },
+  {
+    path: '/reply/modal',
+    name: 'reply/modal',
+    component: () => import('../components/UserTweets.vue'),
   },
   {
     // 單一推文
@@ -34,11 +45,7 @@ const routes = [
     name: 'reply',
     component: () => import('../views/reply.vue'),
   },
-  {
-    path: '/reply_modal',
-    name: 'reply_modal',
-    component: BlankPage,
-  },
+
   // Settings
   {
     path: '/login',

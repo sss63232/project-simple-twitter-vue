@@ -2,37 +2,71 @@
   <div>
     <div class="container">
       <div class="avatar">
-        <img
-          src="https://images.generated.photos/paSzVIM9g_eF8CS-oNx0jqJWapsLDU_VV-LuTRYxgvI/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MjIyMzA0LmpwZw.jpg"
-          alt=""
-          class="avatar__pic"
-        />
+        <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
         <div class="title">
-          <h4 class="title__name">Apple</h4>
-          <h4 class="title__id">@apple</h4>
+          <h4 class="title__name">{{ tweet.User.name }}</h4>
+          <h4 class="title__id">@{{ tweet.User.id }}</h4>
         </div>
       </div>
       <div class="tweet-content">
         <p class="description">
-          Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-          cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum.
+          {{ tweet.description }}
         </p>
-        <h5 class="create-time">上午10:05．2020年6月10日</h5>
+        <h5 class="create-time">{{ tweet.createdAt | fromNow }}</h5>
         <div class="count">
-          <div class="count__number">34</div>
+          <div class="count__number">{{ tweet.RepliesCount }}</div>
           <div class="count__unit">回覆</div>
-          <div class="count__number">808</div>
+          <div class="count__number">{{ tweet.LikesCount }}</div>
           <div class="count__unit">喜歡次數</div>
         </div>
         <div class="icon">
-          <img src="./../assets/reply2.png" class="icon__reply" alt="" />
+          <img
+            src="./../assets/reply2.png"
+            class="icon__reply"
+            alt=""
+            @click="showModal = true"
+            @after-create-reply-modal="afterCreateReplyModal"
+          />
+          <Modal :show="showModal" @close="showModal = false" />
           <img src="./../assets/like2.png" class="icon__like" alt="" />
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import Modal from "./ReplyModal.vue";
+import moment from "moment";
+//換moment語言到中文
+moment.locale("zh-tw");
+export default {
+  props: {
+    tweet: {
+      type: Object,
+      required: true,
+    },
+  },
+  components: {
+    Modal,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  filters: {
+    fromNow(dateTime) {
+      return dateTime ? moment(dateTime).format("aLT．LL") : "-";
+    },
+  },
+  methods: {
+    afterCreateReplyModal(payload) {
+      console.log(payload);
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .container {
@@ -82,8 +116,8 @@
   .count {
     display: flex;
     align-items: center;
-    border-top: 1px #E6ECF0 solid;
-    border-bottom: 1px #E6ECF0 solid;
+    border-top: 1px #e6ecf0 solid;
+    border-bottom: 1px #e6ecf0 solid;
     height: 68px;
     &__number {
       margin-right: 5px;
