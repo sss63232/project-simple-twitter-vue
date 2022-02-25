@@ -8,16 +8,15 @@
               <img src="../assets/X.png" alt="" />
             </button>
             <h4 class="title">編輯個人資料</h4>
-            <button class="save-btn">儲存</button>
           </div>
 
-          <div class="modal-body">
+          <form
+            class="modal-body"
+            @submit.stop.prevent="handleSubmit"
+            novalidate
+          >
             <div class="cover-edit">
-              <img
-                src="https://fakeimg.pl/598x200/?text=cover"
-                alt="cover"
-                class="cover-edit__picture"
-              />
+              <img :src="user.cover" alt="cover" class="cover-edit__picture" />
               <div class="upload-cover">
                 <img
                   src="./../assets/icon_uploadPhoto.png"
@@ -33,7 +32,7 @@
             </div>
             <div class="user-avatar-edit">
               <img
-                src="https://fakeimg.pl/140x140/?text=avatar"
+                :src="user.avatar"
                 alt="avatar"
                 class="user-avatar-edit__picture"
               />
@@ -50,17 +49,35 @@
                 type="text"
                 id="name"
                 name="name"
+                size="50"
+                v-model="user.name"
+                :class="{ invalid: error.name || error.nameLength }"
                 required
-                minlength="4"
-                maxlength="8"
-                size="19px"
               />
+              <div class="input-limit">{{ inputNameLength }}/50</div>
+              <div v-if="error.name" class="invalid-message--name">
+                名稱不可為空！
+              </div>
+              <div v-if="error.nameLength" class="invalid-message--length">
+                字數超出上限！
+              </div>
             </div>
             <div class="user-description-edit">
               <label for="story">自我介紹</label>
-              <textarea id="story" name="story"> </textarea>
+              <textarea
+                id="introduction"
+                name="introduction"
+                v-model="user.introduction"
+                :class="{ invalid: error.introLength }"
+              >
+              </textarea>
+              <div class="input-limit">{{ inputIntroLength }}/160</div>
+              <div v-if="error.introLength" class="invalid-message">
+                字數超出上限！
+              </div>
             </div>
-          </div>
+            <button class="save-btn" type="submit">儲存</button>
+          </form>
         </div>
       </div>
     </div>
@@ -72,6 +89,117 @@ export default {
   name: "ProfileEditModal",
   props: {
     show: Boolean,
+    initialUser: {
+      type: Object,
+      required: true,
+    },
+  },
+  created() {
+    this.fetchuser();
+  },
+  data() {
+    return {
+      user: {
+        id: -1,
+        name: "",
+        avatar: "",
+        introduction: "",
+        cover: "",
+      },
+      error: {
+        name: false,
+        nameLength: false,
+        introLength: false,
+      },
+    };
+  },
+  methods: {
+    fetchuser() {
+      const { id, name, avatar, cover } = { ...this.initialUser };
+      this.user = {
+        id,
+        name,
+        avatar,
+        cover,
+      };
+    },
+    checkForm() {
+      const { name, introduction } = { ...this.user };
+      const { username, nameLength, introLength } = {
+        username: name,
+        nameLength: name ? name.length : 0,
+        introLength: introduction ? introduction.length : 0,
+      };
+      if (!username) {
+        this.error.name = true;
+        return true;
+      } else {
+        this.error.name = false;
+      }
+
+      if (nameLength > 50) {
+        this.error.nameLength = true;
+        return true;
+      } else {
+        this.error.nameLength = false;
+      }
+
+      if (introLength > 160) {
+        this.error.introLength = true;
+        return true;
+      } else {
+        this.error.introLength = false;
+      }
+      return false;
+    },
+    handleSubmit(e) {
+      if (this.checkForm()) return;
+
+      const form = e.target;
+      const formData = new FormData(form);
+      this.$emit("after-submit", formData);
+    },
+  },
+  watch: {
+    show() {
+      this.fetchuser();
+    },
+    user: {
+      handler() {
+        const { name, introduction } = { ...this.user };
+        const { username, nameLength, introLength } = {
+          username: name,
+          nameLength: name ? name.length : 0,
+          introLength: introduction ? introduction.length : 0,
+        };
+        if (!username) {
+          this.error.name = true;
+        } else {
+          this.error.name = false;
+        }
+
+        if (nameLength > 50) {
+          this.error.nameLength = true;
+        } else {
+          this.error.nameLength = false;
+        }
+
+        if (introLength > 160) {
+          this.error.introLength = true;
+        } else {
+          this.error.introLength = false;
+        }
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    inputNameLength: function () {
+      return this.user.name.length;
+    },
+    inputIntroLength: function () {
+      return this.user.introduction ? this.user.introduction.length : 0;
+    },
   },
 };
 </script>
@@ -121,17 +249,6 @@ export default {
       size: 19px;
     }
     margin-left: 44px;
-  }
-  .save-btn {
-    width: 66px;
-    height: 28px;
-    background-color: $orange;
-    border-radius: 100px;
-    font-weight: 500;
-    color: $white;
-    position: absolute;
-    right: 15px;
-    top: 15px;
   }
 }
 
@@ -184,16 +301,38 @@ export default {
   }
 }
 .user-name-edit {
+  position: relative;
   margin : {
     top: 80px;
     left: 15px;
   }
-
   width: 570px;
   height: 54px;
-  padding: 0px 15px;
   background-color: #f5f8fa;
-  border-bottom: 2px solid #657786;
+  border-radius: 4px;
+  .input-limit {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font: {
+      weight: 500;
+      size: 15px;
+    }
+    color: $secondaryTextColor;
+  }
+  .invalid-message {
+    &--name,
+    &--length {
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      font: {
+        weight: 500;
+        size: 15px;
+      }
+      color: #fc5a5a;
+    }
+  }
 }
 .user-description-edit {
   margin : {
@@ -202,10 +341,29 @@ export default {
   }
   width: 570px;
   height: 150px;
-  padding: 0px 15px;
   background-color: #f5f8fa;
-  border-bottom: 2px solid #657786;
   border-radius: 4px;
+  position: relative;
+  .input-limit {
+    position: absolute;
+    bottom: -22px;
+    right: 0;
+    font: {
+      weight: 500;
+      size: 15px;
+    }
+    color: $secondaryTextColor;
+  }
+  .invalid-message {
+    position: absolute;
+    bottom: -22px;
+    left: 0;
+    font: {
+      weight: 500;
+      size: 15px;
+    }
+    color: #fc5a5a;
+  }
 }
 label {
   font: {
@@ -214,16 +372,45 @@ label {
   }
   color: $secondaryTextColor;
   margin-bottom: 4px;
+  margin-left: 15px;
+  height: 22px;
 }
 input,
 textarea {
   width: 100%;
+  padding-left: 15px;
   border: 0;
   display: inline-block;
   vertical-align: middle;
   background: none;
   resize: none;
   font-size: 19px;
+
+  border-bottom: 2px solid #657786;
+  &:focus,
+  &:hover {
+    border-bottom: 2px solid #50b5ff;
+  }
+}
+textarea {
+  font-family: "Noto Sans TC";
+  height: 128px;
+}
+
+.save-btn {
+  width: 66px;
+  height: 28px;
+  background-color: $orange;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 18px;
+  color: $white;
+  position: absolute;
+  right: 15px;
+  top: -43px;
+}
+.invalid {
+  border-bottom: 2px solid #fc5a5a;
 }
 
 /*
