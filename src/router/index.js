@@ -60,7 +60,9 @@ const routes = [
   // user
   {
     path: '/user/:id',
+    name: 'user' ,
     component: () => import('@/views/User.vue'),
+    redirect: '/user/:id/tweets',
     children: [
       // 推文 tab
       {
