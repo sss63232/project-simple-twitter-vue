@@ -2,18 +2,10 @@
   <div>
     <main class="main">
       <div class="cover">
-        <img
-          src="https://fakeimg.pl/598x200/?text=cover"
-          alt="cover"
-          class="cover__picture"
-        />
+        <img :src="user.cover" alt="cover" class="cover__picture" />
       </div>
       <div class="user-avatar">
-        <img
-          src="https://fakeimg.pl/140x140/?text=avatar"
-          alt="avatar"
-          class="user-avatar__picture"
-        />
+        <img :src="user.avatar" alt="avatar" class="user-avatar__picture" />
       </div>
       <div class="user-edit">
         <button
@@ -37,23 +29,31 @@
           />
           <button class="user-edit__followCtrl__btn">正在追蹤</button>
         </div>
-        <ProfileEditModal :show="showModal" @close="showModal = false" />
+        <ProfileEditModal
+          :show="showModal"
+          @close="showModal = false"
+          :initial-user="user"
+          @after-submit="handleAfterSubmit"
+        />
       </div>
       <div class="user-info">
-        <p class="user-info__name">John Doe</p>
-        <p class="user-info__account">@heyjohn</p>
+        <p class="user-info__name">{{ user.name }}</p>
+        <p class="user-info__account">@{{ user.account }}</p>
         <div class="user-description">
           <p>
-            Amet mininm dfjkj lkf jsidoiyi djrnmeiolv oirehoidjfo jiodsufpodsf
-            jiejuro ijkjls
+            {{ user.introduction }}
           </p>
         </div>
         <div class="user-network">
-          <router-link to="/user/:id/followers">
-            <p><span>34個</span>跟隨中</p>
+          <router-link to="/user/:id/followings">
+            <p>
+              <span>{{ user.followingsLength }}個</span>跟隨中
+            </p>
           </router-link>
-          <router-link to="/user/:id/following">
-            <p><span>59位</span>跟隨者</p>
+          <router-link to="/user/:id/followers">
+            <p>
+              <span>{{ user.followersLength }}位</span>跟隨者
+            </p>
           </router-link>
         </div>
       </div>
@@ -69,11 +69,58 @@ export default {
   components: {
     ProfileEditModal,
   },
+  props: {
+    initialUser: {
+      type: Object,
+      require: true,
+    },
+  },
+  created() {
+    this.fetchUser();
+  },
   data() {
     return {
       isCurrentUser: true,
       showModal: false,
+      user: {
+        id: -1,
+        name: "",
+        avatar: "",
+        introduction: "",
+        account: "",
+        cover: "",
+        followersLength: 0,
+        followingsLength: 0,
+      },
     };
+  },
+  methods: {
+    fetchUser() {
+      const {
+        id,
+        name,
+        avatar,
+        introduction,
+        account,
+        cover,
+        followersLength,
+        followingsLength,
+      } = { ...this.initialUser };
+      this.user = {
+        id,
+        name,
+        avatar,
+        introduction,
+        account,
+        cover,
+        followersLength,
+        followingsLength,
+      };
+    },
+    handleAfterSubmit(formData) {
+      this.showModal = false;
+      console.log(formData.keys());
+    },
   },
 };
 </script>
