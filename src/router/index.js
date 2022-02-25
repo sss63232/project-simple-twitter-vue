@@ -90,9 +90,9 @@ const routes = [
       },
       // 正在跟隨者
       {
-        path: 'following',
-        name: 'user-following',
-        component: () => import('@/components/Following.vue'),
+        path: 'followings',
+        name: 'user-followings',
+        component: () => import('@/components/Followings.vue'),
       },
     ],
   },
