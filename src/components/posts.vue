@@ -14,17 +14,24 @@
           {{ post.description }}
         </p>
         <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
+          <button @click="showModal = true">
+            <img src="../assets/reply2.png" class="icon__reply" alt="" />
+          </button>
+          <Modal
+            :show="showModal"
+            @close="showModal = false"
+            @after-create-reply-modal="afterCreateReplyModal"
+          />
           <h5>{{ post.replyCount }}</h5>
           <img
-            src="../assets/likedx1.png"
+            src="../assets/likedx2.png"
             class="icon__like"
             alt=""
             v-if="post.liked"
             @click.stop.prevent="deleteLike"
           />
           <img
-            src="../assets/like.png"
+            src="../assets/like2.png"
             class="icon__like"
             alt=""
             v-else
@@ -38,9 +45,13 @@
   </div>
 </template>
 <script>
-import moment from 'moment';
+import moment from "moment";
+import Modal from "./ReplyModal.vue";
 
 export default {
+  components: {
+    Modal,
+  },
   props: {
     initialPost: {
       type: Object,
@@ -50,9 +61,18 @@ export default {
   data() {
     return {
       post: this.initialPost,
+      showModal: false,
     };
   },
+  watch: {
+    initialPost() {
+      this.post = this.initialPost;
+    },
+  },
   methods: {
+    afterCreateReplyModal(payload) {
+      console.log(payload);
+    },
     addLike() {
       this.post = {
         ...this.post,
