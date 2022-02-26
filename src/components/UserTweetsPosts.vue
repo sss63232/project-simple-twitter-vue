@@ -1,0 +1,205 @@
+<template>
+  <div>
+    <!-- <router-link
+      class="router-to-reply"
+      :to="{ name: 'reply', params: { id: post.UserId } }"
+    > -->
+    <div class="container" v-for="tweet in post" :key="tweet.tweetId">
+      <router-link
+        class="avatar"
+        :to="{ name: 'user', params: { id: tweet.User.id } }"
+      >
+        <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
+      </router-link>
+      <div class="tweet-content">
+        <div class="title">
+          <router-link
+            :to="{ name: 'user', params: { id: tweet.User.id } }"
+            class="title__name"
+            >{{ tweet.User.name }}</router-link
+          >
+          <router-link
+            :to="{ name: 'user', params: { id: tweet.User.id } }"
+            class="title__id"
+            >@{{ tweet.User.account }}．</router-link
+          >
+          <h4 class="title__formNow">{{ tweet.createdAt | fromNow }}</h4>
+        </div>
+        <p class="description">
+          {{ tweet.description }}
+        </p>
+        <div class="icon">
+          <button @click="showModal = true">
+            <img src="../assets/reply2.png" class="icon__reply" alt="" />
+          </button>
+          <Modal
+            :show="showModal"
+            @close="showModal = false"
+            @after-create-reply-modal="afterCreateReplyModal"
+          />
+          <h5>{{ tweet.RepliesCount }}</h5>
+          <img
+            src="../assets/likedx2.png"
+            class="icon__like"
+            alt=""
+            v-if="post.liked"
+            @click.stop.prevent="deleteLike"
+          />
+          <img
+            src="../assets/like2.png"
+            class="icon__like"
+            alt=""
+            v-else
+            @click.stop.prevent="addLike"
+          />
+          <h5>{{ tweet.LikesCount }}</h5>
+        </div>
+      </div>
+    </div>
+    <!-- </router-link> -->
+  </div>
+</template>
+
+<script>
+import moment from "moment";
+import Modal from "./ReplyModal.vue";
+
+export default {
+  name: "UserTweetsPosts",
+  components: {
+    Modal,
+  },
+  props: {
+    initialPost: {
+      type: Array,
+      required: false,
+    },
+  },
+  created() {
+    this.fetchPost();
+  },
+  data() {
+    return {
+      post: [],
+      showModal: false,
+    };
+  },
+  watch: {
+    initialPost() {
+      this.post = this.initialPost;
+    },
+  },
+  methods: {
+    afterCreateReplyModal(payload) {
+      console.log(payload);
+    },
+    //這裡怪怪的
+    addLike() {
+      this.post = {
+        ...this.post,
+        liked: true,
+      };
+      this.post.likeCount += 1;
+    },
+    //這裡怪怪的
+    deleteLike() {
+      this.post = {
+        ...this.post,
+        liked: false,
+      };
+      this.post.likeCount -= 1;
+    },
+    fetchPost() {
+      this.post = this.initialPost;
+    },
+  },
+  filters: {
+    fromNow(dateTime) {
+      return dateTime ? moment(dateTime).fromNow() : "-";
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.router-to-reply {
+  z-index: 1;
+}
+.container {
+  &:hover {
+    background-color: rgb(240, 240, 240);
+  }
+  width: 600px;
+  min-height: 100px;
+  display: flex;
+  border-top: 1px #e6ecf0 solid;
+  border-right: 1px #e6ecf0 solid;
+  border-left: 1px #e6ecf0 solid;
+  .description {
+    font-size: 15px;
+  }
+  .tweet-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    .title {
+      margin-bottom: 6px;
+      font-size: 15px;
+      display: flex;
+      &__name {
+        margin-right: 5px;
+        font-weight: bold;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      &__id {
+        color: #657786;
+        font-weight: 500;
+      }
+      &__formNow {
+        color: #657786;
+        font-weight: 500;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .avatar {
+    .avatar__pic {
+      margin-right: 10px;
+      margin-top: 15px;
+      margin-left: 10px;
+      height: 50px;
+      width: 50px;
+      border-radius: 100%;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  .icon {
+    margin-top: 0.5rem;
+    display: flex;
+    position: relative;
+    h5 {
+      font-size: 13px;
+      margin-left: 5px;
+      margin-right: 50px;
+      z-index: 5;
+    }
+    &__reply,
+    &__like {
+      &:hover {
+        background-color: rgb(189, 189, 189);
+      }
+      z-index: 5;
+      height: 15px;
+      width: 15px;
+      margin-top: 3px;
+      margin-right: 10px;
+    }
+  }
+}
+</style>

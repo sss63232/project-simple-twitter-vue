@@ -2,14 +2,14 @@
   <div class="profile-main">
     <ProfileCard :initial-user="initialUser" />
     <ProfileTabs :status="status" />
-    <Posts :initial-post="initialPost" />
+    <UserTweetsPosts :initial-post="initialPost" />
   </div>
 </template>
 
 <script>
 import ProfileCard from "./ProfileCard.vue";
 import ProfileTabs from "./ProfileTabs.vue";
-import Posts from "./posts.vue";
+import UserTweetsPosts from "./UserTweetsPosts.vue";
 
 export default {
   name: "UserTweets",
@@ -26,7 +26,7 @@ export default {
   components: {
     ProfileCard,
     ProfileTabs,
-    Posts,
+    UserTweetsPosts,
   },
   data() {
     return {

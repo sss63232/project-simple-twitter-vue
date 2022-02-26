@@ -26,6 +26,7 @@
           :initial-likes="likes"
           :initial-followers="Followers"
           :initial-followings="Followings"
+          :initial-replies="replyTweets"
         />
       </div>
     </div>
@@ -1083,6 +1084,7 @@ export default {
     this.fetchUser();
     this.fetchTweets();
     this.fetchLikes();
+    this.fetchReplies();
   },
   data() {
     return {
