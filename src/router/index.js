@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import NotFound from '@/views/NotFound.vue';
 import BlankPage from '@/views/BlankPage.vue';
-import register from '../views/register.vue';
+import adminLogin from '../views/adime.vue';
+
 
 Vue.use(VueRouter);
 
@@ -55,7 +56,7 @@ const routes = [
   {
     path: '/register',
     name: 'register',
-    component: register,
+    component: () => import('../views/register'),
   },
   // user
   {
@@ -100,18 +101,30 @@ const routes = [
   {
     path: '/profile/setting',
     name: 'setting',
-    component: BlankPage,
+    component: () => import('../views/setting.vue'),
   },
   // admin
   {
     path: '/admin',
     name: 'admin-root',
-    redirect: BlankPage,
+    redirect: '/admin.login',
   },
   {
     path: '/admin/signin',
     name: 'admin-signin',
+    component: adminLogin,
+  },
+  {
+    path: '/admin/main',
+    name: 'admin-main'
     component: BlankPage,
+//     component: () => import('../views/adiminTweet.vue')
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-users'
+    component: BlankPage,
+//       component: () => import('../views/adiminUser.vue')
   },
   {
     path: '*',
