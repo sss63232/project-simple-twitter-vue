@@ -1,21 +1,22 @@
 <template>
   <div>
     <FollowStatusTabs :status="status" />
-    <FollowCards :initial-followers="initialFollowers" :status="status" />
+    <FollowCards :initial-followings="initialFollowings" :status="status" />
   </div>
 </template>
+
 <script>
 import FollowStatusTabs from "./FollowStatusTabs.vue";
 import FollowCards from "./FollowCards.vue";
 
 export default {
-  name: "Followers",
+  name: "Following",
   components: {
     FollowStatusTabs,
     FollowCards,
   },
   props: {
-    initialFollowers: {
+    initialFollowings: {
       type: Array,
       required: true,
     },
@@ -23,8 +24,8 @@ export default {
   data() {
     return {
       status: {
-        followings: false,
-        followers: true,
+        followings: true,
+        followers: false,
       },
     };
   },

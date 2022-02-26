@@ -2,12 +2,12 @@
   <div class="main">
     <ul class="tabs">
       <router-link to="/user/:id/followers">
-        <li class="tabs__followers active">
+        <li class="tabs__followers" :class="{ active: status.followers }">
           跟隨者
         </li>
       </router-link>
-       <router-link to="/user/:id/following">
-        <li class="tabs__following">
+      <router-link to="/user/:id/followings">
+        <li class="tabs__following" :class="{ active: status.followings }">
           正在跟隨
         </li>
       </router-link>
@@ -15,12 +15,24 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "FollowStatusTabs",
+  props: {
+    status: {
+      type: Object,
+      required: true,
+    },
+  },
+};
+</script>
+
 <style lang="scss" scoped>
-@import './../styles/variables.scss' ;
+@import "./../styles/variables.scss";
 .main {
   width: 100%;
-  margin-top:1rem;
-  .tabs{
+  margin-top: 1rem;
+  .tabs {
     display: flex;
     li {
       width: 130px;
@@ -28,15 +40,15 @@
       text-align: center;
       line-height: 3rem;
       font: {
-        size:15px;
+        size: 15px;
         weight: 700;
       }
       color: $secondaryTextColor;
     }
-    .active{
-        border-bottom: 2px solid $orange;
-        color: $orange;
-      }
+    .active {
+      border-bottom: 2px solid $orange;
+      color: $orange;
+    }
   }
 }
 </style>

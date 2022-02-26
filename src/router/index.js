@@ -60,7 +60,9 @@ const routes = [
   // user
   {
     path: '/user/:id',
+    name: 'user' ,
     component: () => import('@/views/User.vue'),
+    redirect: '/user/:id/tweets',
     children: [
       // 推文 tab
       {
@@ -88,9 +90,9 @@ const routes = [
       },
       // 正在跟隨者
       {
-        path: 'following',
-        name: 'user-following',
-        component: () => import('@/components/Following.vue'),
+        path: 'followings',
+        name: 'user-followings',
+        component: () => import('@/components/Followings.vue'),
       },
     ],
   },

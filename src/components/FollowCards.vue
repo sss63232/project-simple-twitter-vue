@@ -1,76 +1,73 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container" v-for="user in otherUsers" :key="user.id">
       <div class="avatar">
-        <img
-          src="https://fakeimg.pl/140x140/?text=avatar"
-          alt=""
-          class="avatar__pic"
-        />
+        <img :src="user.avatar" alt="" class="avatar__pic" />
       </div>
       <div class="tweet-content">
         <div class="title">
-          <h4 class="title__name">Laure</h4>
-          <h4 class="title__id">@LaureBill</h4>
+          <h4 class="title__name">{{ user.name }}</h4>
+          <h4 class="title__id">@{{ user.account }}</h4>
         </div>
         <p class="description">
-          sjiofihg kodjfi hidif iojgio uij iojfiouroie vmkoiujgaoi9u83r oidjugpa
-          p jifjio ufk dfj osidfkpodfk fpokpoaopgiapkgpk
+          {{ user.introduction }}
         </p>
         <div class="follow-btn">
-          <button class="follow-btn__follow d-none">正在跟隨</button>
-          <button class="follow-btn__unfollow">跟隨</button>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img
-          src="https://fakeimg.pl/140x140/?text=avatar"
-          alt=""
-          class="avatar__pic"
-        />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Laure</h4>
-          <h4 class="title__id">@LaureBill</h4>
-        </div>
-        <p class="description">
-          sjiofihg kodjfi hidif iojgio uij iojfiouroie vmkoiujgaoi9u83r oidjugpa
-          p jifjio ufk dfj osidfkpodfk fpokpoaopgiapkgpk
-        </p>
-        <div class="follow-btn">
-          <button class="follow-btn__follow d-none">正在跟隨</button>
-          <button class="follow-btn__unfollow">跟隨</button>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img
-          src="https://fakeimg.pl/140x140/?text=avatar"
-          alt=""
-          class="avatar__pic"
-        />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Laure</h4>
-          <h4 class="title__id">@LaureBill</h4>
-        </div>
-        <p class="description">
-          sjiofihg kodjfi hidif iojgio uij iojfiouroie vmkoiujgaoi9u83r oidjugpa
-          p jifjio ufk dfj osidfkpodfk fpokpoaopgiapkgpk
-        </p>
-        <div class="follow-btn">
-          <button class="follow-btn__follow">正在跟隨</button>
-          <button class="follow-btn__unfollow d-none">跟隨</button>
+          <!-- 要換成等於currentUser的id -->
+          <button
+            class="follow-btn__follow"
+            v-show="user.Followship.followerId === 2"
+          >
+            正在跟隨
+          </button>
+          <button
+            class="follow-btn__unfollow"
+            v-show="user.Followship.followingId === 2"
+          >
+            跟隨
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "FollowCards",
+  props: {
+    initialFollowings: {
+      type: Array,
+      default: null,
+    },
+    initialFollowers: {
+      type: Array,
+      default: null,
+    },
+    status: {
+      type: Object,
+      required: true,
+    },
+  },
+  created() {
+    this.fetchOtherUsers();
+  },
+  data() {
+    return {
+      otherUsers: [],
+    };
+  },
+  methods: {
+    fetchOtherUsers() {
+      if (this.status.followings) {
+        this.otherUsers = this.initialFollowings;
+      } else if (this.status.followers) {
+        this.otherUsers = this.initialFollowers;
+      }
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
@@ -92,7 +89,6 @@
     .title {
       margin-bottom: 6px;
       font-size: 15px;
-      display: flex;
       &__name {
         margin-right: 5px;
         font-weight: bold;

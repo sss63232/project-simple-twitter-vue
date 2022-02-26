@@ -1,85 +1,26 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container" v-for="like in likes" :key="like.id">
       <div class="avatar">
-        <img src="https://fakeimg.pl/140x140/?text=avatar" alt="" class="avatar__pic" />
+        <img :src="like.Tweet.image" alt="" class="avatar__pic" />
       </div>
       <div class="tweet-content">
         <div class="title">
+          <!-- 缺少name資料 -->
           <h4 class="title__name">Devon Lane</h4>
+          <!-- 缺少account資料 -->
           <h4 class="title__id">@DL</h4>
-          <h4 class="title__formNow">．{{'2022-02-12T10:18:26.000Z' | fromNow }}</h4>
+          <h4 class="title__formNow">．{{ like.createdAt | fromNow }}</h4>
         </div>
         <p class="description">
-          Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.
+          {{ like.Tweet.description }}
         </p>
         <div class="icon">
           <img src="../assets/reply.png" class="icon__reply" alt="" />
+          <!-- 缺少留言數 -->
           <h5>5</h5>
           <img src="../assets/icon_heart_pk.png" class="icon__like" alt="" />
-          <h5 class="icon__like-quantity">23</h5>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img src="https://fakeimg.pl/140x140/?text=avatar" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Devon Lane</h4>
-          <h4 class="title__id">@DL</h4>
-          <h4 class="title__formNow">．{{'2022-02-12T10:18:26.000Z' | fromNow }}</h4>
-        </div>
-        <p class="description">
-          Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.
-        </p>
-        <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>5</h5>
-          <img src="../assets/icon_heart_pk.png" class="icon__like" alt="" />
-          <h5 class="icon__like-quantity">23</h5>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img src="https://fakeimg.pl/140x140/?text=avatar" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Devon Lane</h4>
-          <h4 class="title__id">@DL</h4>
-          <h4 class="title__formNow">．{{'2022-02-12T10:18:26.000Z' | fromNow }}</h4>
-        </div>
-        <p class="description">
-          Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.
-        </p>
-        <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>5</h5>
-          <img src="../assets/icon_heart_pk.png" class="icon__like" alt="" />
-          <h5 class="icon__like-quantity">23</h5>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="avatar">
-        <img src="https://fakeimg.pl/140x140/?text=avatar" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">Devon Lane</h4>
-          <h4 class="title__id">@DL</h4>
-          <h4 class="title__formNow">．{{'2022-02-12T10:18:26.000Z' | fromNow }}</h4>
-        </div>
-        <p class="description">
-          Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.
-        </p>
-        <div class="icon">
-          <img src="../assets/reply.png" class="icon__reply" alt="" />
-          <h5>5</h5>
-          <img src="../assets/icon_heart_pk.png" class="icon__like" alt="" />
+          <!-- 缺少按讚數 -->
           <h5 class="icon__like-quantity">23</h5>
         </div>
       </div>
@@ -87,10 +28,29 @@
   </div>
 </template>
 <script>
-import moment from 'moment';
+import moment from "moment";
 
 export default {
-  name: 'LikesContent',
+  name: "LikesContent",
+  props: {
+    initialLikes: {
+      type: Array,
+      required: true,
+    },
+  },
+  created() {
+    this.fetchLikes();
+  },
+  data() {
+    return {
+      likes: [],
+    };
+  },
+  methods: {
+    fetchLikes() {
+      this.likes = this.initialLikes;
+    },
+  },
   filters: {
     fromNow(dateTime) {
       return dateTime ? moment(dateTime).fromNow() : "-";
@@ -153,8 +113,8 @@ export default {
       width: 15px;
       margin-top: 3px;
     }
-    &__like-quantity{
-      color:#E0245E
+    &__like-quantity {
+      color: #e0245e;
     }
   }
 }
