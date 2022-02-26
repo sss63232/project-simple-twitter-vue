@@ -51,7 +51,9 @@
           ></textarea>
         </div>
         <div class="modal-footer">
-          <button class="modal-default-button">回覆</button>
+          <button class="modal-default-button" @click="handleSubmit">
+            回覆
+          </button>
         </div>
       </form>
     </div>
@@ -72,9 +74,15 @@ export default {
   },
   methods: {
     handleSubmit() {
+      if (this.text.length > 140) {
+        return alert("字數超過140個");
+      }
+      if (this.text.length === 0) {
+        return alert("不可空白");
+      }
       this.$emit("after-create-reply-modal", {
-        tweetId: uuidv4(),
-        text: this.text,
+        replyId: uuidv4(),
+        comment: this.text,
       });
       this.text = "";
       this.$emit("close");

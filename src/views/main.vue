@@ -128,7 +128,6 @@ export default {
         createdAt: new Date(),
       });
     },
-    addLike() {},
   },
 };
 </script>

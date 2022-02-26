@@ -2,11 +2,14 @@
   <div class="container">
     <Navbar />
     <div>
-      <div class="previous-page">
+      <a @click="$router.go(-1)" class="previous-page">
         <img src="./../assets/arrow.png" alt="" />
-        <h1>推文</h1>
-      </div>
-      <Post :tweet="tweet" />
+        <h4>推文</h4>
+      </a>
+      <Post
+        :initial-tweet="tweet"
+        @after-create-reply-modal="afterCreateReplyModal"
+      />
       <ReplyList :reply="reply" v-for="reply in replies" :key="reply.replyId" />
     </div>
     <Popular />
@@ -14,6 +17,18 @@
 </template>
 
 <script>
+const dummyUser = {
+  userId: 1,
+  account: "root",
+  password: "12345678",
+  name: "root",
+  email: "root@example.com",
+  role: "admin",
+  avatar: "https://i.imgur.com/aVE1Jo0.png",
+  introduction:
+    "Voluptatem ex asperiores doloribus et ullam sit sit quisquam. Officiis et ad eligendi architecto acc",
+  cover: "https://loremflickr.com/320/240/nature?random=100",
+};
 const dummyTweet = {
   tweetId: 11,
   createdAt: "2022-02-25T04:07:26.000Z",
@@ -21,6 +36,7 @@ const dummyTweet = {
   image: "https://loremflickr.com/320/240/nature?random=100",
   LikesCount: 2,
   RepliesCount: 2,
+  isLiked: false,
   User: {
     id: 3,
     name: "user2",
@@ -79,9 +95,31 @@ export default {
   },
   data() {
     return {
+      user: dummyUser,
       tweet: dummyTweet,
       replies: dummyReply,
     };
+  },
+  methods: {
+    afterCreateReplyModal(payload) {
+      const { replyId, comment } = payload;
+      this.replies.unshift({
+        replyId,
+        comment,
+        createdAt: new Date(),
+        Tweet: {
+          tweetId: this.tweetId,
+          description: this.description,
+          image: this.image,
+        },
+        User: {
+          id: this.user.userId,
+          name: this.user.name,
+          account: this.user.account,
+          avatar: this.user.avatar,
+        },
+      });
+    },
   },
 };
 </script>
@@ -95,14 +133,16 @@ export default {
     display: flex;
     align-items: center;
     padding: 10px;
+    cursor: pointer;
     img {
       width: 17px;
       height: 14px;
       margin-right: 2.5rem;
     }
-    h1 {
+    h4 {
       margin-right: 5rem;
       font-size: 18px;
+      // font-weight: bold;
     }
   }
 }
