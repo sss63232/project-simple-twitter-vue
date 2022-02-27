@@ -85,7 +85,7 @@ export default {
   },
   data() {
     return {
-      user: dummyUser,
+      currentUser: dummyUser,
       posts: [],
       currentStatus: {
         isIndex: true,

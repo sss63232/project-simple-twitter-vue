@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <Navbar :initial-current-status="currentStatus" />
+    <Navbar
+      :initial-current-status="currentStatus"
+      :current-user="currentUser"
+    />
     <div>
       <a @click="$router.go(-1)" class="previous-page">
         <img src="./../assets/arrow.png" alt="" />
@@ -22,7 +25,7 @@
 </template>
 
 <script>
-const dummyUser = {
+const dummyCurrentUser = {
   userId: 1,
   account: "root",
   password: "12345678",
@@ -97,7 +100,7 @@ export default {
   },
   data() {
     return {
-      currentUser: dummyUser,
+      currentUser: dummyCurrentUser,
       reply: {},
       currentStatus: {
         isIndex: true,
