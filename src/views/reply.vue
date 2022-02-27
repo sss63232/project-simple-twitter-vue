@@ -35,18 +35,6 @@ const dummyCurrentUser = {
   createdAt: "2022-02-26T03:59:35.000Z",
   updatedAt: "2022-02-26T03:59:35.000Z",
 };
-const dummyUser = {
-  userId: 1,
-  account: "root",
-  password: "12345678",
-  name: "root",
-  email: "root@example.com",
-  role: "admin",
-  avatar: "https://i.imgur.com/aVE1Jo0.png",
-  introduction:
-    "Voluptatem ex asperiores doloribus et ullam sit sit quisquam. Officiis et ad eligendi architecto acc",
-  cover: "https://loremflickr.com/320/240/nature?random=100",
-};
 const Reply = {
   UserId: 2,
   description: "magni",
@@ -112,7 +100,6 @@ export default {
     return {
       currentUser: dummyCurrentUser,
       reply: {},
-
       currentStatus: {
         isIndex: true,
         isUser: false,
@@ -131,7 +118,7 @@ export default {
     afterCreateReplyModal(payload) {
       const { replyId, comment } = payload;
       this.reply.Replies.unshift({
-        UserId: this.currentUser.userId,
+        UserId: this.currentUser.id,
         comment,
         createdAt: new Date(),
         tweetId: this.tweetId,

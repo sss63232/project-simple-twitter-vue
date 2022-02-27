@@ -107,10 +107,10 @@ export default {
       const { tweetId, text } = payload;
       this.posts.unshift({
         tweetId,
-        UserId: this.user.userId,
-        name: this.user.name,
-        image: this.user.avatar,
-        account: this.user.account,
+        UserId: this.currentUser.id,
+        name: this.currentUser.name,
+        image: this.currentUser.avatar,
+        account: this.currentUser.account,
         description: text,
         RepliesCount: 0,
         LikesCount: 0,
@@ -121,10 +121,10 @@ export default {
       const { tweetId, text } = payload;
       this.posts.unshift({
         tweetId,
-        UserId: this.user.userId,
-        name: this.user.name,
-        image: this.user.avatar,
-        account: this.user.account,
+        UserId: this.currentUser.id,
+        name: this.currentUser.name,
+        image: this.currentUser.avatar,
+        account: this.currentUser.account,
         description: text,
         RepliesCount: 0,
         LikesCount: 0,

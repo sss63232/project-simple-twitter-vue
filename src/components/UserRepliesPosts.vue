@@ -26,7 +26,7 @@
         <div class="hashtag">
           <span class="hashtag__reply">回覆</span>
           <!-- 這裡會需要一個reply to 的對象 -->
-          <router-link to="#" class="hashtag__userid">@apple</router-link>
+          <router-link to="" class="hashtag__userid">@apple</router-link>
         </div>
         <p class="description">{{ reply.comment }}</p>
       </div>
