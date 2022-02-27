@@ -1,4 +1,11 @@
+import axios from "axios"
 import Swal from "sweetalert2";
+
+const baseURL = 'https://mighty-ridge-02983.herokuapp.com/api'
+
+export const apiHelper = axios.create({
+  baseURL,
+});
 
 export const Toast = Swal.mixin({
   toast: true,
