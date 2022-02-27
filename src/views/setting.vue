@@ -132,7 +132,7 @@ export default {
     margin-left: 23.625rem;
     padding: 0 0 0 1rem;
     flex-grow: 1;
-    border-left: 1px solid $borderColo;
+    border-left: 1px solid $borderColor;
   }
   
   .setting-form {
