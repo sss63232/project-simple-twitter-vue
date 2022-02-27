@@ -2,10 +2,18 @@
   <div>
     <main class="main">
       <div class="cover">
-        <img :src="user.cover" alt="cover" class="cover__picture" />
+        <img
+          :src="user.cover | emptyImage"
+          alt="cover"
+          class="cover__picture"
+        />
       </div>
       <div class="user-avatar">
-        <img :src="user.avatar" alt="avatar" class="user-avatar__picture" />
+        <img
+          :src="user.avatar | emptyImage"
+          alt="avatar"
+          class="user-avatar__picture"
+        />
       </div>
       <div class="user-edit">
         <button
@@ -38,7 +46,7 @@
       </div>
       <div class="user-info">
         <p class="user-info__name">{{ user.name }}</p>
-        <p class="user-info__account">@{{ user.account }}</p>
+        <p class="user-info__account">@{{ initialUser.account }}</p>
         <div class="user-description">
           <p>
             {{ user.introduction }}
@@ -63,9 +71,11 @@
 
 <script>
 import ProfileEditModal from "./ProfileEditModal.vue";
+import { emptyImageFilter } from "./../utils/mixins";
 
 export default {
   name: "ProfileCard",
+  mixins: [emptyImageFilter],
   components: {
     ProfileEditModal,
   },
@@ -84,7 +94,7 @@ export default {
       showModal: false,
       user: {
         id: -1,
-        name: "",
+        name: "123",
         avatar: "",
         introduction: "",
         account: "",
@@ -96,6 +106,7 @@ export default {
   },
   methods: {
     fetchUser() {
+      console.log("1");
       const {
         id,
         name,
@@ -105,7 +116,8 @@ export default {
         cover,
         followersLength,
         followingsLength,
-      } = { ...this.initialUser };
+      } = this.initialUser;
+
       this.user = {
         id,
         name,
@@ -116,6 +128,8 @@ export default {
         followersLength,
         followingsLength,
       };
+
+      console.log("3");
     },
     handleAfterSubmit(formData) {
       this.showModal = false;
