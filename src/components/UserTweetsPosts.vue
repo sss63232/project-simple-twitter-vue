@@ -43,8 +43,15 @@
             class="icon__like"
             alt=""
             v-if="tweet.isLiked"
+            @click.stop.prevent="deleteLike(tweet.tweetId)"
           />
-          <img src="../assets/like2.png" class="icon__like" alt="" v-else />
+          <img
+            src="../assets/like2.png"
+            class="icon__like"
+            alt=""
+            v-else
+            @click.stop.prevent="addLike(tweet.tweetId)"
+          />
           <h5>{{ tweet.LikesCount }}</h5>
         </div>
       </div>
@@ -76,6 +83,12 @@ export default {
   methods: {
     afterCreateReplyModal(payload) {
       console.log(payload);
+    },
+    addLike(tweetId) {
+      this.$emit("after-like", tweetId);
+    },
+    deleteLike(tweetId) {
+      this.$emit("after-delete-like", tweetId);
     },
   },
   filters: {

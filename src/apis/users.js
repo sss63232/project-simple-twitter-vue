@@ -18,4 +18,8 @@ export default {
   getLikes({userId}){
     return apiHelper.get(`/users/${userId}/likes`, {headers:{Authorization:`Bearer ${getToken()}`}})
   },
+  // 取得topUser的資料 
+  getTopUser(){
+    return apiHelper.get('/users/top', {headers:{Authorization:`Bearer ${getToken()}`}} )
+  }
 }
