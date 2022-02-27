@@ -2,7 +2,7 @@
   <div class="profile-main">
     <ProfileCard :user="user" :current-user="currentUser" />
     <ProfileTabs :status="status" />
-    <UserTweetsPosts :tweets="tweets" />
+    <UserTweetsPosts :tweets="tweets" v-on="$listeners" />
   </div>
 </template>
 
