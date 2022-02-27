@@ -9,72 +9,39 @@
           class="image"
         >
           <!-- 缺少頭像 -->
-          <img src="https://fakeimg.pl/50/" alt="avatar" />
+          <img :src="user.avatar | emptyImage" alt="avatar" />
         </router-link>
         <div class="info">
           <p class="name">{{ user.name }}</p>
-          <span class="account">@p{{ user.account }}</span>
+          <span class="account">@{{ user.account }}</span>
         </div>
 
-        <button class="following-btn" v-if="user.isFollowing">正在跟隨</button>
-        <button class="follow-btn" v-else>跟隨</button>
+        <button
+          class="following-btn"
+          v-if="user.isFollowing"
+          @click.stop.prevent="removeFollowing(user.id)"
+        >
+          正在跟隨
+        </button>
+        <button
+          class="follow-btn"
+          v-else
+          @click.stop.prevent="addFollowing(user.id)"
+        >
+          跟隨
+        </button>
       </div>
     </div>
   </div>
 </template>
 <script>
-const dummyData = [
-  {
-    id: 2,
-    name: "user1",
-    account: "user1",
-    createdAt: "2022-02-26T03:49:30.000Z",
-    followedCount: 3,
-    isFollowing: false,
-  },
-  {
-    id: 5,
-    name: "user4",
-    account: "user4",
-    createdAt: "2022-02-26T03:49:30.000Z",
-    followedCount: 3,
-    isFollowing: true,
-  },
-  {
-    id: 6,
-    name: "user5",
-    account: "user5",
-    createdAt: "2022-02-26T03:49:30.000Z",
-    followedCount: 3,
-    isFollowing: false,
-  },
-  {
-    id: 3,
-    name: "user2",
-    account: "user2",
-    createdAt: "2022-02-26T03:49:30.000Z",
-    followedCount: 2,
-    isFollowing: true,
-  },
-  {
-    id: 4,
-    name: "user3",
-    account: "user3",
-    createdAt: "2022-02-26T03:49:30.000Z",
-    followedCount: 1,
-    isFollowing: false,
-  },
-  {
-    id: 1,
-    name: "root",
-    account: "root",
-    createdAt: "2022-02-26T03:49:30.000Z",
-    followedCount: 0,
-    isFollowing: false,
-  },
-];
+import usersAPI from "./../apis/users";
+import { Toast } from "./../utils/helper";
+import { emptyImageFilter } from "./../utils/mixins";
+
 export default {
   name: "PopularUsers",
+  mixins: [emptyImageFilter],
   created() {
     this.fetchTopUsers();
   },
@@ -84,8 +51,39 @@ export default {
     };
   },
   methods: {
-    fetchTopUsers() {
-      this.topUsers = dummyData;
+    async fetchTopUsers() {
+      try {
+        const { data } = await usersAPI.getTopUser();
+        this.topUsers = data;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得Top使用者資料，請稍後再試",
+        });
+      }
+    },
+    removeFollowing(userId) {
+      this.topUsers = this.topUsers.map((user) => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            isFollowing: false,
+          };
+        }
+        return user;
+      });
+    },
+    addFollowing(userId) {
+      this.topUsers = this.topUsers.map((user) => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            isFollowing: true,
+          };
+        }
+        return user;
+      });
     },
   },
 };
