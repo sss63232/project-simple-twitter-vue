@@ -6,7 +6,7 @@
     />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
-      <Posts :initial-post="post" v-for="post in posts" :key="post.UserId" />
+      <Posts :initial-post="post" v-for="post in posts" :key="post.id" />
     </div>
     <Popular />
   </div>
@@ -32,56 +32,51 @@ const dummyUser = {
 };
 const dummyData = [
   {
-    name: 121,
-    UserId: 1,
-    description: "quis aut qui",
-    avatar: "https://i.imgur.com/Asq10RE.jpg",
-    replyCount: 0,
-    likeCount: 0,
-    liked: false,
-    createdAt: "2022-02-22T10:18:27.000Z",
-    updatedAt: "2022-02-22T10:17:28.000Z",
-  },
-  {
-    name: 120,
+    id: 5,
     UserId: 2,
-    description: "consectetur",
-    avatar: "https://loremflickr.com/320/240/nature?random=100",
-    replyCount: 0,
-    likeCount: 0,
-    liked: false,
-    createdAt: "2022-02-12T10:18:26.000Z",
-    updatedAt: "2022-02-22T10:17:28.000Z",
+    description:
+      "Suscipit quo illum saepe dolores atque. Eos similique laborum. Error ea distinctio. Aperiam totam ei",
+    image: "https://loremflickr.com/320/240/nature?random=100",
+    createdAt: "2022-02-27T04:18:50.000Z",
+    updatedAt: "2022-02-27T04:18:50.000Z",
+    name: "user1",
+    account: "user1",
+    isLiked: true,
+    LikesCount: 3,
+    RepliesCount: 3,
   },
   {
-    name: 119,
-    UserId: 3,
+    id: 6,
+    UserId: 2,
+    description: "est",
+    image: "https://loremflickr.com/320/240/nature?random=100",
+    createdAt: "2022-02-27T04:18:50.000Z",
+    updatedAt: "2022-02-27T04:18:50.000Z",
+    name: "user1",
+    account: "user1",
+    isLiked: false,
+    LikesCount: 1,
+    RepliesCount: 3,
+  },
+  {
+    id: 7,
+    UserId: 2,
     description:
-      "Ipsum quis id non et. Est voluptate dolor officiis. Nam nulla maiores sed.",
-    avatar: "https://loremflickr.com/320/240/nature?random=100",
-    replyCount: 0,
-    likeCount: 0,
-    liked: false,
-    createdAt: "2022-02-11T10:18:25.000Z",
-    updatedAt: "2022-02-22T10:17:28.000Z",
-    User: {
-      id: 2,
-      name: "user1",
-      email: "user1@example.com",
-      password: "12345678",
-      avatar: "https://i.imgur.com/RviCPVp.png",
-      introduction: "new introduction",
-      role: "",
-      account: "user1",
-      cover: "https://i.imgur.com/L9ZtBAb.png",
-      createdAt: "2022-02-15T13:50:02.000Z",
-      updatedAt: "2022-02-20T10:18:28.000Z",
-    },
+      "Placeat architecto et quaerat. Fugiat fuga labore et quod illum molestiae quia sit. Laboriosam volup",
+    image: "https://loremflickr.com/320/240/nature?random=100",
+    createdAt: "2022-02-27T04:18:50.000Z",
+    updatedAt: "2022-02-27T04:18:50.000Z",
+    name: "user1",
+    account: "user1",
+    isLiked: false,
+    LikesCount: 1,
+    RepliesCount: 3,
   },
 ];
 
 export default {
-  name: "main",
+  //main是保留字，會報錯
+  // name: "main",
   components: {
     Tweet,
     Posts,
@@ -91,7 +86,7 @@ export default {
   data() {
     return {
       user: dummyUser,
-      posts: dummyData,
+      posts: [],
       currentStatus: {
         isIndex: true,
         isUser: false,
@@ -99,18 +94,24 @@ export default {
       },
     };
   },
+  created() {
+    this.fetchPosts();
+  },
   methods: {
+    fetchPosts() {
+      this.posts = dummyData;
+    },
     afterCreateTweet(payload) {
       const { tweetId, text } = payload;
       this.posts.unshift({
         tweetId,
-        id: this.user.id,
+        UserId: this.user.userId,
         name: this.user.name,
-        avatar: this.user.avatar,
+        image: this.user.avatar,
         account: this.user.account,
         description: text,
-        replyCount: 0,
-        likeCount: 0,
+        RepliesCount: 0,
+        LikesCount: 0,
         createdAt: new Date(),
       });
     },
@@ -118,13 +119,13 @@ export default {
       const { tweetId, text } = payload;
       this.posts.unshift({
         tweetId,
-        id: this.user.id,
+        UserId: this.user.userId,
         name: this.user.name,
-        avatar: this.user.avatar,
+        image: this.user.avatar,
         account: this.user.account,
         description: text,
-        replyCount: 0,
-        likeCount: 0,
+        RepliesCount: 0,
+        LikesCount: 0,
         createdAt: new Date(),
       });
     },

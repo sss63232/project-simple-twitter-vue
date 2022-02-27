@@ -10,7 +10,7 @@
           class="avatar"
           :to="{ name: 'user-tweets', params: { id: post.UserId } }"
         >
-          <img :src="post.avatar" alt="" class="avatar__pic" />
+          <img :src="post.image" alt="" class="avatar__pic" />
         </router-link>
         <div class="tweet-content">
           <div class="title">
@@ -43,7 +43,7 @@
                 @after-create-reply-modal="afterCreateReplyModal"
               />
             </router-link>
-            <h5>{{ post.replyCount }}</h5>
+            <h5>{{ post.RepliesCount }}</h5>
             <img
               src="../assets/likedx2.png"
               class="icon__like"
@@ -58,7 +58,7 @@
               v-else
               @click.stop.prevent="addLike"
             />
-            <h5>{{ post.likeCount }}</h5>
+            <h5>{{ post.LikesCount }}</h5>
           </div>
         </div>
       </div>
@@ -94,20 +94,21 @@ export default {
   methods: {
     afterCreateReplyModal(payload) {
       console.log(payload);
+      this.post.RepliesCount += 1;
     },
     addLike() {
       this.post = {
         ...this.post,
         liked: true,
       };
-      this.post.likeCount += 1;
+      this.post.LikesCount += 1;
     },
     deleteLike() {
       this.post = {
         ...this.post,
         liked: false,
       };
-      this.post.likeCount -= 1;
+      this.post.LikesCount -= 1;
     },
   },
   filters: {
@@ -181,6 +182,7 @@ export default {
     margin-top: 0.5rem;
     display: flex;
     position: relative;
+    margin-bottom: 5px;
     h5 {
       font-size: 13px;
       margin-left: 5px;

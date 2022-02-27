@@ -5,10 +5,10 @@
         class="avatar"
         :to="{ name: 'user-tweets', params: { id: tweet.UserId } }"
       >
-        <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
+        <img :src="tweet.image" alt="" class="avatar__pic" />
         <div class="title">
-          <h4 class="title__name">{{ tweet.User.name }}</h4>
-          <h4 class="title__id">@{{ tweet.User.id }}</h4>
+          <h4 class="title__name">{{ tweet.name }}</h4>
+          <h4 class="title__id">@{{ tweet.account }}</h4>
         </div>
       </router-link>
       <div class="tweet-content">
