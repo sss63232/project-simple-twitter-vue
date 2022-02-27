@@ -1,24 +1,28 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :initial-user="initialUser" />
+    <ProfileCard :user="user" :current-user="currentUser" />
     <ProfileTabs :status="status" />
-    <Posts :initial-post="initialPost" />
+    <UserTweetsPosts :tweets="tweets" />
   </div>
 </template>
 
 <script>
 import ProfileCard from "./ProfileCard.vue";
 import ProfileTabs from "./ProfileTabs.vue";
-import Posts from "./posts.vue";
+import UserTweetsPosts from "./UserTweetsPosts.vue";
 
 export default {
   name: "UserTweets",
   props: {
-    initialUser: {
+    user: {
       type: Object,
       required: true,
     },
-    initialPost: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+    tweets: {
       type: Array,
       required: true,
     },
@@ -26,11 +30,10 @@ export default {
   components: {
     ProfileCard,
     ProfileTabs,
-    Posts,
+    UserTweetsPosts,
   },
   data() {
     return {
-      posts: this.initialPost,
       status: {
         tweets: true,
         replies: false,

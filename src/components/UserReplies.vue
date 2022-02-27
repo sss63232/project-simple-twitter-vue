@@ -1,26 +1,34 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :initial-user="initialUser" />
+    <ProfileCard :user="user" :current-user="currentUser" />
     <ProfileTabs :status="status" />
-    <ReplyList />
+    <UserRepliesPosts :replies="replies" />
   </div>
 </template>
 
 <script>
 import ProfileCard from "./ProfileCard.vue";
 import ProfileTabs from "./ProfileTabs.vue";
-import ReplyList from "./replyList.vue";
+import UserRepliesPosts from "./UserRepliesPosts.vue";
 
 export default {
   name: "UserReplies",
   components: {
     ProfileCard,
     ProfileTabs,
-    ReplyList,
+    UserRepliesPosts,
   },
   props: {
-    initialUser: {
+    user: {
       type: Object,
+      required: true,
+    },
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+    replies: {
+      type: Array,
       required: true,
     },
   },

@@ -15,7 +15,7 @@
         </li>
         <li :class="{ active: currentStatus.isUser }">
           <router-link
-            :to="{ name: 'user', params: { id: currentUser.UserId } }"
+            :to="{ name: 'user', params: { id: currentUser.id } }"
             class="menu__item"
           >
             <img src="../assets/icon_user.png" alt="index" class="user" />
@@ -47,59 +47,30 @@
 
 <script>
 import Modal from "./TweetModal.vue";
-
-const dummyUser = {
-  UserId: 1,
-  account: "root",
-  password: "12345678",
-  name: "root",
-  email: "root@example.com",
-  role: "admin",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  introduction:
-    "Voluptatem ex asperiores doloribus et ullam sit sit quisquam. Officiis et ad eligendi architecto acc",
-  cover: "https://loremflickr.com/600/200/nature?random=100",
-};
-
 export default {
   name: "Navbar",
   components: {
     Modal,
   },
   props: {
-    initialCurrentStatus: {
+    currentStatus: {
+      type: Object,
+      required: true,
+    },
+    currentUser: {
       type: Object,
       required: true,
     },
   },
-  created() {
-    this.fetchCurrentUser();
-    this.fetchCurrentStatus();
-  },
   data() {
     return {
       showModal: false,
-      currentUser: {},
-      currentStatus: {
-        isIndex: true,
-        isUser: false,
-        isSetting: false,
-      },
     };
   },
   methods: {
     afterCreateTweetModal(payload) {
       this.$emit("after-create-tweet-modal", payload);
       console.log(payload);
-    },
-    fetchCurrentUser() {
-      this.currentUser = {
-        ...this.currentUser,
-        ...dummyUser,
-      };
-    },
-    fetchCurrentStatus() {
-      this.currentStatus = this.initialCurrentStatus;
     },
   },
 };
