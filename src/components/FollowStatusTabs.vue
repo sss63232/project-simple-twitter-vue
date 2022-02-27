@@ -1,12 +1,22 @@
 <template>
   <div class="main">
     <ul class="tabs">
-      <router-link to="/user/:id/followers">
+      <router-link
+        :to="{
+          name: 'user-followers',
+          params: { id: this.$route.params.id },
+        }"
+      >
         <li class="tabs__followers" :class="{ active: status.followers }">
           跟隨者
         </li>
       </router-link>
-      <router-link to="/user/:id/followings">
+      <router-link
+        :to="{
+          name: 'user-followings',
+          params: { id: this.$route.params.id },
+        }"
+      >
         <li class="tabs__following" :class="{ active: status.followings }">
           正在跟隨
         </li>

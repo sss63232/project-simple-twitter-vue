@@ -2,57 +2,92 @@
   <div id="popular-users">
     <p class="title">Popular</p>
     <div class="users-list">
-      <div class="item">
+      <div class="item" v-for="user in topUsers" :key="user.id">
         <!-- 點頭像可以連結至該使用者頁面 -->
-        <router-link to="#" class="image">
-          <img src="https://fakeimg.pl/50/" alt="" />
+        <router-link
+          :to="{ name: 'user', params: { id: user.id } }"
+          class="image"
+        >
+          <!-- 缺少頭像 -->
+          <img src="https://fakeimg.pl/50/" alt="avatar" />
         </router-link>
         <div class="info">
-          <p class="name">Pizza Hut</p>
-          <span class="account">@pizzahut</span>
+          <p class="name">{{ user.name }}</p>
+          <span class="account">@p{{ user.account }}</span>
         </div>
-        <button class="follow-btn d-none">跟隨</button>
-        <button class="following-btn">正在跟隨</button>
-      </div>
-      <div class="item">
-        <router-link to="#" class="image">
-          <img src="https://fakeimg.pl/50/" alt="" />
-        </router-link>
-        <div class="info">
-          <p class="name">McDonald's</p>
-          <span class="account">@McDonalds</span>
-        </div>
-        <button class="follow-btn">跟隨</button>
-        <button class="following-btn d-none">正在跟隨</button>
-      </div>
-      <div class="item">
-        <router-link to="#" class="image">
-          <img src="https://fakeimg.pl/50/" alt="" />
-        </router-link>
-        <div class="info">
-          <p class="name">McDonald's</p>
-          <span class="account">@McDonalds</span>
-        </div>
-        <button class="follow-btn">跟隨</button>
-        <button class="following-btn d-none">正在跟隨</button>
-      </div>
-      <div class="item">
-        <router-link to="#" class="image">
-          <img src="https://fakeimg.pl/50/" alt="" />
-        </router-link>
-        <div class="info">
-          <p class="name">McDonald's</p>
-          <span class="account">@McDonalds</span>
-        </div>
-        <button class="follow-btn">跟隨</button>
-        <button class="following-btn d-none">正在跟隨</button>
+
+        <button class="following-btn" v-if="user.isFollowing">正在跟隨</button>
+        <button class="follow-btn" v-else>跟隨</button>
       </div>
     </div>
   </div>
 </template>
 <script>
+const dummyData = [
+  {
+    id: 2,
+    name: "user1",
+    account: "user1",
+    createdAt: "2022-02-26T03:49:30.000Z",
+    followedCount: 3,
+    isFollowing: false,
+  },
+  {
+    id: 5,
+    name: "user4",
+    account: "user4",
+    createdAt: "2022-02-26T03:49:30.000Z",
+    followedCount: 3,
+    isFollowing: true,
+  },
+  {
+    id: 6,
+    name: "user5",
+    account: "user5",
+    createdAt: "2022-02-26T03:49:30.000Z",
+    followedCount: 3,
+    isFollowing: false,
+  },
+  {
+    id: 3,
+    name: "user2",
+    account: "user2",
+    createdAt: "2022-02-26T03:49:30.000Z",
+    followedCount: 2,
+    isFollowing: true,
+  },
+  {
+    id: 4,
+    name: "user3",
+    account: "user3",
+    createdAt: "2022-02-26T03:49:30.000Z",
+    followedCount: 1,
+    isFollowing: false,
+  },
+  {
+    id: 1,
+    name: "root",
+    account: "root",
+    createdAt: "2022-02-26T03:49:30.000Z",
+    followedCount: 0,
+    isFollowing: false,
+  },
+];
 export default {
   name: "PopularUsers",
+  created() {
+    this.fetchTopUsers();
+  },
+  data() {
+    return {
+      topUsers: [],
+    };
+  },
+  methods: {
+    fetchTopUsers() {
+      this.topUsers = dummyData;
+    },
+  },
 };
 </script>
 
@@ -61,7 +96,7 @@ export default {
 #popular-users {
   min-width: 350px;
   width: 350px;
-  height: 756px;
+  height: auto;
   background-color: $formBgColor;
   border-radius: 14px;
   margin-top: 15px;
