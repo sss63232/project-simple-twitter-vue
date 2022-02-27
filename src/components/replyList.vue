@@ -6,17 +6,15 @@
       </div>
       <div class="tweet-content">
         <div class="title">
-          <router-link to="#" class="title__name">{{ reply.name }}</router-link>
-          <router-link to="#" class="title__id"
-            >@{{ reply.UserId }}</router-link
-          >
-          <router-link to="#" class="title__formNow"
+          <router-link to="" class="title__name">{{ reply.name }}</router-link>
+          <router-link to="" class="title__id">@{{ reply.UserId }}</router-link>
+          <router-link to="" class="title__formNow"
             >．{{ reply.createdAt | fromNow }}</router-link
           >
         </div>
         <div class="hashtag">
-          <router-link to="#" class="hashtag__reply">回覆</router-link>
-          <router-link to="#" class="hashtag__userid">@{{ name }}</router-link>
+          <router-link to="" class="hashtag__reply">回覆</router-link>
+          <router-link to="" class="hashtag__userid">@{{ name }}</router-link>
         </div>
         <p class="description">{{ reply.comment }}</p>
       </div>

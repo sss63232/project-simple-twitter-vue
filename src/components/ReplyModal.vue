@@ -21,9 +21,9 @@
           </div>
           <div class="tweet-content">
             <div class="title">
-              <router-link to="#" class="title__name">Mary Jane</router-link>
-              <router-link to="#" class="title__id">@mjjane</router-link>
-              <router-link to="#" class="title__formNow">．3小時</router-link>
+              <router-link to="" class="title__name">Mary Jane</router-link>
+              <router-link to="" class="title__id">@mjjane</router-link>
+              <router-link to="" class="title__formNow">．3小時</router-link>
             </div>
             <p class="description">
               Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
@@ -33,8 +33,8 @@
               exercitation incididunt a
             </p>
             <div class="hashtag">
-              <router-link to="#" class="hashtag__reply">回覆</router-link>
-              <router-link to="#" class="hashtag__userid">@apple</router-link>
+              <router-link to="" class="hashtag__reply">回覆</router-link>
+              <router-link to="" class="hashtag__userid">@apple</router-link>
             </div>
           </div>
         </div>
