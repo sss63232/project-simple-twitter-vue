@@ -61,7 +61,7 @@ const routes = [
   // user
   {
     path: '/user/:id',
-    name: 'user' ,
+    name: 'user',
     component: () => import('@/views/User.vue'),
     redirect: '/user/:id/tweets',
     children: [
@@ -118,13 +118,13 @@ const routes = [
     path: '/admin/main',
     name: 'admin-main',
     component: BlankPage,
-//     component: () => import('../views/adiminTweet.vue')
+    //     component: () => import('../views/adiminTweet.vue')
   },
   {
     path: '/admin/users',
     name: 'admin-users',
     component: BlankPage,
-//       component: () => import('../views/adiminUser.vue')
+    //       component: () => import('../views/adiminUser.vue')
   },
   {
     path: '*',

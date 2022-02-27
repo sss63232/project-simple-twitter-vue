@@ -7,10 +7,15 @@
         <h4>推文</h4>
       </a>
       <Post
-        :initial-tweet="tweet"
+        :initial-tweet="reply"
         @after-create-reply-modal="afterCreateReplyModal"
       />
-      <ReplyList :reply="reply" v-for="reply in replies" :key="reply.replyId" />
+      <ReplyList
+        :name="reply.name"
+        :reply="item"
+        v-for="item in reply.Replies"
+        :key="item.replyId"
+      />
     </div>
     <Popular />
   </div>
@@ -42,58 +47,55 @@ const dummyUser = {
     "Voluptatem ex asperiores doloribus et ullam sit sit quisquam. Officiis et ad eligendi architecto acc",
   cover: "https://loremflickr.com/320/240/nature?random=100",
 };
-const dummyTweet = {
-  tweetId: 11,
-  createdAt: "2022-02-25T04:07:26.000Z",
-  description: "quaerat doloribus minus",
+const Reply = {
+  UserId: 2,
+  description: "magni",
   image: "https://loremflickr.com/320/240/nature?random=100",
-  LikesCount: 2,
-  RepliesCount: 2,
-  isLiked: false,
-  User: {
-    id: 3,
-    name: "user2",
-    account: "user2",
-    avatar: "https://loremflickr.com/140/140/people?random=100",
-  },
+  createdAt: "2022-02-27T04:18:49.000Z",
+  updatedAt: "2022-02-27T04:18:49.000Z",
+  tweetId: 2,
+  name: "user1",
+  account: "user1",
+  avatar: "https://loremflickr.com/140/140/people?random=100",
+  isLiked: true,
+  LikesCount: 3,
+  RepliesCount: 3,
+  Replies: [
+    {
+      UserId: 5,
+      comment: "Quia omnis illo ad est tempore explicabo. Et aperi",
+      createdAt: "2022-02-27T04:18:50.000Z",
+      updatedAt: "2022-02-27T04:18:50.000Z",
+      tweetId: 2,
+      replyId: 4,
+      name: "user4",
+      account: "user4",
+      avatar: "https://loremflickr.com/140/140/people?random=100",
+    },
+    {
+      UserId: 3,
+      comment: "Ut a doloribus facilis explicabo inventore deserun",
+      createdAt: "2022-02-27T04:18:50.000Z",
+      updatedAt: "2022-02-27T04:18:50.000Z",
+      tweetId: 2,
+      replyId: 5,
+      name: "user2",
+      account: "user2",
+      avatar: "https://loremflickr.com/140/140/people?random=100",
+    },
+    {
+      UserId: 2,
+      comment: "sapiente voluptates voluptatem",
+      createdAt: "2022-02-27T04:18:50.000Z",
+      updatedAt: "2022-02-27T04:18:50.000Z",
+      tweetId: 2,
+      replyId: 6,
+      name: "user1",
+      account: "user1",
+      avatar: "https://loremflickr.com/140/140/people?random=100",
+    },
+  ],
 };
-const dummyReply = [
-  {
-    replyId: 1,
-    comment: "sed sint eveniet",
-    createdAt: "2022-02-25T04:07:26.000Z",
-    Tweet: {
-      tweetId: 11,
-      description:
-        "Aliquam qui harum.\nAut deleniti rerum eius quos error labore fuga sint consequatur.",
-      image: "https://loremflickr.com/320/240/nature?random=100",
-    },
-    User: {
-      id: 2,
-      name: "user2",
-      account: "user2",
-      avatar: "https://loremflickr.com/140/140/people?random=100",
-    },
-  },
-  {
-    replyId: 4,
-    comment: "Exercitationem commodi ut qui. Architecto tenetur ",
-    createdAt: "2022-02-25T04:07:26.000Z",
-    Tweet: {
-      tweetId: 11,
-      description:
-        "Quod voluptas non et sunt a asperiores. Reiciendis maxime similique in sapiente voluptatem facere cu",
-      image: "https://loremflickr.com/320/240/nature?random=100",
-    },
-    User: {
-      id: 2,
-      name: "user2",
-      account: "user2",
-      avatar: "https://loremflickr.com/140/140/people?random=100",
-    },
-  },
-];
-
 import Post from "../components/post.vue";
 import ReplyList from "../components/replyList.vue";
 import Navbar from "../components/Navbar.vue";
@@ -108,10 +110,9 @@ export default {
   },
   data() {
     return {
-      user: dummyUser,
-      tweet: dummyTweet,
-      replies: dummyReply,
       currentUser: dummyCurrentUser,
+      reply: {},
+
       currentStatus: {
         isIndex: true,
         isUser: false,
@@ -119,24 +120,25 @@ export default {
       },
     };
   },
+  created() {
+    this.fetchReply();
+  },
   methods: {
+    fetchReply() {
+      //tweets/:id
+      this.reply = Reply;
+    },
     afterCreateReplyModal(payload) {
       const { replyId, comment } = payload;
-      this.replies.unshift({
-        replyId,
+      this.reply.Replies.unshift({
+        UserId: this.currentUser.userId,
         comment,
         createdAt: new Date(),
-        Tweet: {
-          tweetId: this.tweetId,
-          description: this.description,
-          image: this.image,
-        },
-        User: {
-          id: this.user.userId,
-          name: this.user.name,
-          account: this.user.account,
-          avatar: this.user.avatar,
-        },
+        tweetId: this.tweetId,
+        replyId,
+        name: this.currentUser.name,
+        account: this.currentUser.account,
+        avatar: this.currentUser.avatar,
       });
     },
   },

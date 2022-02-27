@@ -148,6 +148,7 @@ h1 {
   border-left: 1px solid $borderColor;
 }
 
+
 .setting-form {
   padding: 1.875rem 25.3125rem 0 1rem;
   margin-bottom: 40rem;
