@@ -41,6 +41,12 @@ export default {
   },
   methods: {
     handleSubmit() {
+      if (this.text.length > 140) {
+        return alert("字數超過140個");
+      }
+      if (this.text.length === 0) {
+        return alert("不可空白");
+      }
       this.$emit("after-create-tweet-modal", {
         tweetId: uuidv4(),
         text: this.text,

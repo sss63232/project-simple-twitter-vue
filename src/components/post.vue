@@ -1,13 +1,16 @@
 <template>
   <div>
     <div class="container">
-      <div class="avatar">
+      <router-link
+        class="avatar"
+        :to="{ name: 'user-tweets', params: { id: tweet.UserId } }"
+      >
         <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
         <div class="title">
           <h4 class="title__name">{{ tweet.User.name }}</h4>
           <h4 class="title__id">@{{ tweet.User.id }}</h4>
         </div>
-      </div>
+      </router-link>
       <div class="tweet-content">
         <p class="description">
           {{ tweet.description }}
@@ -25,10 +28,26 @@
             class="icon__reply"
             alt=""
             @click="showModal = true"
+          />
+          <Modal
+            :show="showModal"
+            @close="showModal = false"
             @after-create-reply-modal="afterCreateReplyModal"
           />
-          <Modal :show="showModal" @close="showModal = false" />
-          <img src="./../assets/like2.png" class="icon__like" alt="" />
+          <img
+            v-if="tweet.isLiked"
+            src="./../assets/likedx2.png"
+            class="icon__like"
+            alt=""
+            @click.stop.prevent="deleteLike"
+          />
+          <img
+            v-else
+            src="./../assets/like2.png"
+            class="icon__like"
+            alt=""
+            @click.stop.prevent="addLike"
+          />
         </div>
       </div>
     </div>
@@ -42,7 +61,7 @@ import moment from "moment";
 moment.locale("zh-tw");
 export default {
   props: {
-    tweet: {
+    initialTweet: {
       type: Object,
       required: true,
     },
@@ -53,8 +72,10 @@ export default {
   data() {
     return {
       showModal: false,
+      tweet: this.initialTweet,
     };
   },
+  //格式化時間用
   filters: {
     fromNow(dateTime) {
       return dateTime ? moment(dateTime).format("aLT．LL") : "-";
@@ -62,7 +83,22 @@ export default {
   },
   methods: {
     afterCreateReplyModal(payload) {
-      console.log(payload);
+      this.$emit("after-create-reply-modal", payload);
+      this.tweet.RepliesCount += 1;
+    },
+    addLike() {
+      this.tweet = {
+        ...this.tweet,
+        isLiked: true,
+      };
+      this.tweet.LikesCount += 1;
+    },
+    deleteLike() {
+      this.tweet = {
+        ...this.tweet,
+        isLiked: false,
+      };
+      this.tweet.LikesCount -= 1;
     },
   },
 };
@@ -89,6 +125,8 @@ export default {
   }
   .avatar {
     display: flex;
+    width: auto;
+    max-width: 110px;
     .avatar__pic {
       margin-right: 10px;
       height: 50px;

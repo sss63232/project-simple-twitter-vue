@@ -12,13 +12,7 @@
         class="textarea"
         v-model="text"
       ></textarea>
-      <button
-        type="submit"
-        :class="['btn-tweet', { disabled: text.length === 0 }]"
-        :disabled="text.length === 0"
-      >
-        推文
-      </button>
+      <button type="submit" class="btn-tweet">推文</button>
     </form>
     <div class="divide"></div>
   </div>
@@ -32,14 +26,14 @@ export default {
       text: "",
     };
   },
-  computed: {
-    handleBtnTweet() {
-      return this.text.length;
-    },
-  },
   methods: {
     handleSubmit() {
-      console.log(this.handleBtnTweet);
+      if (this.text.length > 140) {
+        return alert("字數超過140個");
+      }
+      if (this.text.length === 0) {
+        return alert("不可空白");
+      }
       this.$emit("after-create-tweet", {
         tweetId: uuidv4(),
         text: this.text,
@@ -108,9 +102,6 @@ export default {
       border-radius: 100px;
       left: 520px;
       top: 70px;
-      &.disabled {
-        opacity: 0.7;
-      }
     }
   }
   .divide {

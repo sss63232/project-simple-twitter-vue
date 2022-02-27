@@ -1,62 +1,68 @@
 <template>
   <div>
-    <!-- <router-link
+    <router-link
       class="router-to-reply"
+      tag="div"
       :to="{ name: 'reply', params: { id: post.UserId } }"
-    > -->
-    <div class="container">
-      <router-link
-        class="avatar"
-        :to="{ name: 'user-tweets', params: { id: post.UserId } }"
-      >
-        <img :src="post.avatar" alt="" class="avatar__pic" />
-      </router-link>
-      <div class="tweet-content">
-        <div class="title">
-          <router-link
-            :to="{ name: 'user-tweets', params: { id: post.UserId } }"
-            class="title__name"
-            >{{ post.name }}</router-link
-          >
-          <router-link
-            :to="{ name: 'user-tweets', params: { id: post.UserId } }"
-            class="title__id"
-            >@{{ post.UserId }}．</router-link
-          >
-          <h4 class="title__formNow">{{ post.createdAt | fromNow }}</h4>
-        </div>
-        <p class="description">
-          {{ post.description }}
-        </p>
-        <div class="icon">
-          <button @click="showModal = true">
-            <img src="../assets/reply2.png" class="icon__reply" alt="" />
-          </button>
-          <Modal
-            :show="showModal"
-            @close="showModal = false"
-            @after-create-reply-modal="afterCreateReplyModal"
-          />
-          <h5>{{ post.replyCount }}</h5>
-          <img
-            src="../assets/likedx2.png"
-            class="icon__like"
-            alt=""
-            v-if="post.liked"
-            @click.stop.prevent="deleteLike"
-          />
-          <img
-            src="../assets/like2.png"
-            class="icon__like"
-            alt=""
-            v-else
-            @click.stop.prevent="addLike"
-          />
-          <h5>{{ post.likeCount }}</h5>
+    >
+      <div class="container">
+        <router-link
+          class="avatar"
+          :to="{ name: 'user-tweets', params: { id: post.UserId } }"
+        >
+          <img :src="post.avatar" alt="" class="avatar__pic" />
+        </router-link>
+        <div class="tweet-content">
+          <div class="title">
+            <router-link
+              :to="{ name: 'user-tweets', params: { id: post.UserId } }"
+              class="title__name"
+              >{{ post.name }}</router-link
+            >
+            <router-link
+              :to="{ name: 'user-tweets', params: { id: post.UserId } }"
+              class="title__id"
+              >@{{ post.UserId }}．</router-link
+            >
+            <h4 class="title__formNow">{{ post.createdAt | fromNow }}</h4>
+          </div>
+          <p class="description">
+            {{ post.description }}
+          </p>
+          <div class="icon">
+            <router-link to="/">
+              <img
+                src="../assets/reply2.png"
+                class="icon__reply"
+                alt=""
+                @click="showModal = true"
+              />
+              <Modal
+                :show="showModal"
+                @close="showModal = false"
+                @after-create-reply-modal="afterCreateReplyModal"
+              />
+            </router-link>
+            <h5>{{ post.replyCount }}</h5>
+            <img
+              src="../assets/likedx2.png"
+              class="icon__like"
+              alt=""
+              v-if="post.liked"
+              @click.stop.prevent="deleteLike"
+            />
+            <img
+              src="../assets/like2.png"
+              class="icon__like"
+              alt=""
+              v-else
+              @click.stop.prevent="addLike"
+            />
+            <h5>{{ post.likeCount }}</h5>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- </router-link> -->
+    </router-link>
   </div>
 </template>
 
@@ -114,7 +120,8 @@ export default {
 
 <style lang="scss" scoped>
 .router-to-reply {
-  z-index: 1;
+  z-index: -1;
+  cursor: pointer;
 }
 .container {
   &:hover {
