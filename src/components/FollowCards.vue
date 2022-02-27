@@ -1,31 +1,54 @@
 <template>
   <div>
-    <div class="container" v-for="user in otherUsers" :key="user.id">
-      <div class="avatar">
-        <img :src="user.avatar" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <h4 class="title__name">{{ user.name }}</h4>
-          <h4 class="title__id">@{{ user.account }}</h4>
+    <div v-if="status.followings">
+      <div class="container" v-for="user in followings" :key="user.id">
+        <div class="avatar">
+          <img :src="user.avatar" alt="" class="avatar__pic" />
         </div>
-        <p class="description">
-          {{ user.introduction }}
-        </p>
-        <div class="follow-btn">
-          <!-- 要換成等於currentUser的id -->
-          <button
-            class="follow-btn__follow"
-            v-show="user.Followship.followerId === 2"
-          >
-            正在跟隨
-          </button>
-          <button
-            class="follow-btn__unfollow"
-            v-show="user.Followship.followingId === 2"
-          >
-            跟隨
-          </button>
+        <div class="tweet-content">
+          <div class="title">
+            <h4 class="title__name">{{ user.name }}</h4>
+            <h4 class="title__id">@{{ user.account }}</h4>
+          </div>
+          <p class="description">
+            {{ user.introduction }}
+          </p>
+          <div class="follow-btn">
+            <!-- 要換成等於currentUser的id -->
+            <button
+              class="follow-btn__follow"
+              v-if="user.Followship.followerId === 14"
+            >
+              正在跟隨
+            </button>
+            <button class="follow-btn__unfollow" v-else>跟隨</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else-if="status.followers">
+      <div class="container" v-for="user in followers" :key="user.id">
+        <div class="avatar">
+          <img :src="user.avatar" alt="" class="avatar__pic" />
+        </div>
+        <div class="tweet-content">
+          <div class="title">
+            <h4 class="title__name">{{ user.name }}</h4>
+            <h4 class="title__id">@{{ user.account }}</h4>
+          </div>
+          <p class="description">
+            {{ user.introduction }}
+          </p>
+          <div class="follow-btn">
+            <!-- 要換成等於currentUser的id -->
+            <button
+              class="follow-btn__follow"
+              v-if="user.Followship.followerId === 14"
+            >
+              正在跟隨
+            </button>
+            <button class="follow-btn__unfollow" v-else>跟隨</button>
+          </div>
         </div>
       </div>
     </div>
@@ -36,34 +59,17 @@
 export default {
   name: "FollowCards",
   props: {
-    initialFollowings: {
+    followings: {
       type: Array,
       default: null,
     },
-    initialFollowers: {
+    followers: {
       type: Array,
       default: null,
     },
     status: {
       type: Object,
       required: true,
-    },
-  },
-  created() {
-    this.fetchOtherUsers();
-  },
-  data() {
-    return {
-      otherUsers: [],
-    };
-  },
-  methods: {
-    fetchOtherUsers() {
-      if (this.status.followings) {
-        this.otherUsers = this.initialFollowings;
-      } else if (this.status.followers) {
-        this.otherUsers = this.initialFollowers;
-      }
     },
   },
 };

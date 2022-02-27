@@ -33,22 +33,9 @@ import moment from "moment";
 export default {
   name: "LikesContent",
   props: {
-    initialLikes: {
+    likes: {
       type: Array,
       required: true,
-    },
-  },
-  created() {
-    this.fetchLikes();
-  },
-  data() {
-    return {
-      likes: [],
-    };
-  },
-  methods: {
-    fetchLikes() {
-      this.likes = this.initialLikes;
     },
   },
   filters: {

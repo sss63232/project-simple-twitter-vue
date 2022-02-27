@@ -18,7 +18,7 @@
       <div class="user-edit">
         <button
           class="user-edit__btn"
-          v-if="isCurrentUser"
+          v-if="user.id === currentUser.id"
           id="show-modal"
           @click="showModal = true"
         >
@@ -46,19 +46,29 @@
       </div>
       <div class="user-info">
         <p class="user-info__name">{{ user.name }}</p>
-        <p class="user-info__account">@{{ initialUser.account }}</p>
+        <p class="user-info__account">@{{ user.account }}</p>
         <div class="user-description">
           <p>
             {{ user.introduction }}
           </p>
         </div>
         <div class="user-network">
-          <router-link to="/user/:id/followings">
+          <router-link
+            :to="{
+              name: 'user-followings',
+              params: { id: this.$route.params.id },
+            }"
+          >
             <p>
               <span>{{ user.followingsLength }}個</span>跟隨中
             </p>
           </router-link>
-          <router-link to="/user/:id/followers">
+          <router-link
+            :to="{
+              name: 'user-followers',
+              params: { id: this.$route.params.id },
+            }"
+          >
             <p>
               <span>{{ user.followersLength }}位</span>跟隨者
             </p>
@@ -80,57 +90,21 @@ export default {
     ProfileEditModal,
   },
   props: {
-    initialUser: {
+    user: {
       type: Object,
       require: true,
     },
-  },
-  created() {
-    this.fetchUser();
+    currentUser: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
-      isCurrentUser: true,
       showModal: false,
-      user: {
-        id: -1,
-        name: "123",
-        avatar: "",
-        introduction: "",
-        account: "",
-        cover: "",
-        followersLength: 0,
-        followingsLength: 0,
-      },
     };
   },
   methods: {
-    fetchUser() {
-      console.log("1");
-      const {
-        id,
-        name,
-        avatar,
-        introduction,
-        account,
-        cover,
-        followersLength,
-        followingsLength,
-      } = this.initialUser;
-
-      this.user = {
-        id,
-        name,
-        avatar,
-        introduction,
-        account,
-        cover,
-        followersLength,
-        followingsLength,
-      };
-
-      console.log("3");
-    },
     handleAfterSubmit(formData) {
       this.showModal = false;
       console.log(formData.keys());

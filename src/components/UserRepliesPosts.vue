@@ -40,7 +40,7 @@ moment.locale("zh-tw");
 export default {
   name: "UserRepliesPosts",
   props: {
-    initialReplies: {
+    replies: {
       type: Array,
       required: true,
     },
@@ -48,19 +48,6 @@ export default {
   filters: {
     fromNow(dateTime) {
       return dateTime ? moment(dateTime).fromNow() : "-";
-    },
-  },
-  created() {
-    this.fetchReplies();
-  },
-  data() {
-    return {
-      replies: [],
-    };
-  },
-  methods: {
-    fetchReplies() {
-      this.replies = this.initialReplies;
     },
   },
 };

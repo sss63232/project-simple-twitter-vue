@@ -1,8 +1,8 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :initial-user="initialUser" />
+    <ProfileCard :user="user" :current-user="currentUser" />
     <ProfileTabs :status="status" />
-    <LikesContent :initial-likes="initialLikes" />
+    <LikesContent :likes="likes" />
   </div>
 </template>
 
@@ -19,11 +19,15 @@ export default {
     LikesContent,
   },
   props: {
-    initialUser: {
+    user: {
       type: Object,
       required: true,
     },
-    initialLikes: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+    likes: {
       type: Array,
       required: true,
     },

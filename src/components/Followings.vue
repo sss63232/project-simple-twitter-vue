@@ -1,7 +1,7 @@
 <template>
   <div>
     <FollowStatusTabs :status="status" />
-    <FollowCards :initial-followings="initialFollowings" :status="status" />
+    <FollowCards :followings="followings" :status="status" />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
     FollowCards,
   },
   props: {
-    initialFollowings: {
+    followings: {
       type: Array,
       required: true,
     },

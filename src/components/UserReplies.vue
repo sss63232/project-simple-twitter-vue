@@ -1,8 +1,8 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :initial-user="initialUser" />
+    <ProfileCard :user="user" :current-user="currentUser" />
     <ProfileTabs :status="status" />
-    <UserRepliesPosts :initial-replies="initialReplies" />
+    <UserRepliesPosts :replies="replies" />
   </div>
 </template>
 
@@ -19,11 +19,15 @@ export default {
     UserRepliesPosts,
   },
   props: {
-    initialUser: {
+    user: {
       type: Object,
       required: true,
     },
-    initialReplies: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+    replies: {
       type: Array,
       required: true,
     },

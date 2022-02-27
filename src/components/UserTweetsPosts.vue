@@ -4,7 +4,7 @@
       class="router-to-reply"
       :to="{ name: 'reply', params: { id: post.UserId } }"
     > -->
-    <div class="container" v-for="tweet in post" :key="tweet.tweetId">
+    <div class="container" v-for="tweet in tweets" :key="tweet.tweetId">
       <router-link
         class="avatar"
         :to="{ name: 'user', params: { id: tweet.User.id } }"
@@ -39,19 +39,12 @@
           />
           <h5>{{ tweet.RepliesCount }}</h5>
           <img
-            src="../assets/likedx2.png"
+            src="../assets/icon_heart_pk.png"
             class="icon__like"
             alt=""
-            v-if="post.liked"
-            @click.stop.prevent="deleteLike"
+            v-if="tweet.isLiked"
           />
-          <img
-            src="../assets/like2.png"
-            class="icon__like"
-            alt=""
-            v-else
-            @click.stop.prevent="addLike"
-          />
+          <img src="../assets/like2.png" class="icon__like" alt="" v-else />
           <h5>{{ tweet.LikesCount }}</h5>
         </div>
       </div>
@@ -70,47 +63,19 @@ export default {
     Modal,
   },
   props: {
-    initialPost: {
+    tweets: {
       type: Array,
       required: false,
     },
   },
-  created() {
-    this.fetchPost();
-  },
   data() {
     return {
-      post: [],
       showModal: false,
     };
-  },
-  watch: {
-    initialPost() {
-      this.post = this.initialPost;
-    },
   },
   methods: {
     afterCreateReplyModal(payload) {
       console.log(payload);
-    },
-    //這裡怪怪的
-    addLike() {
-      this.post = {
-        ...this.post,
-        liked: true,
-      };
-      this.post.likeCount += 1;
-    },
-    //這裡怪怪的
-    deleteLike() {
-      this.post = {
-        ...this.post,
-        liked: false,
-      };
-      this.post.likeCount -= 1;
-    },
-    fetchPost() {
-      this.post = this.initialPost;
     },
   },
   filters: {
@@ -122,6 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// Todo: 最下方缺少空白間隔
 .router-to-reply {
   z-index: 1;
 }

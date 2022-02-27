@@ -1,15 +1,21 @@
 <template>
   <div class="main">
     <ul class="tabs">
-      <router-link to="/user/:id/tweets">
+      <router-link
+        :to="{ name: 'user-tweets', params: { id: this.$route.params.id } }"
+      >
         <li class="tabs__posts" :class="{ active: status.tweets }">推文</li>
       </router-link>
-      <router-link to="/user/:id/replies">
+      <router-link
+        :to="{ name: 'user-replies', params: { id: this.$route.params.id } }"
+      >
         <li class="tabs__replies" :class="{ active: status.replies }">
           推文與回覆
         </li>
       </router-link>
-      <router-link to="/user/:id/likes">
+      <router-link
+        :to="{ name: 'user-likes', params: { id: this.$route.params.id } }"
+      >
         <li class="tabs__likes" :class="{ active: status.likes }">
           喜歡的內容
         </li>
