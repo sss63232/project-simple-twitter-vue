@@ -31,6 +31,7 @@
           :replies="replyTweets"
           @after-like="handleAddLike"
           @after-delete-like="handleDeleteLike"
+          @after-update="handleUpdate"
         />
       </div>
     </div>
@@ -237,6 +238,17 @@ export default {
         }
         return tweet;
       });
+    },
+    handleUpdate(formData) {
+      const { name, avatar, cover, introduction } = formData;
+      this.user = {
+        ...this.user,
+        name,
+        avatar,
+        cover,
+        introduction,
+      };
+      this.fetchTweets(this.user.id);
     },
   },
 };
