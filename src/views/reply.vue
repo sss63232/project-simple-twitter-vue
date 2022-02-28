@@ -42,7 +42,7 @@ import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
 import tweetAPI from "./../apis/tweets.js";
 import { Toast } from "./../utils/helper";
-import replyAPI from "./../apis/reply.js";
+// import replyAPI from "./../apis/reply.js";
 
 export default {
   components: {
@@ -82,26 +82,16 @@ export default {
       }
     },
     async afterCreateReplyModal(payload) {
-      try {
-        const { data } = await replyAPI.createReply({ payload });
-        console.log(data);
-        const { replyId, comment } = payload;
-        this.reply.Replies.unshift({
-          UserId: this.currentUser.id,
-          comment,
-          createdAt: new Date(),
-          tweetId: this.tweetId,
-          replyId,
-          name: this.currentUser.name,
-          account: this.currentUser.account,
-          avatar: this.currentUser.avatar,
-        });
-      } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title: "目前無法回覆，請稍後再試",
-        });
-      }
+      const { tweetId, comment } = payload;
+      this.reply.Replies.unshift({
+        UserId: this.currentUser.id,
+        comment,
+        createdAt: new Date(),
+        tweetId,
+        name: this.currentUser.name,
+        account: this.currentUser.account,
+        avatar: this.currentUser.avatar,
+      });
     },
   },
 };

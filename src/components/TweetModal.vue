@@ -20,7 +20,9 @@
           ></textarea>
         </div>
         <div class="modal-footer">
-          <button class="modal-default-button">推文</button>
+          <button class="modal-default-button" :disabled="isLoading">
+            推文
+          </button>
         </div>
       </form>
     </div>
@@ -53,16 +55,26 @@ export default {
     return {
       text: "",
       currentUser: currentUser,
+      isLoading: false,
     };
   },
   methods: {
     async handleSubmit() {
+      if (this.text.length > 140) {
+        return alert("字數超過140個");
+      }
+      if (this.text.trim().length === 0) {
+        return alert("不可空白");
+      }
+      this.isLoading = true;
       try {
         const { data } = await tweetsAPI.createTweet({
           image: this.currentUser.avatar,
           description: this.text,
         });
+        this.isLoading = false;
         if (data.status === "error") {
+          this.isLoading = false;
           throw new Error(data.message);
         }
       } catch (error) {

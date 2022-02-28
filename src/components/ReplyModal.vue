@@ -54,6 +54,7 @@
           <button
             class="modal-default-button"
             @click.stop.prevent="handleSubmit"
+            :disabled="isLoading"
           >
             回覆
           </button>
@@ -72,12 +73,12 @@ export default {
     show: Boolean,
     tweetId: {
       type: Number,
-      required: true,
     },
   },
   data() {
     return {
       text: "",
+      isLoading: false,
     };
   },
   methods: {
@@ -88,12 +89,15 @@ export default {
       if (this.text.length === 0) {
         return alert("不可空白");
       }
+      this.isLoading = true;
       try {
         const { data } = await replyAPI.createReply({
           tweetId: this.tweetId,
           comment: this.text,
         });
+        this.isLoading = false;
         if (data.status === "error") {
+          this.isLoading = false;
           throw new Error(data.message);
         } else {
           Toast.fire({
