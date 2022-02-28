@@ -3,7 +3,7 @@
     <router-link
       class="router-to-reply"
       tag="div"
-      :to="{ name: 'reply', params: { id: post.UserId } }"
+      :to="{ name: 'reply', params: { id: post.tweetId } }"
     >
       <div class="container">
         <router-link

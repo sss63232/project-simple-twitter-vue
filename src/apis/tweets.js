@@ -9,11 +9,18 @@ export default {
         headers: { Authorization: `Bearer ${getToken()}` }
       })
   },
+  //取得一篇tweet內容及其回覆清單
+  getTweet({ tweetId }) {
+    return apiHelper.get(`/tweets/${tweetId}`,
+      {
+        headers: { Authorization: `Bearer ${getToken()} ` }
+      })
+  },
   //新增一則推文 failure 
-  createTweet({ tweet }) {
-    return apiHelper.post('/tweets', { tweet }, {
+  createTweet({ formData }) {
+    return apiHelper.post('/tweets', { formData }, {
       headers: {
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `Bearer ${getToken()} `
       }
     })
   },

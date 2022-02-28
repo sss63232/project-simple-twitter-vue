@@ -7,7 +7,7 @@
     />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
-      <Posts :initial-post="post" v-for="post in posts" :key="post.id" />
+      <Posts :initial-post="post" v-for="post in posts" :key="post.tweetId" />
     </div>
     <Popular />
   </div>

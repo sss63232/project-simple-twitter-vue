@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="avatar">
-        <img src="https://i.imgur.com/KvZWl8z.png" alt="" class="avatar__pic" />
+        <img :src="reply.avatar" alt="" class="avatar__pic" />
       </div>
       <div class="tweet-content">
         <div class="title">
