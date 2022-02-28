@@ -65,6 +65,7 @@
 <script>
 import Navbar from "./../components/Navbar.vue";
 import { Toast } from "./../utils/helper";
+
 const dummyUser = {
   id: 14,
   name: "user1",
@@ -113,26 +114,26 @@ export default {
         email,
       };
     },
-  },
-  handleSubmit() {
-    const { account, name, email, password, checkPassword } = this.user;
-    if (
-      account.trim().length ||
-      name.trim().length ||
-      email.trim().length ||
-      password.trim().length ||
-      checkPassword.trim().length === 0
-    ) {
-      Toast.fire({
-        icon: "error",
-        title: "不得留白",
-      });
-      return;
-    } else if (password !== checkPassword) {
-      return;
-    } else if (email.indexOf("@") === -1) {
-      return;
-    }
+    handleSubmit() {
+      const { account, name, email, password, checkPassword } = this.user;
+      if (
+        account.trim().length ||
+        name.trim().length ||
+        email.trim().length ||
+        password.trim().length ||
+        checkPassword.trim().length === 0
+      ) {
+        Toast.fire({
+          icon: "error",
+          title: "不得留白",
+        });
+        return;
+      } else if (password !== checkPassword) {
+        return;
+      } else if (email.indexOf("@") === -1) {
+        return;
+      }
+    },
   },
 };
 </script>
