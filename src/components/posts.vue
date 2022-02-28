@@ -48,15 +48,15 @@
               src="../assets/likedx2.png"
               class="icon__like"
               alt=""
-              v-if="post.liked"
-              @click.stop.prevent="deleteLike"
+              v-if="post.isLiked"
+              @click.stop.prevent="deleteLike(post.tweetId)"
             />
             <img
               src="../assets/like2.png"
               class="icon__like"
               alt=""
               v-else
-              @click.stop.prevent="addLike"
+              @click.stop.prevent="addLike(post.tweetId)"
             />
             <h5>{{ post.LikesCount }}</h5>
           </div>
@@ -69,6 +69,8 @@
 <script>
 import moment from "moment";
 import Modal from "./ReplyModal.vue";
+import { Toast } from "./../utils/helper";
+import tweetsAPI from "./../apis/tweets";
 
 export default {
   components: {
@@ -96,19 +98,41 @@ export default {
       console.log(payload);
       this.post.RepliesCount += 1;
     },
-    addLike() {
-      this.post = {
-        ...this.post,
-        liked: true,
-      };
-      this.post.LikesCount += 1;
+    async addLike(tweetId) {
+      try {
+        const { data } = await tweetsAPI.addLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.post = {
+          ...this.post,
+          isLiked: true,
+        };
+        this.post.LikesCount += 1;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法加入愛心",
+        });
+      }
     },
-    deleteLike() {
-      this.post = {
-        ...this.post,
-        liked: false,
-      };
-      this.post.LikesCount -= 1;
+    async deleteLike(tweetId) {
+      try {
+        const { data } = await tweetsAPI.deleteLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.post = {
+          ...this.post,
+          isLiked: false,
+        };
+        this.post.LikesCount -= 1;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法移除愛心",
+        });
+      }
     },
   },
   filters: {

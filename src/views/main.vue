@@ -18,6 +18,8 @@ import Tweet from "../components/tweet.vue";
 import Posts from "../components/posts.vue";
 import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
+import tweetsAPI from "../apis/tweets.js";
+import { Toast } from "./../utils/helper";
 
 const dummyUser = {
   id: 14,
@@ -32,49 +34,6 @@ const dummyUser = {
   createdAt: "2022-02-26T03:59:35.000Z",
   updatedAt: "2022-02-26T03:59:35.000Z",
 };
-const dummyData = [
-  {
-    id: 5,
-    UserId: 2,
-    description:
-      "Suscipit quo illum saepe dolores atque. Eos similique laborum. Error ea distinctio. Aperiam totam ei",
-    image: "https://loremflickr.com/320/240/nature?random=100",
-    createdAt: "2022-02-27T04:18:50.000Z",
-    updatedAt: "2022-02-27T04:18:50.000Z",
-    name: "user1",
-    account: "user1",
-    isLiked: true,
-    LikesCount: 3,
-    RepliesCount: 3,
-  },
-  {
-    id: 6,
-    UserId: 2,
-    description: "est",
-    image: "https://loremflickr.com/320/240/nature?random=100",
-    createdAt: "2022-02-27T04:18:50.000Z",
-    updatedAt: "2022-02-27T04:18:50.000Z",
-    name: "user1",
-    account: "user1",
-    isLiked: false,
-    LikesCount: 1,
-    RepliesCount: 3,
-  },
-  {
-    id: 7,
-    UserId: 2,
-    description:
-      "Placeat architecto et quaerat. Fugiat fuga labore et quod illum molestiae quia sit. Laboriosam volup",
-    image: "https://loremflickr.com/320/240/nature?random=100",
-    createdAt: "2022-02-27T04:18:50.000Z",
-    updatedAt: "2022-02-27T04:18:50.000Z",
-    name: "user1",
-    account: "user1",
-    isLiked: false,
-    LikesCount: 1,
-    RepliesCount: 3,
-  },
-];
 
 export default {
   //main是保留字，會報錯
@@ -100,36 +59,90 @@ export default {
     this.fetchPosts();
   },
   methods: {
-    fetchPosts() {
-      this.posts = dummyData;
+    async fetchPosts() {
+      try {
+        const { data } = await tweetsAPI.getTweets();
+        if (data.status === "error") {
+          console.log("error", data.message);
+        }
+        this.posts = data;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得該推文資料，請稍後再試",
+        });
+      }
     },
-    afterCreateTweet(payload) {
-      const { tweetId, text } = payload;
-      this.posts.unshift({
-        tweetId,
-        UserId: this.currentUser.id,
-        name: this.currentUser.name,
-        image: this.currentUser.avatar,
-        account: this.currentUser.account,
-        description: text,
-        RepliesCount: 0,
-        LikesCount: 0,
-        createdAt: new Date(),
-      });
+    //後端無法接收資料，原因未知
+    async afterCreateTweet(tweet) {
+      console.log(tweet);
+      try {
+        const { data } = await tweetsAPI.createTweet({ tweet });
+        // if (data.status === "error") {
+        //   throw new Error(data.message);
+        // }
+        console.log(data);
+        const {
+          tweetId,
+          UserId,
+          name,
+          image,
+          account,
+          description,
+          RepliesCount,
+          LikesCount,
+          createdAt,
+        } = tweet;
+        this.posts.unshift({
+          tweetId,
+          UserId,
+          name,
+          image,
+          account,
+          description,
+          RepliesCount,
+          LikesCount,
+          createdAt,
+        });
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法推文，請稍後再試",
+        });
+      }
     },
-    afterCreateTweetModal(payload) {
-      const { tweetId, text } = payload;
-      this.posts.unshift({
-        tweetId,
-        UserId: this.currentUser.id,
-        name: this.currentUser.name,
-        image: this.currentUser.avatar,
-        account: this.currentUser.account,
-        description: text,
-        RepliesCount: 0,
-        LikesCount: 0,
-        createdAt: new Date(),
-      });
+    async afterCreateTweetModal(tweet) {
+      try {
+        const { data } = await tweetsAPI.createTweet({ tweet });
+        console.log(data);
+        const {
+          tweetId,
+          UserId,
+          name,
+          image,
+          account,
+          description,
+          RepliesCount,
+          LikesCount,
+          createdAt,
+        } = tweet;
+        this.posts.unshift({
+          tweetId,
+          UserId,
+          name,
+          image,
+          account,
+          description,
+          RepliesCount,
+          LikesCount,
+          createdAt,
+        });
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法推文，請稍後再試",
+        });
+      }
     },
   },
 };
