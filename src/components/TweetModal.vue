@@ -60,13 +60,15 @@ export default {
   },
   methods: {
     async handleSubmit() {
+      this.isLoading = true;
       if (this.text.length > 140) {
+        this.isLoading = false;
         return alert("字數超過140個");
       }
       if (this.text.trim().length === 0) {
+        this.isLoading = false;
         return alert("不可空白");
       }
-      this.isLoading = true;
       try {
         const { data } = await tweetsAPI.createTweet({
           image: this.currentUser.avatar,
