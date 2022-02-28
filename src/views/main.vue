@@ -7,7 +7,7 @@
     />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
-      <Posts :initial-post="post" v-for="post in posts" :key="post.id" />
+      <Posts :initial-post="post" v-for="post in posts" :key="post.tweetId" />
     </div>
     <Popular />
   </div>
@@ -74,42 +74,27 @@ export default {
       }
     },
     //後端無法接收資料，原因未知
-    async afterCreateTweet(tweet) {
-      console.log(tweet);
-      try {
-        const { data } = await tweetsAPI.createTweet({ tweet });
-        // if (data.status === "error") {
-        //   throw new Error(data.message);
-        // }
-        console.log(data);
-        const {
-          tweetId,
-          UserId,
-          name,
-          image,
-          account,
-          description,
-          RepliesCount,
-          LikesCount,
-          createdAt,
-        } = tweet;
-        this.posts.unshift({
-          tweetId,
-          UserId,
-          name,
-          image,
-          account,
-          description,
-          RepliesCount,
-          LikesCount,
-          createdAt,
-        });
-      } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title: "目前無法推文，請稍後再試",
-        });
-      }
+    async afterCreateTweet(payload) {
+      const {
+        UserId,
+        name,
+        image,
+        account,
+        description,
+        RepliesCount,
+        LikesCount,
+        createdAt,
+      } = payload;
+      this.posts.unshift({
+        UserId,
+        name,
+        image,
+        account,
+        description,
+        RepliesCount,
+        LikesCount,
+        createdAt,
+      });
     },
     async afterCreateTweetModal(tweet) {
       try {

@@ -18,7 +18,9 @@
   </div>
 </template>
 <script>
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+import tweetsAPI from "../apis/tweets.js";
+import { Toast } from "./../utils/helper";
 
 const dummyUser = {
   id: 14,
@@ -38,27 +40,43 @@ export default {
     return {
       text: "",
       currentUser: dummyUser,
+      newData: {},
     };
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       if (this.text.length > 140) {
         return alert("字數超過140個");
       }
       if (this.text.length === 0) {
         return alert("不可空白");
       }
-      this.$emit("after-create-tweet", {
-        tweetId: uuidv4(),
-        UserId: this.currentUser.id,
-        name: this.currentUser.name,
-        image: this.currentUser.avatar,
-        account: this.currentUser.account,
-        description: this.text,
-        RepliesCount: 0,
-        LikesCount: 0,
-        createdAt: new Date(),
-      });
+      try {
+        const { data } = await tweetsAPI.createTweet({
+          image: this.currentUser.avatar,
+          description: this.text,
+        });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.$emit("after-create-tweet", {
+          // tweetId: uuidv4(),
+          UserId: this.currentUser.id,
+          name: this.currentUser.name,
+          image: this.currentUser.avatar,
+          account: this.currentUser.account,
+          description: this.text,
+          RepliesCount: 0,
+          LikesCount: 0,
+          createdAt: new Date(),
+        });
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法推文",
+        });
+      }
+
       this.text = "";
     },
   },
@@ -71,6 +89,7 @@ export default {
   display: flex;
   flex-direction: column;
   .home {
+    opacity: 0.9;
     z-index: 995;
     position: fixed;
     top: 0;

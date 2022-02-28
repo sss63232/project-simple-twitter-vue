@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" class="modal-mask">
     <div class="modal-wrapper">
-      <form class="modal-container" @submit.stop.prevent="handleSubmit">
+      <form class="modal-container">
         <div class="modal-header">
           <button name="header" @click="$emit('close')">
             <img src="../assets/X.png" alt="" />
@@ -51,7 +51,10 @@
           ></textarea>
         </div>
         <div class="modal-footer">
-          <button class="modal-default-button" @click="handleSubmit">
+          <button
+            class="modal-default-button"
+            @click.stop.prevent="handleSubmit"
+          >
             回覆
           </button>
         </div>
@@ -61,11 +64,16 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
+import { Toast } from "./../utils/helper";
+import replyAPI from "./../apis/reply";
 
 export default {
   props: {
     show: Boolean,
+    tweetId: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
@@ -73,19 +81,38 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       if (this.text.length > 140) {
         return alert("字數超過140個");
       }
       if (this.text.length === 0) {
         return alert("不可空白");
       }
-      this.$emit("after-create-reply-modal", {
-        replyId: uuidv4(),
-        comment: this.text,
-      });
-      this.text = "";
-      this.$emit("close");
+      try {
+        const { data } = await replyAPI.createReply({
+          tweetId: this.tweetId,
+          comment: this.text,
+        });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        } else {
+          Toast.fire({
+            icon: "success",
+            title: "回覆成功",
+          });
+        }
+        this.$emit("after-create-reply-modal", {
+          tweetId: this.tweetId,
+          comment: this.text,
+        });
+        this.text = "";
+        this.$emit("close");
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法回覆，請稍後再試",
+        });
+      }
     },
   },
 };
@@ -211,17 +238,15 @@ export default {
     font: #9197a3;
   }
 }
-.modal-footer {
-  .modal-default-button {
-    margin: 0 15px 20px 0;
-    float: right;
-    width: 66px;
-    height: 38px;
-    font-size: 18px;
-    color: #ffffff;
-    background-color: #ff6600;
-    border-radius: 100px;
-  }
+.modal-default-button {
+  margin: 0 15px 20px 0;
+  float: right;
+  width: 66px;
+  height: 38px;
+  font-size: 18px;
+  color: #ffffff;
+  background-color: #ff6600;
+  border-radius: 100px;
 }
 
 /* .modal-enter-from {

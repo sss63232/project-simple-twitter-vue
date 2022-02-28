@@ -35,59 +35,14 @@ const dummyCurrentUser = {
   createdAt: "2022-02-26T03:59:35.000Z",
   updatedAt: "2022-02-26T03:59:35.000Z",
 };
-const Reply = {
-  UserId: 2,
-  description: "magni",
-  image: "https://loremflickr.com/320/240/nature?random=100",
-  createdAt: "2022-02-27T04:18:49.000Z",
-  updatedAt: "2022-02-27T04:18:49.000Z",
-  tweetId: 2,
-  name: "user1",
-  account: "user1",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  isLiked: true,
-  LikesCount: 3,
-  RepliesCount: 3,
-  Replies: [
-    {
-      UserId: 5,
-      comment: "Quia omnis illo ad est tempore explicabo. Et aperi",
-      createdAt: "2022-02-27T04:18:50.000Z",
-      updatedAt: "2022-02-27T04:18:50.000Z",
-      tweetId: 2,
-      replyId: 4,
-      name: "user4",
-      account: "user4",
-      avatar: "https://loremflickr.com/140/140/people?random=100",
-    },
-    {
-      UserId: 3,
-      comment: "Ut a doloribus facilis explicabo inventore deserun",
-      createdAt: "2022-02-27T04:18:50.000Z",
-      updatedAt: "2022-02-27T04:18:50.000Z",
-      tweetId: 2,
-      replyId: 5,
-      name: "user2",
-      account: "user2",
-      avatar: "https://loremflickr.com/140/140/people?random=100",
-    },
-    {
-      UserId: 2,
-      comment: "sapiente voluptates voluptatem",
-      createdAt: "2022-02-27T04:18:50.000Z",
-      updatedAt: "2022-02-27T04:18:50.000Z",
-      tweetId: 2,
-      replyId: 6,
-      name: "user1",
-      account: "user1",
-      avatar: "https://loremflickr.com/140/140/people?random=100",
-    },
-  ],
-};
+
 import Post from "../components/post.vue";
 import ReplyList from "../components/replyList.vue";
 import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
+import tweetAPI from "./../apis/tweets.js";
+import { Toast } from "./../utils/helper";
+import replyAPI from "./../apis/reply.js";
 
 export default {
   components: {
@@ -108,25 +63,45 @@ export default {
     };
   },
   created() {
-    this.fetchReply();
+    const tweetId = this.$route.params.id;
+    this.fetchReply(tweetId);
   },
   methods: {
-    fetchReply() {
-      //tweets/:id
-      this.reply = Reply;
+    async fetchReply(tweetId) {
+      try {
+        const { data } = await tweetAPI.getTweet({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.reply = data;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法取得貼文資訊",
+        });
+      }
     },
-    afterCreateReplyModal(payload) {
-      const { replyId, comment } = payload;
-      this.reply.Replies.unshift({
-        UserId: this.currentUser.id,
-        comment,
-        createdAt: new Date(),
-        tweetId: this.tweetId,
-        replyId,
-        name: this.currentUser.name,
-        account: this.currentUser.account,
-        avatar: this.currentUser.avatar,
-      });
+    async afterCreateReplyModal(payload) {
+      try {
+        const { data } = await replyAPI.createReply({ payload });
+        console.log(data);
+        const { replyId, comment } = payload;
+        this.reply.Replies.unshift({
+          UserId: this.currentUser.id,
+          comment,
+          createdAt: new Date(),
+          tweetId: this.tweetId,
+          replyId,
+          name: this.currentUser.name,
+          account: this.currentUser.account,
+          avatar: this.currentUser.avatar,
+        });
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法回覆，請稍後再試",
+        });
+      }
     },
   },
 };

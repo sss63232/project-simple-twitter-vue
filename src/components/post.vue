@@ -31,6 +31,7 @@
           />
           <Modal
             :show="showModal"
+            :tweetId="tweet.tweetId"
             @close="showModal = false"
             @after-create-reply-modal="afterCreateReplyModal"
           />
@@ -39,14 +40,14 @@
             src="./../assets/likedx2.png"
             class="icon__like"
             alt=""
-            @click.stop.prevent="deleteLike"
+            @click.stop.prevent="deleteLike(tweet.tweetId)"
           />
           <img
             v-else
             src="./../assets/like2.png"
             class="icon__like"
             alt=""
-            @click.stop.prevent="addLike"
+            @click.stop.prevent="addLike(tweet.tweetId)"
           />
         </div>
       </div>
@@ -57,6 +58,10 @@
 <script>
 import Modal from "./ReplyModal.vue";
 import moment from "moment";
+import tweetAPI from "./../apis/tweets.js";
+import { Toast } from "./../utils/helper";
+// import replyAPI from "./../apis/reply";
+
 //換moment語言到中文
 moment.locale("zh-tw");
 export default {
@@ -75,6 +80,14 @@ export default {
       tweet: this.initialTweet,
     };
   },
+  watch: {
+    initialTweet(newValue) {
+      this.tweet = {
+        ...this.tweet,
+        ...newValue,
+      };
+    },
+  },
   //格式化時間用
   filters: {
     fromNow(dateTime) {
@@ -86,19 +99,41 @@ export default {
       this.$emit("after-create-reply-modal", payload);
       this.tweet.RepliesCount += 1;
     },
-    addLike() {
-      this.tweet = {
-        ...this.tweet,
-        isLiked: true,
-      };
-      this.tweet.LikesCount += 1;
+    async addLike(tweetId) {
+      try {
+        const { data } = await tweetAPI.addLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.tweet = {
+          ...this.tweet,
+          isLiked: true,
+        };
+        this.tweet.LikesCount += 1;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法like",
+        });
+      }
     },
-    deleteLike() {
-      this.tweet = {
-        ...this.tweet,
-        isLiked: false,
-      };
-      this.tweet.LikesCount -= 1;
+    async deleteLike(tweetId) {
+      try {
+        const { data } = await tweetAPI.deleteLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.tweet = {
+          ...this.tweet,
+          isLiked: false,
+        };
+        this.tweet.LikesCount -= 1;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "目前無法unlike",
+        });
+      }
     },
   },
 };
