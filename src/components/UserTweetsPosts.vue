@@ -1,62 +1,72 @@
 <template>
   <div>
-    <!-- <router-link
+    <router-link
       class="router-to-reply"
-      :to="{ name: 'reply', params: { id: post.UserId } }"
-    > -->
-    <div class="container" v-for="tweet in tweets" :key="tweet.tweetId">
-      <router-link
-        class="avatar"
-        :to="{ name: 'user', params: { id: tweet.User.id } }"
-      >
-        <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
-      </router-link>
-      <div class="tweet-content">
-        <div class="title">
-          <router-link
-            :to="{ name: 'user', params: { id: tweet.User.id } }"
-            class="title__name"
-            >{{ tweet.User.name }}</router-link
-          >
-          <router-link
-            :to="{ name: 'user', params: { id: tweet.User.id } }"
-            class="title__id"
-            >@{{ tweet.User.account }}．</router-link
-          >
-          <h4 class="title__formNow">{{ tweet.createdAt | fromNow }}</h4>
-        </div>
-        <p class="description">
-          {{ tweet.description }}
-        </p>
-        <div class="icon">
-          <button @click="showModal = true">
-            <img src="../assets/reply2.png" class="icon__reply" alt="" />
-          </button>
-          <Modal
-            :show="showModal"
-            @close="showModal = false"
-            @after-create-reply-modal="afterCreateReplyModal"
-          />
-          <h5>{{ tweet.RepliesCount }}</h5>
-          <img
-            src="../assets/icon_heart_pk.png"
-            class="icon__like"
-            alt=""
-            v-if="tweet.isLiked"
-            @click.stop.prevent="deleteLike(tweet.tweetId)"
-          />
-          <img
-            src="../assets/like2.png"
-            class="icon__like"
-            alt=""
-            v-else
-            @click.stop.prevent="addLike(tweet.tweetId)"
-          />
-          <h5>{{ tweet.LikesCount }}</h5>
+      tag="div"
+      :to="{ name: 'reply', params: { id: tweet.tweetId } }"
+      v-for="tweet in tweets"
+      :key="tweet.tweetId"
+    >
+      <div class="container">
+        <router-link
+          class="avatar"
+          :to="{ name: 'user', params: { id: tweet.User.id } }"
+        >
+          <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
+        </router-link>
+        <div class="tweet-content">
+          <div class="title">
+            <router-link
+              :to="{ name: 'user', params: { id: tweet.User.id } }"
+              class="title__name"
+              >{{ tweet.User.name }}</router-link
+            >
+            <router-link
+              :to="{ name: 'user', params: { id: tweet.User.id } }"
+              class="title__id"
+              >@{{ tweet.User.account }}．</router-link
+            >
+            <h4 class="title__formNow">{{ tweet.createdAt | fromNow }}</h4>
+          </div>
+          <p class="description">
+            {{ tweet.description }}
+          </p>
+          <div class="icon">
+            <!-- Todo: reply hover的地方要修正 -->
+            <router-link :to="{ name: 'user', params: { id: tweet.User.id } }">
+              <img
+                src="../assets/reply2.png"
+                class="icon__reply"
+                alt=""
+                @click="showModal = true"
+              />
+              <Modal
+                :show="showModal"
+                @close="showModal = false"
+                @after-create-reply-modal="afterCreateReplyModal"
+              />
+            </router-link>
+            <h5>{{ tweet.RepliesCount }}</h5>
+            <!-- Todo: 愛心hover的地方要修正 -->
+            <img
+              src="../assets/icon_heart_pk.png"
+              class="icon__like"
+              alt=""
+              v-if="tweet.isLiked"
+              @click.stop.prevent="deleteLike(tweet.tweetId)"
+            />
+            <img
+              src="../assets/like2.png"
+              class="icon__like"
+              alt=""
+              v-else
+              @click.stop.prevent="addLike(tweet.tweetId)"
+            />
+            <h5>{{ tweet.LikesCount }}</h5>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- </router-link> -->
+    </router-link>
   </div>
 </template>
 
@@ -139,9 +149,6 @@ export default {
       &__formNow {
         color: #657786;
         font-weight: 500;
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
   }

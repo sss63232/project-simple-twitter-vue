@@ -91,6 +91,7 @@ export default {
     textarea::-webkit-input-placeholder {
       font-size: 18px;
       font: #9197a3;
+      font-family: "Noto Sans TC";
     }
     .btn-tweet {
       position: absolute;
