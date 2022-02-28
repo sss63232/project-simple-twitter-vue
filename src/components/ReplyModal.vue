@@ -54,6 +54,7 @@
           <button
             class="modal-default-button"
             @click.stop.prevent="handleSubmit"
+            :disabled="isLoading"
           >
             回覆
           </button>
@@ -72,20 +73,23 @@ export default {
     show: Boolean,
     tweetId: {
       type: Number,
-      required: true,
     },
   },
   data() {
     return {
       text: "",
+      isLoading: false,
     };
   },
   methods: {
     async handleSubmit() {
+      this.isLoading = true;
       if (this.text.length > 140) {
+        this.isLoading = false;
         return alert("字數超過140個");
       }
       if (this.text.length === 0) {
+        this.isLoading = false;
         return alert("不可空白");
       }
       try {
@@ -93,7 +97,9 @@ export default {
           tweetId: this.tweetId,
           comment: this.text,
         });
+        this.isLoading = false;
         if (data.status === "error") {
+          this.isLoading = false;
           throw new Error(data.message);
         } else {
           Toast.fire({

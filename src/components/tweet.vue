@@ -12,7 +12,9 @@
         class="textarea"
         v-model="text"
       ></textarea>
-      <button type="submit" class="btn-tweet">推文</button>
+      <button type="submit" class="btn-tweet" :disabled="isLoading">
+        推文
+      </button>
     </form>
     <div class="divide"></div>
   </div>
@@ -40,15 +42,18 @@ export default {
     return {
       text: "",
       currentUser: dummyUser,
-      newData: {},
+      isLoading: false,
     };
   },
   methods: {
     async handleSubmit() {
+      this.isLoading = true;
       if (this.text.length > 140) {
+        this.isLoading = false;
         return alert("字數超過140個");
       }
-      if (this.text.length === 0) {
+      if (this.text.trim().length === 0) {
+        this.isLoading = false;
         return alert("不可空白");
       }
       try {
@@ -56,7 +61,9 @@ export default {
           image: this.currentUser.avatar,
           description: this.text,
         });
+        this.isLoading = false;
         if (data.status === "error") {
+          this.isLoading = false;
           throw new Error(data.message);
         }
         this.$emit("after-create-tweet", {
