@@ -2,7 +2,7 @@
   <div class="profile-main">
     <ProfileCard :user="user" :current-user="currentUser" />
     <ProfileTabs :status="status" />
-    <LikesContent :likes="likes" />
+    <LikesContent :likes="likes" v-on="$listeners" />
   </div>
 </template>
 

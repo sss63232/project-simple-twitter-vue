@@ -32,6 +32,7 @@
           @after-like="handleAddLike"
           @after-delete-like="handleDeleteLike"
           @after-update="handleUpdate"
+          @after-delete-on-like="handleDeleteLikePost"
         />
       </div>
     </div>
@@ -45,6 +46,7 @@
 import Navbar from "../components/Navbar.vue";
 import PopularUsers from "../components/PopularUsers.vue";
 import usersAPI from "./../apis/users";
+import tweetsAPI from "./../apis/tweets";
 import { Toast } from "./../utils/helper";
 
 const dummyUser = {
@@ -215,29 +217,70 @@ export default {
         });
       }
     },
-    handleAddLike(tweetId) {
-      this.tweets = this.tweets.map((tweet) => {
-        if (tweet.tweetId === tweetId) {
-          return {
-            ...tweet,
-            LikesCount: tweet.LikesCount + 1,
-            isLiked: true,
-          };
+    async handleAddLike(tweetId) {
+      try {
+        const { data } = await tweetsAPI.addLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
         }
-        return tweet;
-      });
+        this.tweets = this.tweets.map((tweet) => {
+          if (tweet.tweetId === tweetId) {
+            return {
+              ...tweet,
+              LikesCount: tweet.LikesCount + 1,
+              isLiked: true,
+            };
+          }
+          return tweet;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法新增喜歡，請稍後再試",
+        });
+      }
     },
-    handleDeleteLike(tweetId) {
-      this.tweets = this.tweets.map((tweet) => {
-        if (tweet.tweetId === tweetId) {
-          return {
-            ...tweet,
-            LikesCount: tweet.LikesCount - 1,
-            isLiked: false,
-          };
+    async handleDeleteLike(tweetId) {
+      try {
+        const { data } = await tweetsAPI.deleteLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
         }
-        return tweet;
-      });
+        this.tweets = this.tweets.map((tweet) => {
+          if (tweet.tweetId === tweetId) {
+            return {
+              ...tweet,
+              LikesCount: tweet.LikesCount - 1,
+              isLiked: false,
+            };
+          }
+          return tweet;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取消喜歡，請稍後再試",
+        });
+      }
+    },
+    async handleDeleteLikePost(tweetId) {
+      try {
+        const { data } = await tweetsAPI.deleteLike({ tweetId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.likes = this.likes.filter((like) => {
+          return like.TweetId !== tweetId;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取消喜歡，請稍後再試",
+        });
+      }
     },
     handleUpdate(formData) {
       const { name, avatar, cover, introduction } = formData;
