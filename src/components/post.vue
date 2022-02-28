@@ -31,6 +31,7 @@
           />
           <Modal
             :show="showModal"
+            :tweetId="tweet.tweetId"
             @close="showModal = false"
             @after-create-reply-modal="afterCreateReplyModal"
           />
@@ -59,6 +60,8 @@ import Modal from "./ReplyModal.vue";
 import moment from "moment";
 import tweetAPI from "./../apis/tweets.js";
 import { Toast } from "./../utils/helper";
+// import replyAPI from "./../apis/reply";
+
 //換moment語言到中文
 moment.locale("zh-tw");
 export default {

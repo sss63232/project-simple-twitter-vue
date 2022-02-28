@@ -2,7 +2,7 @@ import { apiHelper } from "../utils/helper";
 const getToken = () => localStorage.getItem('token')
 
 export default {
-  //main.vue首頁拿所有推文的api ok
+  //main.vue首頁拿所有推文的api
   getTweets() {
     return apiHelper.get('/tweets',
       {
@@ -16,21 +16,21 @@ export default {
         headers: { Authorization: `Bearer ${getToken()} ` }
       })
   },
-  //新增一則推文 failure 
-  createTweet({ formData }) {
-    return apiHelper.post('/tweets', { formData }, {
+  //新增一則推文 
+  createTweet({ image, description }) {
+    return apiHelper.post('/tweets', { image, description }, {
       headers: {
         Authorization: `Bearer ${getToken()} `
       }
     })
   },
-  //推文可以加入like ok
+  //推文可以加入like
   addLike({ tweetId }) {
     return apiHelper.post(`tweets/${tweetId}/like`, null, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  //推文可以移除like ok
+  //推文可以移除like
   deleteLike({ tweetId }) {
     return apiHelper.post(`tweets/${tweetId}/unlike`, null, {
       headers: { Authorization: `Bearer ${getToken()}` }

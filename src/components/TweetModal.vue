@@ -28,8 +28,11 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
-const dummyUser = {
+// import { v4 as uuidv4 } from "uuid";
+import tweetsAPI from "../apis/tweets.js";
+import { Toast } from "./../utils/helper";
+
+const currentUser = {
   id: 14,
   name: "user1",
   email: "user1@example.com",
@@ -49,11 +52,25 @@ export default {
   data() {
     return {
       text: "",
-      currentUser: dummyUser,
+      currentUser: currentUser,
     };
   },
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
+      try {
+        const { data } = await tweetsAPI.createTweet({
+          image: this.currentUser.avatar,
+          description: this.text,
+        });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        Toast({
+          icon: "error",
+          title: "目前無法推文",
+        });
+      }
       if (this.text.length > 140) {
         return alert("字數超過140個");
       }
@@ -61,7 +78,7 @@ export default {
         return alert("不可空白");
       }
       this.$emit("after-create-tweet-modal", {
-        tweetId: uuidv4(),
+        // tweetId: uuidv4(),
         UserId: this.currentUser.id,
         name: this.currentUser.name,
         image: this.currentUser.avatar,
