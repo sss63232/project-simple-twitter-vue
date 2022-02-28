@@ -49,14 +49,14 @@
               class="icon__like"
               alt=""
               v-if="post.isLiked"
-              @click.stop.prevent="deleteLike(post.id)"
+              @click.stop.prevent="deleteLike(post.tweetId)"
             />
             <img
               src="../assets/like2.png"
               class="icon__like"
               alt=""
               v-else
-              @click.stop.prevent="addLike(post.id)"
+              @click.stop.prevent="addLike(post.tweetId)"
             />
             <h5>{{ post.LikesCount }}</h5>
           </div>
@@ -101,7 +101,9 @@ export default {
     async addLike(tweetId) {
       try {
         const { data } = await tweetsAPI.addLike({ tweetId });
-        console.log(data);
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
         this.post = {
           ...this.post,
           isLiked: true,
@@ -117,7 +119,6 @@ export default {
     async deleteLike(tweetId) {
       try {
         const { data } = await tweetsAPI.deleteLike({ tweetId });
-        console.log(data);
         if (data.status === "error") {
           throw new Error(data.message);
         }

@@ -42,8 +42,6 @@ export default {
   },
   methods: {
     handleSubmit() {
-      // const form = e.target;
-      // const formData = new FormData(form);
       if (this.text.length > 140) {
         return alert("字數超過140個");
       }
@@ -51,7 +49,6 @@ export default {
         return alert("不可空白");
       }
       this.$emit("after-create-tweet", {
-        // formData,
         tweetId: uuidv4(),
         UserId: this.currentUser.id,
         name: this.currentUser.name,

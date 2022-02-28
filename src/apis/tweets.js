@@ -12,7 +12,9 @@ export default {
   //新增一則推文 failure 
   createTweet({ tweet }) {
     return apiHelper.post('/tweets', { tweet }, {
-      headers: { Authorization: `Bearer ${getToken()}` }
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      }
     })
   },
   //推文可以加入like ok
