@@ -96,6 +96,7 @@ import ProfileEditModal from "./ProfileEditModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "ProfileCard",
@@ -108,10 +109,9 @@ export default {
       type: Object,
       require: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   data() {
     return {

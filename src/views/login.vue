@@ -85,9 +85,8 @@ export default {
         }
         // 將 token 放到 localStorage
         localStorage.setItem("token", data.token);
-        const user = data.user;
-        //將資料傳到 App.vue 中
-        this.$emit("after-login", user);
+        // 將資料傳到 Vuex
+        this.$store.commit("setCurrentUser", data.user);
         // 成功登入後轉址到餐廳首頁
         this.$router.push("/main");
       } catch (error) {

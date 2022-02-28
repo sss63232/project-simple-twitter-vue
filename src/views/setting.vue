@@ -1,7 +1,7 @@
 <template>
   <div id="setting" class="container">
     <div class="navbar">
-      <Navbar :current-status="currentStatus" :current-user="currentUser" />
+      <Navbar :current-status="currentStatus" />
     </div>
     <div class="setting-account">
       <div class="title">
@@ -67,16 +67,15 @@
 import Navbar from "../components/Navbar.vue";
 import settingAPI from "./../apis/setting";
 import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "setting",
   components: {
     Navbar,
   },
-  props: {
-    currentUser: {
-      type: Object,
-    },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   created() {
     const { account, name, email, password } = this.currentUser;

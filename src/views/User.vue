@@ -3,7 +3,6 @@
     <div class="navbar">
       <Navbar
         :current-status="currentStatus"
-        :current-user="currentUser"
         @after-create-tweet-modal="afterCreateTweetModal"
       />
     </div>
@@ -27,7 +26,6 @@
       <div class="user-page-body">
         <router-view
           :user="user"
-          :current-user="currentUser"
           :tweets="tweets"
           :likes="likes"
           :followers="Followers"
@@ -58,17 +56,17 @@ import PopularUsers from "../components/PopularUsers.vue";
 import usersAPI from "./../apis/users";
 import tweetsAPI from "./../apis/tweets";
 import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "User",
-  props: {
-    currentUser: {
-      type: Object,
-    },
-  },
+
   components: {
     Navbar,
     PopularUsers,
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   created() {
     const userId = this.$route.params.id;

@@ -43,7 +43,6 @@
             {{ user.introduction }}
           </p>
           <div class="follow-btn">
-            <!-- 要換成等於currentUser的id -->
             <button
               class="follow-btn__follow"
               v-if="user.isFollowed"

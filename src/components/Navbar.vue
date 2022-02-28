@@ -47,18 +47,18 @@
 
 <script>
 import Modal from "./TweetModal.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "Navbar",
   components: {
     Modal,
   },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+  },
   props: {
     currentStatus: {
-      type: Object,
-      required: true,
-    },
-    currentUser: {
       type: Object,
       required: true,
     },
