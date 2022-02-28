@@ -29,6 +29,9 @@
           :followers="Followers"
           :followings="Followings"
           :replies="replyTweets"
+          @after-like="handleAddLike"
+          @after-delete-like="handleDeleteLike"
+          @after-update="handleUpdate"
         />
       </div>
     </div>
@@ -71,6 +74,16 @@ export default {
     this.fetchLikes(userId);
     this.fetchReplies(userId);
     this.fetchCurrentUser();
+  },
+  //這不是一個好方法
+  beforeRouteUpdate(to, from, next) {
+    console.log(to.params.id);
+    const id = to.params.id;
+    this.fetchUser(id);
+    this.fetchTweets(id);
+    this.fetchLikes(id);
+    this.fetchReplies(id);
+    next();
   },
   data() {
     return {
@@ -201,6 +214,41 @@ export default {
           title: "無法取得該使用者喜愛資料，請稍後再試",
         });
       }
+    },
+    handleAddLike(tweetId) {
+      this.tweets = this.tweets.map((tweet) => {
+        if (tweet.tweetId === tweetId) {
+          return {
+            ...tweet,
+            LikesCount: tweet.LikesCount + 1,
+            isLiked: true,
+          };
+        }
+        return tweet;
+      });
+    },
+    handleDeleteLike(tweetId) {
+      this.tweets = this.tweets.map((tweet) => {
+        if (tweet.tweetId === tweetId) {
+          return {
+            ...tweet,
+            LikesCount: tweet.LikesCount - 1,
+            isLiked: false,
+          };
+        }
+        return tweet;
+      });
+    },
+    handleUpdate(formData) {
+      const { name, avatar, cover, introduction } = formData;
+      this.user = {
+        ...this.user,
+        name,
+        avatar,
+        cover,
+        introduction,
+      };
+      this.fetchTweets(this.user.id);
     },
   },
 };
