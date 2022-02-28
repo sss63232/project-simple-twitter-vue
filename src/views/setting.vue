@@ -83,6 +83,11 @@ export default {
   components: {
     Navbar,
   },
+  props: {
+    currentUser: {
+      type: Object,
+    },
+  },
   data() {
     return {
       user: {
@@ -93,7 +98,6 @@ export default {
         checkPassword: "",
       },
       isProcessing: false,
-      currentUser: dummyUser,
       currentStatus: {
         isIndex: false,
         isUser: false,

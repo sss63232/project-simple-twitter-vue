@@ -59,22 +59,13 @@ import usersAPI from "./../apis/users";
 import tweetsAPI from "./../apis/tweets";
 import { Toast } from "./../utils/helper";
 
-const dummyUser = {
-  id: 14,
-  name: "user1",
-  email: "user1@example.com",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  introduction:
-    "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
-  role: "",
-  account: "user1",
-  cover: "https://loremflickr.com/600/200/nature?random=100",
-  createdAt: "2022-02-26T03:59:35.000Z",
-  updatedAt: "2022-02-26T03:59:35.000Z",
-};
-
 export default {
   name: "User",
+  props: {
+    currentUser: {
+      type: Object,
+    },
+  },
   components: {
     Navbar,
     PopularUsers,
@@ -87,7 +78,6 @@ export default {
     this.fetchReplies(userId);
     this.fetchFollowers(userId);
     this.fetchFollowings(userId);
-    this.fetchCurrentUser();
   },
   //這不是一個好方法
   beforeRouteUpdate(to, from, next) {
@@ -102,7 +92,6 @@ export default {
   },
   data() {
     return {
-      currentUser: {},
       currentStatus: {
         isIndex: false,
         isUser: true,
@@ -126,12 +115,6 @@ export default {
     };
   },
   methods: {
-    fetchCurrentUser() {
-      this.currentUser = {
-        ...this.currentUser,
-        ...dummyUser,
-      };
-    },
     async fetchUser(userId) {
       try {
         const { data } = await usersAPI.get({ userId });
