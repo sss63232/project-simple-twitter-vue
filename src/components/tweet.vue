@@ -20,14 +20,30 @@
 <script>
 import { v4 as uuidv4 } from "uuid";
 
+const dummyUser = {
+  id: 14,
+  name: "user1",
+  email: "user1@example.com",
+  avatar: "https://loremflickr.com/140/140/people?random=100",
+  introduction:
+    "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
+  role: "",
+  account: "user1",
+  cover: "https://loremflickr.com/600/200/nature?random=100",
+  createdAt: "2022-02-26T03:59:35.000Z",
+  updatedAt: "2022-02-26T03:59:35.000Z",
+};
 export default {
   data() {
     return {
       text: "",
+      currentUser: dummyUser,
     };
   },
   methods: {
     handleSubmit() {
+      // const form = e.target;
+      // const formData = new FormData(form);
       if (this.text.length > 140) {
         return alert("字數超過140個");
       }
@@ -35,8 +51,16 @@ export default {
         return alert("不可空白");
       }
       this.$emit("after-create-tweet", {
+        // formData,
         tweetId: uuidv4(),
-        text: this.text,
+        UserId: this.currentUser.id,
+        name: this.currentUser.name,
+        image: this.currentUser.avatar,
+        account: this.currentUser.account,
+        description: this.text,
+        RepliesCount: 0,
+        LikesCount: 0,
+        createdAt: new Date(),
       });
       this.text = "";
     },
