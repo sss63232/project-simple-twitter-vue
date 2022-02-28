@@ -159,7 +159,8 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  // Ally: bgc 修正透明度，原本0.4 在user頁面會呈現全黑，現在調成0.1
+  background-color: rgba(0, 0, 0, 0.1);
   display: table;
   /* transition: opacity 0.3s ease; */
 }

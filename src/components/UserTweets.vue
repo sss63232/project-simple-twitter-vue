@@ -1,8 +1,8 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :user="user" :current-user="currentUser" />
+    <ProfileCard :user="user" :current-user="currentUser" v-on="$listeners" />
     <ProfileTabs :status="status" />
-    <UserTweetsPosts :tweets="tweets" />
+    <UserTweetsPosts :tweets="tweets" v-on="$listeners" />
   </div>
 </template>
 

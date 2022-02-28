@@ -41,6 +41,7 @@
           :show="showModal"
           @close="showModal = false"
           :initial-user="user"
+          :is-processing="isProcessing"
           @after-submit="handleAfterSubmit"
         />
       </div>
@@ -82,6 +83,8 @@
 <script>
 import ProfileEditModal from "./ProfileEditModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
+import usersAPI from "./../apis/users";
+import { Toast } from "./../utils/helper";
 
 export default {
   name: "ProfileCard",
@@ -102,12 +105,34 @@ export default {
   data() {
     return {
       showModal: false,
+      isProcessing: false,
     };
   },
   methods: {
-    handleAfterSubmit(formData) {
-      this.showModal = false;
-      console.log(formData.keys());
+    async handleAfterSubmit(formData) {
+      try {
+        this.isProcessing = true;
+        const { data } = await usersAPI.update({
+          userId: this.user.id,
+          formData,
+        });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功更新使用者資料",
+        });
+        this.showModal = false;
+        this.$emit("after-update", formData);
+      } catch (error) {
+        this.isProcessing = false;
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法更新個人資料，請稍後再試",
+        });
+      }
     },
   },
 };

@@ -4,7 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <button class="close-btn" @click="$emit('close')">
+            <button class="close-btn" @click.stop.prevent="clickCancel">
               <img src="../assets/X.png" alt="" />
             </button>
             <h4 class="title">編輯個人資料</h4>
@@ -18,16 +18,27 @@
             <div class="cover-edit">
               <img :src="user.cover" alt="cover" class="cover-edit__picture" />
               <div class="upload-cover">
-                <img
-                  src="./../assets/icon_uploadPhoto.png"
-                  alt="upload"
-                  class="upload-cover__picture"
-                />
-                <img
-                  src="./../assets/icon_delete.png"
-                  alt="delete"
-                  class="upload-cover__cancel"
-                />
+                <div class="upload-cover__upload">
+                  <label
+                    for="image_uploads"
+                    class="upload-cover__upload__label"
+                  >
+                    <img src="./../assets/icon_uploadPhoto.png" alt="upload" />
+                  </label>
+                  <input
+                    type="file"
+                    id="image_uploads"
+                    name="image_uploads"
+                    accept=".jpg, .jpeg, .png"
+                  />
+                </div>
+                <div class="upload-cover__cancel">
+                  <img
+                    src="./../assets/icon_delete.png"
+                    alt="delete"
+                    class="upload-cover__cancel__icon"
+                  />
+                </div>
               </div>
             </div>
             <div class="user-avatar-edit">
@@ -36,11 +47,18 @@
                 alt="avatar"
                 class="user-avatar-edit__picture"
               />
-              <img
-                src="./../assets/icon_uploadPhoto.png"
-                alt="upload"
-                class="user-avatar-edit__upload"
-              />
+              <div class="user-avatar-edit__upload">
+                <label for="image_uploads">
+                  <img src="./../assets/icon_uploadPhoto.png" alt="upload" />
+                </label>
+                <input
+                  type="file"
+                  id="image_uploads"
+                  name="image_uploads"
+                  accept=".jpg, .jpeg, .png"
+                  @change="handleFileChange"
+                />
+              </div>
             </div>
             <div class="user-name-edit">
               <label for="name">名稱</label>
@@ -76,7 +94,9 @@
                 字數超出上限！
               </div>
             </div>
-            <button class="save-btn" type="submit">儲存</button>
+            <button class="save-btn" type="submit" :disabled="isProcessing">
+              儲存
+            </button>
           </form>
         </div>
       </div>
@@ -93,6 +113,7 @@ export default {
       type: Object,
       required: true,
     },
+    isProcessing: Boolean,
   },
   created() {
     this.fetchuser();
@@ -100,12 +121,12 @@ export default {
   data() {
     return {
       user: {
-        id: -1,
         name: "",
         avatar: "",
         introduction: "",
         cover: "",
       },
+      inputForm: {},
       error: {
         name: false,
         nameLength: false,
@@ -115,13 +136,16 @@ export default {
   },
   methods: {
     fetchuser() {
-      const { id, name, avatar, cover } = { ...this.initialUser };
+      const { name, avatar, cover } = { ...this.initialUser };
       this.user = {
-        id,
         name,
         avatar,
         cover,
       };
+    },
+    clickCancel() {
+      this.inputForm = {};
+      this.$emit("close");
     },
     checkForm() {
       const { name, introduction } = { ...this.user };
@@ -152,12 +176,26 @@ export default {
       }
       return false;
     },
-    handleSubmit(e) {
+    handleSubmit() {
       if (this.checkForm()) return;
-
-      const form = e.target;
-      const formData = new FormData(form);
+      this.inputForm = {
+        ...this.initialUser,
+        ...this.user,
+      };
+      const formData = this.inputForm;
       this.$emit("after-submit", formData);
+    },
+    // 沒有用?
+    handleFileChange(e) {
+      console.log("yes");
+      const { files } = e.target;
+      if (files.length === 0) {
+        this.user.avatar = "";
+        return;
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0]);
+        this.user.avatar = imageURL;
+      }
     },
   },
   watch: {
@@ -268,12 +306,45 @@ export default {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 90px;
-    cursor: pointer;
-    img {
-      width: 24px;
-      height: 24px;
-      margin-left: 40px;
+    top: 100px;
+    transform: translateY(-50%);
+    &__upload {
+      &__label {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        cursor: pointer;
+        img {
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          top: 0;
+        }
+      }
+      input {
+        display: none;
+      }
+    }
+    &__cancel {
+      width: 20px;
+      height: 20px;
+      margin-left: 37px;
+      position: relative;
+      cursor: pointer;
+      &:hover::before {
+        position: absolute;
+        width: 80px;
+        top: -20px;
+        left: 1px;
+        text-align: center;
+        opacity: 0.7;
+        color: $white;
+        font-size: 13px;
+        background: $orange;
+        padding: 1px;
+        border-radius: 5px;
+        content: "取消封面相片";
+      }
     }
   }
 }
@@ -297,7 +368,25 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    cursor: pointer;
+    label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+      }
+    }
+    input {
+      display: none;
+    }
   }
 }
 .user-name-edit {

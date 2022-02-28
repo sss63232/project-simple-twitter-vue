@@ -1,36 +1,45 @@
 <template>
   <div>
-    <div class="container" v-for="reply in replies" :key="reply.replyId">
-      <div class="avatar">
-        <img :src="reply.User.avatar" alt="" class="avatar__pic" />
-      </div>
-      <div class="tweet-content">
-        <div class="title">
-          <router-link
-            :to="{ name: 'user', params: { id: reply.User.id } }"
-            class="title__name"
-            >{{ reply.User.name }}</router-link
-          >
-          <router-link
-            :to="{ name: 'user', params: { id: reply.User.id } }"
-            class="title__id"
-            >@{{ reply.User.account }}</router-link
-          >
-          <router-link
-            :to="{ name: 'user', params: { id: reply.User.id } }"
-            class="title__formNow"
-            >．{{ reply.createdAt | fromNow }}</router-link
-          >
+    <router-link
+      class="router-to-reply"
+      tag="div"
+      :to="{ name: 'reply', params: { id: reply.Tweet.tweetId } }"
+      v-for="reply in replies"
+      :key="reply.replyId"
+    >
+      <div class="container">
+        <div class="avatar">
+          <router-link :to="{ name: 'user', params: { id: reply.User.id } }">
+            <img :src="reply.User.avatar" alt="" class="avatar__pic" />
+          </router-link>
         </div>
+        <div class="tweet-content">
+          <div class="title">
+            <router-link
+              :to="{ name: 'user', params: { id: reply.User.id } }"
+              class="title__name"
+              >{{ reply.User.name }}</router-link
+            >
+            <router-link
+              :to="{ name: 'user', params: { id: reply.User.id } }"
+              class="title__id"
+              >@{{ reply.User.account }}</router-link
+            >
+            <div class="title__formNow">．{{ reply.createdAt | fromNow }}</div>
+          </div>
 
-        <div class="hashtag">
-          <span class="hashtag__reply">回覆</span>
-          <!-- 這裡會需要一個reply to 的對象 -->
-          <router-link to="" class="hashtag__userid">@apple</router-link>
+          <div class="hashtag">
+            <span class="hashtag__reply">回覆</span>
+            <router-link
+              :to="{ name: 'user', params: { id: reply.Tweet.TweetUserId } }"
+              class="hashtag__userid"
+              >@{{ reply.Tweet.TweetUserAccount }}</router-link
+            >
+          </div>
+          <p class="description">{{ reply.comment }}</p>
         </div>
-        <p class="description">{{ reply.comment }}</p>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 <script>
