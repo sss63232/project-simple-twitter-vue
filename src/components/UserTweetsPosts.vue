@@ -32,7 +32,6 @@
             {{ tweet.description }}
           </p>
           <div class="icon">
-            <!-- Todo: reply hover的地方要修正 -->
             <router-link :to="{ name: 'user', params: { id: tweet.User.id } }">
               <img
                 src="../assets/reply2.png"
@@ -47,7 +46,7 @@
               />
             </router-link>
             <h5>{{ tweet.RepliesCount }}</h5>
-            <!-- Todo: 愛心hover的地方要修正 -->
+
             <img
               src="../assets/icon_heart_pk.png"
               class="icon__like"
@@ -62,7 +61,7 @@
               v-else
               @click.stop.prevent="addLike(tweet.tweetId)"
             />
-            <h5>{{ tweet.LikesCount }}</h5>
+            <h5 :class="{ pink: tweet.isLiked }">{{ tweet.LikesCount }}</h5>
           </div>
         </div>
       </div>
@@ -110,7 +109,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// Todo: 最下方缺少空白間隔
 .router-to-reply {
   z-index: 1;
 }
@@ -167,6 +165,7 @@ export default {
   }
   .icon {
     margin-top: 0.5rem;
+    margin-bottom: 8px;
     display: flex;
     position: relative;
     h5 {
@@ -178,13 +177,17 @@ export default {
     &__reply,
     &__like {
       &:hover {
-        background-color: rgb(189, 189, 189);
+        filter: invert(4%) sepia(4%) saturate(6670%) hue-rotate(22deg)
+          brightness(89%) contrast(88%);
       }
       z-index: 5;
       height: 15px;
       width: 15px;
       margin-top: 3px;
       margin-right: 10px;
+    }
+    .pink {
+      color: #e0245e;
     }
   }
 }

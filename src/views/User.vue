@@ -32,6 +32,7 @@
           @after-like="handleAddLike"
           @after-delete-like="handleDeleteLike"
           @after-update="handleUpdate"
+          @after-delete-on-like="handleDeleteLikePost"
         />
       </div>
     </div>
@@ -238,6 +239,12 @@ export default {
         }
         return tweet;
       });
+    },
+    handleDeleteLikePost(tweetId) {
+      this.likes = this.likes.filter((like) => {
+        return like.TweetId !== tweetId;
+      });
+      console.log("yes", this.likes, tweetId);
     },
     handleUpdate(formData) {
       const { name, avatar, cover, introduction } = formData;
