@@ -1,5 +1,5 @@
 <template>
-  <div id="setting">
+  <div id="setting" class="container">
     <div class="navbar">
       <Navbar :current-status="currentStatus" :current-user="currentUser" />
     </div>
@@ -7,7 +7,8 @@
       <div class="title">
         <h1>帳戶設定</h1>
       </div>
-      <form class="setting-form" @submit.stop.prevent="handleSubmit">
+      <!--       form block -->
+      <form class="setting-form" @submit.stop.prevent="formSubmit()">
         <div class="form-label-group">
           <label for="account">帳號</label>
           <input
@@ -48,7 +49,7 @@
           <label for="password-check">密碼確認</label>
           <input
             id="password-check"
-            v-model="user.checkPassword"
+            v-model="checkPassword"
             type="text"
             class="form-control"
           />
@@ -63,23 +64,12 @@
   </div>
 </template>
 <script>
-import Navbar from "./../components/Navbar.vue";
+import Navbar from "../components/Navbar.vue";
+import settingAPI from "./../apis/setting";
 import { Toast } from "./../utils/helper";
 
-const dummyUser = {
-  id: 14,
-  name: "user1",
-  email: "user1@example.com",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  introduction:
-    "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
-  role: "",
-  account: "user1",
-  cover: "https://loremflickr.com/600/200/nature?random=100",
-  createdAt: "2022-02-26T03:59:35.000Z",
-  updatedAt: "2022-02-26T03:59:35.000Z",
-};
 export default {
+  name: "setting",
   components: {
     Navbar,
   },
@@ -88,15 +78,20 @@ export default {
       type: Object,
     },
   },
+  created() {
+    const { account, name, email, password } = this.currentUser;
+    this.account = account;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  },
   data() {
     return {
-      user: {
-        account: "",
-        name: "",
-        email: "",
-        password: "",
-        checkPassword: "",
-      },
+      account: "",
+      name: "",
+      email: "",
+      password: "",
+      checkPassword: "",
       isProcessing: false,
       currentStatus: {
         isIndex: false,
@@ -105,37 +100,37 @@ export default {
       },
     };
   },
-  created() {
-    this.fetchUser();
-  },
   methods: {
-    fetchUser() {
-      const { account, name, email } = dummyUser;
-      this.user = {
-        ...this.user,
-        account,
-        name,
-        email,
-      };
-    },
-    handleSubmit() {
-      const { account, name, email, password, checkPassword } = this.user;
-      if (
-        account.trim().length ||
-        name.trim().length ||
-        email.trim().length ||
-        password.trim().length ||
-        checkPassword.trim().length === 0
-      ) {
+    async formSubmit() {
+      try {
+        const formData = {
+          account: this.account ? this.account : this.currentUser.account,
+          name: this.name ? this.name : this.currentUser.name,
+          email: this.email ? this.email : this.currentUser.email,
+          password: this.password,
+          checkPassword: this.checkPassword,
+        };
+        this.isProcessing = true;
+        console.log(formData);
+        const { data } = await settingAPI.setUser({
+          userId: this.currentUser.id,
+          formData,
+        });
+        this.isProcessing = false;
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功更新帳戶資料！",
+        });
+      } catch (error) {
+        this.isProcessing = false;
+        console.log("error", error);
         Toast.fire({
           icon: "error",
-          title: "不得留白",
+          title: "無法設定帳戶資料，請稍後再試",
         });
-        return;
-      } else if (password !== checkPassword) {
-        return;
-      } else if (email.indexOf("@") === -1) {
-        return;
       }
     },
   },
@@ -145,34 +140,31 @@ export default {
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 #setting {
-  width: 100%;
-  display: flex;
-}
-.navbar {
-  margin-left: 6.438rem;
+  display: grid;
+  grid-template-columns: 210px auto;
+  column-gap: 30px;
 }
 
 .title {
   border-bottom: 1px solid $borderColor;
-  margin-left: -1rem;
-  margin-right: -1rem;
+  height: 55px;
+  line-height: 55px;
 }
 
 h1 {
   color: $mainColor;
   font-size: 19px;
-  margin-left: 2rem;
+  padding-left: 1rem;
 }
 
 .setting-account {
-  flex: 1;
-  flex-grow: 1;
   border-left: 1px solid $borderColor;
 }
 
 .setting-form {
   padding: 1.875rem 25.3125rem 0 1rem;
   margin-bottom: 40rem;
+  position: relative;
 }
 .form-label-group {
   position: relative;
@@ -186,8 +178,8 @@ h1 {
     line-height: 15px;
   }
   input {
-    width: 40.125rem;
-    height: 3.25rem;
+    width: 642px;
+    height: 52px;
     border-radius: 4px;
     background-color: $formBgColor;
     padding: 1.25rem 0 0.25rem 0.625rem;
@@ -197,14 +189,33 @@ h1 {
     font-weight: 500;
     border: none;
     border-bottom: 2px solid $secondaryTextColor;
+    &:focus,
+    &:hover {
+      border-bottom: 2px solid #50b5ff;
+    }
+    .invalid-message {
+      position: absolute;
+      top: 50px;
+      left: 2px;
+      font: {
+        weight: 500;
+        size: 15px;
+      }
+      color: #fc5a5a;
+    }
+  }
+  .invalid {
+    border-bottom: 2px solid #fc5a5a;
   }
 }
 .setting-block {
-  width: 40.125rem;
-  display: inline-flex;
-  justify-content: flex-end;
+  width: 642px;
+  position: relative;
 }
 .btn {
+  position: absolute;
+  top: 0;
+  right: 0;
   border-radius: 50px;
   background-color: $orange;
   font-size: 18px;
