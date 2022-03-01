@@ -116,13 +116,13 @@ const routes = [
     path: "/admin/main",
     name: "admin-main",
     component: BlankPage,
-    //     component: () => import('../views/adiminTweet.vue')
+    //     component: () => import('../views/adminTweet.vue')
   },
   {
     path: "/admin/users",
     name: "admin-users",
     component: BlankPage,
-    //       component: () => import('../views/adiminUser.vue')
+    //       component: () => import('../views/adminUser.vue')
   },
   {
     path: "*",

@@ -38,6 +38,7 @@
           @after-remove-followship="handleRemoveFollowship"
           @after-add-followship="handleAddFollowship"
           @after-del-followship="handleDelFollowship"
+          @after-cancel-cover="handleCancelCover"
         />
       </div>
     </div>
@@ -118,11 +119,13 @@ export default {
       Followers: [],
       Followings: [],
       topUsers: [],
+      isLoading: true,
     };
   },
   methods: {
     async fetchUser(userId) {
       try {
+        this.isLoading = true;
         const { data } = await usersAPI.get({ userId });
         if (data.status === "error") {
           console.log("error", data.message);
@@ -151,6 +154,7 @@ export default {
           followersLength: Followers ? Followers.length : 0,
           followingsLength: Followings ? Followings.length : 0,
         };
+        this.isLoading = false;
       } catch (error) {
         console.log("error", error);
         Toast.fire({
@@ -447,6 +451,9 @@ export default {
         isLiked: false,
       };
       this.tweets.unshift(createaData);
+    },
+    handleCancelCover() {
+      this.user.cover = "";
     },
   },
 };

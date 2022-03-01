@@ -16,20 +16,26 @@
             novalidate
           >
             <div class="cover-edit">
-              <img :src="user.cover" alt="cover" class="cover-edit__picture" />
+              <img
+                :src="user.cover | emptyImage"
+                alt="cover"
+                class="cover-edit__picture"
+              />
               <div class="upload-cover">
                 <div class="upload-cover__upload">
                   <label
-                    for="image_uploads"
+                    for="cover_uploads"
                     class="upload-cover__upload__label"
                   >
                     <img src="./../assets/icon_uploadPhoto.png" alt="upload" />
                   </label>
                   <input
                     type="file"
-                    id="image_uploads"
-                    name="image_uploads"
+                    class="cover"
+                    id="cover_uploads"
+                    name="cover_uploads"
                     accept=".jpg, .jpeg, .png"
+                    @change="handleCoverFileChange"
                   />
                 </div>
                 <div class="upload-cover__cancel">
@@ -37,6 +43,7 @@
                     src="./../assets/icon_delete.png"
                     alt="delete"
                     class="upload-cover__cancel__icon"
+                    @click.stop.prevent="cancelCover"
                   />
                 </div>
               </div>
@@ -48,15 +55,16 @@
                 class="user-avatar-edit__picture"
               />
               <div class="user-avatar-edit__upload">
-                <label for="image_uploads">
+                <label for="avatar_uploads">
                   <img src="./../assets/icon_uploadPhoto.png" alt="upload" />
                 </label>
                 <input
                   type="file"
-                  id="image_uploads"
-                  name="image_uploads"
+                  id="avatar_uploads"
+                  class="avatar"
+                  name="avatar_uploads"
                   accept=".jpg, .jpeg, .png"
-                  @change="handleFileChange"
+                  @change="handleAvatarFileChange"
                 />
               </div>
             </div>
@@ -105,8 +113,10 @@
 </template>
 
 <script>
+import { emptyImageFilter } from "./../utils/mixins";
 export default {
   name: "ProfileEditModal",
+  mixins: [emptyImageFilter],
   props: {
     show: Boolean,
     initialUser: {
@@ -186,16 +196,34 @@ export default {
       this.$emit("after-submit", formData);
     },
     // 沒有用?
-    handleFileChange(e) {
-      console.log("yes");
+    handleCoverFileChange(e) {
+      console.log(e.target);
       const { files } = e.target;
+      console.log(files);
+      if (files.length === 0) {
+        this.user.cover = "";
+        return;
+      } else {
+        const coverImageURL = window.URL.createObjectURL(files[0]);
+        this.user.cover = coverImageURL;
+        console.log("cover", coverImageURL);
+      }
+    },
+    handleAvatarFileChange(e) {
+      const { files } = e.target;
+
       if (files.length === 0) {
         this.user.avatar = "";
         return;
       } else {
-        const imageURL = window.URL.createObjectURL(files[0]);
-        this.user.avatar = imageURL;
+        const ImageURL = window.URL.createObjectURL(files[0]);
+        this.user.avatar = ImageURL;
       }
+    },
+
+    cancelCover() {
+      this.user.cover = "";
+      this.$emit("after-cancel-cover");
     },
   },
   watch: {
