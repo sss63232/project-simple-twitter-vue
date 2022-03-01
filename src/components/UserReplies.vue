@@ -1,6 +1,6 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :user="user" :current-user="currentUser" />
+    <ProfileCard :user="user" />
     <ProfileTabs :status="status" />
     <UserRepliesPosts :replies="replies" />
   </div>
@@ -23,10 +23,7 @@ export default {
       type: Object,
       required: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
+
     replies: {
       type: Array,
       required: true,

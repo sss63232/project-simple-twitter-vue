@@ -1,16 +1,22 @@
 <template>
-  <div>
+  <div class="main">
+    <div v-if="!replies[0]" class="empty">目前沒有推文及回覆內容</div>
     <router-link
       class="router-to-reply"
       tag="div"
       :to="{ name: 'reply', params: { id: reply.Tweet.tweetId } }"
       v-for="reply in replies"
       :key="reply.replyId"
+      v-else
     >
       <div class="container">
         <div class="avatar">
           <router-link :to="{ name: 'user', params: { id: reply.User.id } }">
-            <img :src="reply.User.avatar" alt="" class="avatar__pic" />
+            <img
+              :src="reply.User.avatar | emptyImage"
+              alt=""
+              class="avatar__pic"
+            />
           </router-link>
         </div>
         <div class="tweet-content">
@@ -44,10 +50,12 @@
 </template>
 <script>
 import moment from "moment";
+import { emptyImageFilter } from "./../utils/mixins";
 //換moment語言到中文
 moment.locale("zh-tw");
 export default {
   name: "UserRepliesPosts",
+  mixins: [emptyImageFilter],
   props: {
     replies: {
       type: Array,
@@ -62,12 +70,30 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.main {
+  border-bottom: 1px solid #e6ecf0;
+}
+.empty {
+  height: 2rem;
+  border: {
+    top: 1px #e6ecf0 solid;
+    right: 1px #e6ecf0 solid;
+    left: 1px #e6ecf0 solid;
+  }
+  text-align: center;
+  font-size: 15px;
+  line-height: 2rem;
+}
 .container {
   width: 600px;
   min-height: 100px;
   display: flex;
-  border-top: 1px #e6ecf0 solid;
-  margin-bottom: 5px;
+  border: {
+    left: 1px solid #e6ecf0;
+    right: 1px solid #e6ecf0;
+    top: 1px solid #e6ecf0;
+  }
+  padding-bottom: 5px;
   .description {
     font-size: 15px;
   }

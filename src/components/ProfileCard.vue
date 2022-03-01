@@ -35,7 +35,18 @@
             alt="avatar"
             class="user-edit__followCtrl__noti"
           />
-          <button class="user-edit__followCtrl__btn">正在追蹤</button>
+          <button
+            class="user-edit__followCtrl__btn d-none"
+            @click.stop.prevent="deleteFollowship(user.id)"
+          >
+            正在追蹤
+          </button>
+          <button
+            class="user-edit__followCtrl__btn1"
+            @click.stop.prevent="addFollowship(user.id)"
+          >
+            追蹤
+          </button>
         </div>
         <ProfileEditModal
           :show="showModal"
@@ -85,6 +96,7 @@ import ProfileEditModal from "./ProfileEditModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   name: "ProfileCard",
@@ -97,10 +109,9 @@ export default {
       type: Object,
       require: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   data() {
     return {
@@ -134,6 +145,12 @@ export default {
         });
       }
     },
+    deleteFollowship(userId) {
+      this.$emit("after-del-followship", userId);
+    },
+    addFollowship(userId) {
+      this.$emit("after-add-followship", userId);
+    },
   },
 };
 </script>
@@ -143,6 +160,10 @@ export default {
 .main {
   width: 100%;
   position: relative;
+  border: {
+    left: 1px solid #e6ecf0;
+    right: 1px solid #e6ecf0;
+  }
   .cover {
     width: 100%;
     height: 200px;
@@ -188,6 +209,15 @@ export default {
           size: 15px;
         }
         color: $white;
+      }
+      &__btn1 {
+        width: 60px;
+        height: 35px;
+        border: 1px solid $orange;
+        border-radius: 100px;
+        color: $orange;
+        font-size: 15px;
+        font-weight: 700;
       }
     }
   }

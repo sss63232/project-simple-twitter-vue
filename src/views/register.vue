@@ -1,6 +1,6 @@
 <template>
   <div id="register">
-    <form class="w-100 text-align">
+    <form class="w-100 text-align" @submit.prevent.stop="handleSubmit">
       <!-- @submit.prevent.stop="handleSubmit" -->
       <div class="register-top d-flex flex-column align-items-center">
         <img class="register-logo" src="../assets/Logo.png" />
@@ -83,6 +83,8 @@
   </div>
 </template>
 <script>
+import authorization from "./../apis/authorization";
+import { Toast } from "./../utils/helper";
 export default {
   data() {
     return {
@@ -94,12 +96,90 @@ export default {
       isProcessing: false,
     };
   },
+  methods: {
+    async handleSumbit() {
+      try {
+        this.isProcessing = true;
+        if (
+          !this.account ||
+          !this.name ||
+          !this.email ||
+          !this.password ||
+          !this.checkPassword
+        ) {
+          Toast.fire({
+            icon: "warning",
+            title: "請確認已填寫所有欄位",
+          });
+          this.isProcessing = false;
+          return;
+        }
+        if (this.password !== this.checkPassword) {
+          Toast.fire({
+            icon: "Warning",
+            title: "兩次輸入的密碼不同",
+          });
+          this.password = "";
+          this.checkPassword = "";
+          this.isProcessing = false;
+          return;
+        }
+        const data = await authorization.register({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          passwrod: this.password,
+          checkPassword: this.checkPassword,
+        });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "註冊成功",
+        });
+        //成功登入後跳轉到登入頁
+        this.$router.push("/login");
+      } catch (error) {
+        const { data } = error.response;
+        if (data.message.length === 1) {
+          if (data.message[0].error === "Account is exists.") {
+            Toast.fire({
+              icon: "warning",
+              title: "帳號已重覆註冊",
+            });
+            this.isProcessing = false;
+            return;
+          } else if (data.message[0].error === "Email is exists.") {
+            Toast.fire({
+              icon: "warning",
+              title: "Email 已重覆註冊",
+            });
+            this.isProcessing = false;
+            return;
+          }
+        } else if (data.message.length === 2) {
+          Toast.fire({
+            icon: "warning",
+            title: "帳號及 Email 皆已重覆註冊",
+          });
+          this.isProcessing = false;
+          return;
+        } else {
+          Toast.fire({
+            icon: "warning",
+            title: `無法註冊 - ${error.message}`,
+          });
+        }
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 #register {
-  max-width: 540px; 
+  max-width: 540px;
   margin: 0 auto;
   text-align: center;
   flex-direction: column;

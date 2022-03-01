@@ -5,7 +5,7 @@
       <img class="admin-logo" src="../assets/Logo.png" alt="" />
       <h1>後台登入</h1>
     </div>
-    <form class="admin-form">
+    <form class="admin-form" @submit.prevent.stop="handleSubmit">
       <div class="form-label-group">
         <label for="account">帳號</label>
         <input
@@ -51,13 +51,49 @@
 </template>
 
 <script>
+import authorization from "./../apis/authorization";
+import { Toast } from "./../utils/helper";
 export default {
   data() {
-    return {};
+    return {
+      email: "",
+      account: "",
+      password: "",
+      isProcessing: false,
+    };
   },
   methods: {
-    success() {
-      alert("成功登入");
+    async handleSubmit() {
+      try {
+        if (!this.account || !this.password) {
+          Toast.fire({
+            icon: "warning",
+            title: "請填入 email 和 password",
+          });
+          return;
+        }
+        this.isProcessing = true;
+
+        const response = await authorization.adminLogin({
+          email: this.email,
+          password: this.password,
+        });
+        console.log(response);
+        const { data } = response;
+
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        localStorage.setItem("token", data.token);
+      } catch (error) {
+        Toast.fire({
+          icon: "warning",
+          title: "請確認您輸入的帳號密碼",
+        });
+        this.isProcessing = false;
+        console.log("error", error);
+      }
     },
   },
 };

@@ -1,18 +1,24 @@
 <template>
-  <div>
+  <div class="main">
+    <div v-if="!tweets[0]" class="empty">目前沒有推文內容</div>
     <router-link
       class="router-to-reply"
       tag="div"
       :to="{ name: 'reply', params: { id: tweet.tweetId } }"
       v-for="tweet in tweets"
       :key="tweet.tweetId"
+      v-else
     >
       <div class="container">
         <router-link
           class="avatar"
           :to="{ name: 'user', params: { id: tweet.User.id } }"
         >
-          <img :src="tweet.User.avatar" alt="" class="avatar__pic" />
+          <img
+            :src="tweet.User.avatar | emptyImage"
+            alt=""
+            class="avatar__pic"
+          />
         </router-link>
         <div class="tweet-content">
           <div class="title">
@@ -72,9 +78,11 @@
 <script>
 import moment from "moment";
 import Modal from "./ReplyModal.vue";
+import { emptyImageFilter } from "./../utils/mixins";
 
 export default {
   name: "UserTweetsPosts",
+  mixins: [emptyImageFilter],
   components: {
     Modal,
   },
@@ -109,6 +117,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main {
+  border-bottom: 1px solid #e6ecf0;
+}
+.empty {
+  height: 2rem;
+  border: {
+    top: 1px #e6ecf0 solid;
+    right: 1px #e6ecf0 solid;
+    left: 1px #e6ecf0 solid;
+  }
+  text-align: center;
+  font-size: 15px;
+  line-height: 2rem;
+}
 .router-to-reply {
   z-index: 1;
 }
