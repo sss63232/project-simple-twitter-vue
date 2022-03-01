@@ -95,8 +95,7 @@ export default {
     },
   },
   methods: {
-    afterCreateReplyModal(payload) {
-      console.log(payload);
+    afterCreateReplyModal() {
       this.post.RepliesCount += 1;
     },
     async addLike(tweetId) {

@@ -1,73 +1,56 @@
 <template>
   <div id="setting">
     <div class="navbar">
-      <navbar page="normal" />
       <Navbar :current-status="currentStatus" :current-user="currentUser" />
     </div>
     <div class="setting-account">
       <div class="title">
         <h1>帳戶設定</h1>
       </div>
-      <!--       form block -->
-      <form class="setting-form">
+      <form class="setting-form" @submit.stop.prevent="handleSubmit">
         <div class="form-label-group">
           <label for="account">帳號</label>
-          <!--           待綁定 -->
           <input
             id="account"
-            v-model="account"
+            v-model="user.account"
             type="text"
             class="form-control"
-            autocomplete="userame"
-            required
-            autofocus
           />
         </div>
         <div class="form-label-group">
           <label for="name">名稱</label>
-          <!--           待綁定 -->
           <input
             id="name"
-            v-model="name"
+            v-model="user.name"
             type="text"
             class="form-control"
-            autocomplete="userame"
-            required
-            autofocus
           />
         </div>
         <div class="form-label-group">
           <label for="email">Email</label>
-          <!--           待綁定 -->
           <input
             id="email"
-            v-model="email"
+            v-model="user.email"
             type="text"
             class="form-control"
-            autocomplete="email"
-            required
           />
         </div>
         <div class="form-label-group">
           <label for="password">密碼</label>
-          <!--           待綁定 -->
           <input
             id="password"
-            v-model="password"
+            v-model="user.password"
             type="text"
             class="form-control"
-            autocomplete="new-password"
           />
         </div>
         <div class="form-label-group">
           <label for="password-check">密碼確認</label>
-          <!--           待綁定 -->
           <input
             id="password-check"
-            v-model="passwordCheck"
+            v-model="user.checkPassword"
             type="text"
             class="form-control"
-            autocomplete="new-password"
           />
         </div>
         <div class="setting-block">
@@ -80,7 +63,9 @@
   </div>
 </template>
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from "./../components/Navbar.vue";
+import { Toast } from "./../utils/helper";
+
 const dummyUser = {
   id: 14,
   name: "user1",
@@ -116,8 +101,43 @@ export default {
       },
     };
   },
+  created() {
+    this.fetchUser();
+  },
+  methods: {
+    fetchUser() {
+      const { account, name, email } = dummyUser;
+      this.user = {
+        ...this.user,
+        account,
+        name,
+        email,
+      };
+    },
+    handleSubmit() {
+      const { account, name, email, password, checkPassword } = this.user;
+      if (
+        account.trim().length ||
+        name.trim().length ||
+        email.trim().length ||
+        password.trim().length ||
+        checkPassword.trim().length === 0
+      ) {
+        Toast.fire({
+          icon: "error",
+          title: "不得留白",
+        });
+        return;
+      } else if (password !== checkPassword) {
+        return;
+      } else if (email.indexOf("@") === -1) {
+        return;
+      }
+    },
+  },
 };
 </script>
+
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 #setting {
@@ -142,12 +162,9 @@ h1 {
 
 .setting-account {
   flex: 1;
-  margin-left: 23.625rem;
-  padding: 0 0 0 1rem;
   flex-grow: 1;
   border-left: 1px solid $borderColor;
 }
-
 
 .setting-form {
   padding: 1.875rem 25.3125rem 0 1rem;
