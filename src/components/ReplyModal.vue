@@ -73,6 +73,7 @@ import moment from "moment";
 moment.locale("zh-tw");
 import { emptyImageFilter } from "../utils/mixins";
 import { mapState } from "vuex";
+
 export default {
   mixins: [emptyImageFilter],
   props: {
@@ -145,7 +146,13 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
+.swal2-container.swal2-top-end > .swal2-popup {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: space-between !important;
+}
 .reply-container {
   padding: 15px;
   padding-bottom: 0;

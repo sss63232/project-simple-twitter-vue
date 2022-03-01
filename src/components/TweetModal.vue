@@ -34,6 +34,7 @@
 <script>
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
+// import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 import { emptyImageFilter } from "../utils/mixins";
 
@@ -86,7 +87,6 @@ export default {
           description: this.text,
         });
         Toast.fire({
-          icon: "success",
           title: "推文發送成功",
         });
         this.$emit("after-create-tweet-modal", {
@@ -129,7 +129,7 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: table;
-  /* transition: opacity 0.3s ease; */
+  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
@@ -144,7 +144,6 @@ export default {
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: 14px;
-  // transition: all 0.3s ease;
 }
 
 .modal-header {
@@ -208,18 +207,4 @@ export default {
     border-radius: 100px;
   }
 }
-
-/* .modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-} */
 </style>
