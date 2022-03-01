@@ -31,7 +31,7 @@
           />
           <Modal
             :show="showModal"
-            :tweetId="tweet.tweetId"
+            :post="tweet"
             @close="showModal = false"
             @after-create-reply-modal="afterCreateReplyModal"
           />
