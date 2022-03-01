@@ -9,11 +9,7 @@
         </div>
         <div class="reply-container">
           <div class="avatar">
-            <img
-              src="https://i.imgur.com/KvZWl8z.png"
-              alt=""
-              class="avatar__pic"
-            />
+            <img :src="post.image" alt="" class="avatar__pic" />
             <div class="divider">
               <div class="divider__a"></div>
               <div class="divider__b"></div>
@@ -21,20 +17,24 @@
           </div>
           <div class="tweet-content">
             <div class="title">
-              <router-link to="" class="title__name">Mary Jane</router-link>
-              <router-link to="" class="title__id">@mjjane</router-link>
-              <router-link to="" class="title__formNow">．3小時</router-link>
+              <router-link to="" class="title__name">{{
+                post.name
+              }}</router-link>
+              <router-link to="" class="title__id"
+                >@{{ post.account }}</router-link
+              >
+              <router-link to="" class="title__formNow"
+                >．{{ post.createdAt | fromNow }}</router-link
+              >
             </div>
             <p class="description">
-              Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
-              ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-              deserunt reprehenderit elit laborum. Nulla Lorem mollit cupidatat
-              irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
-              exercitation incididunt a
+              {{ post.description }}
             </p>
             <div class="hashtag">
               <router-link to="" class="hashtag__reply">回覆</router-link>
-              <router-link to="" class="hashtag__userid">@apple</router-link>
+              <router-link to="" class="hashtag__userid"
+                >@{{ post.account }}</router-link
+              >
             </div>
           </div>
         </div>
@@ -67,12 +67,15 @@
 <script>
 import { Toast } from "./../utils/helper";
 import replyAPI from "./../apis/reply";
+import moment from "moment";
+moment.locale("zh-tw");
 
 export default {
   props: {
     show: Boolean,
-    tweetId: {
-      type: Number,
+    post: {
+      type: Object,
+      required: true,
     },
   },
   data() {
@@ -80,6 +83,11 @@ export default {
       text: "",
       isLoading: false,
     };
+  },
+  filters: {
+    fromNow(dateTime) {
+      return dateTime ? moment(dateTime).fromNow() : "-";
+    },
   },
   methods: {
     async handleSubmit() {
@@ -94,7 +102,7 @@ export default {
       }
       try {
         const { data } = await replyAPI.createReply({
-          tweetId: this.tweetId,
+          tweetId: this.post.tweetId,
           comment: this.text,
         });
         this.isLoading = false;
@@ -108,7 +116,7 @@ export default {
           });
         }
         this.$emit("after-create-reply-modal", {
-          tweetId: this.tweetId,
+          tweetId: this.post.tweetId,
           comment: this.text,
         });
         this.text = "";
@@ -135,15 +143,18 @@ export default {
     margin-right: 10px;
     display: flex;
     flex-direction: column;
+    &__pic {
+      border-radius: 100%;
+    }
     .divider {
       display: flex;
       margin-top: 5px;
       &__a {
         width: 25px;
-        height: 150px;
+        height: 1rem;
         min-height: 2.5rem;
         max-height: 6rem;
-        border-right: 3.7px red solid;
+        border-right: 2px #ccd6dd solid;
       }
       &__b {
         width: 25px;
