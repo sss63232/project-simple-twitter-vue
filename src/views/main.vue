@@ -3,7 +3,6 @@
     <Navbar
       @after-create-tweet-modal="afterCreateTweetModal"
       :current-status="currentStatus"
-      :current-user="currentUser"
     />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
@@ -20,20 +19,7 @@ import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
-
-const dummyUser = {
-  id: 14,
-  name: "user1",
-  email: "user1@example.com",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  introduction:
-    "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
-  role: "",
-  account: "user1",
-  cover: "https://loremflickr.com/600/200/nature?random=100",
-  createdAt: "2022-02-26T03:59:35.000Z",
-  updatedAt: "2022-02-26T03:59:35.000Z",
-};
+import { mapState } from "vuex";
 
 export default {
   //main是保留字，會報錯
@@ -44,9 +30,12 @@ export default {
     Navbar,
     Popular,
   },
+
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+  },
   data() {
     return {
-      currentUser: dummyUser,
       posts: [],
       currentStatus: {
         isIndex: true,

@@ -52,7 +52,7 @@
 
 <script>
 import authorization from "./../apis/authorization";
-import { Toast } from "./../utils/helpers";
+import { Toast } from "./../utils/helper";
 export default {
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
   methods: {
     async handleSubmit() {
       try {
-        if (!this.email || !this.password) {
+        if (!this.account || !this.password) {
           Toast.fire({
             icon: "warning",
             title: "請填入 email 和 password",

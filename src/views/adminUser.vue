@@ -18,7 +18,7 @@
 <script>
 import adminNavbar from "./../components/adminNavbar";
 import adminUserCard from "./../components/adminuserCard";
-import { Toast } from "../utils/helpers";
+import { Toast } from "../utils/helper";
 import userAPI from "../apis/users";
 export default {
   name: "AdminUser",

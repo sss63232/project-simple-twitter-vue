@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div id="logo">
-      <router-link to="/login">
+      <router-link to="/main">
         <img src="../assets/Logo.png" alt="logo" />
       </router-link>
     </div>
@@ -36,7 +36,7 @@
       @close="showModal = false"
       @after-create-tweet-modal="afterCreateTweetModal"
     />
-    <div id="log-out">
+    <div id="log-out" @click.stop.prevent="logOut">
       <div>
         <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
       </div>
@@ -47,17 +47,18 @@
 
 <script>
 import Modal from "./TweetModal.vue";
+import { mapState } from "vuex";
+
 export default {
   name: "Navbar",
   components: {
     Modal,
   },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+  },
   props: {
     currentStatus: {
-      type: Object,
-      required: true,
-    },
-    currentUser: {
       type: Object,
       required: true,
     },
@@ -71,6 +72,10 @@ export default {
     afterCreateTweetModal(payload) {
       this.$emit("after-create-tweet-modal", payload);
       console.log(payload);
+    },
+    logOut() {
+      localStorage.removeItem("token");
+      this.$router.push("/login");
     },
   },
 };
@@ -141,6 +146,9 @@ nav {
     display: flex;
     justify-content: center;
     cursor: pointer;
+    &:hover {
+      color: $orange;
+    }
 
     .icon {
       display: inline-block;

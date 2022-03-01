@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="navbar">
-      <Navbar :current-status="currentStatus" :current-user="currentUser" />
+      <Navbar
+        :current-status="currentStatus"
+        @after-create-tweet-modal="afterCreateTweetModal"
+      />
     </div>
     <div class="main">
       <header class="header">
@@ -23,7 +26,6 @@
       <div class="user-page-body">
         <router-view
           :user="user"
-          :current-user="currentUser"
           :tweets="tweets"
           :likes="likes"
           :followers="Followers"
@@ -33,11 +35,17 @@
           @after-delete-like="handleDeleteLike"
           @after-update="handleUpdate"
           @after-delete-on-like="handleDeleteLikePost"
+          @after-remove-followship="handleRemoveFollowship"
+          @after-add-followship="handleAddFollowship"
+          @after-del-followship="handleDelFollowship"
         />
       </div>
     </div>
     <div class="popular-users">
-      <PopularUsers />
+      <PopularUsers
+        @after-remove-pop="handleRemovePop"
+        @after-add-pop="handleAddPop"
+      />
     </div>
   </div>
 </template>
@@ -48,26 +56,17 @@ import PopularUsers from "../components/PopularUsers.vue";
 import usersAPI from "./../apis/users";
 import tweetsAPI from "./../apis/tweets";
 import { Toast } from "./../utils/helper";
-
-const dummyUser = {
-  id: 14,
-  name: "user1",
-  email: "user1@example.com",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  introduction:
-    "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
-  role: "",
-  account: "user1",
-  cover: "https://loremflickr.com/600/200/nature?random=100",
-  createdAt: "2022-02-26T03:59:35.000Z",
-  updatedAt: "2022-02-26T03:59:35.000Z",
-};
+import { mapState } from "vuex";
 
 export default {
   name: "User",
+
   components: {
     Navbar,
     PopularUsers,
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   created() {
     const userId = this.$route.params.id;
@@ -75,21 +74,29 @@ export default {
     this.fetchTweets(userId);
     this.fetchLikes(userId);
     this.fetchReplies(userId);
-    this.fetchCurrentUser();
+    this.fetchFollowers(userId);
+    this.fetchFollowings(userId);
+    this.$watch(
+      () => this.$route.params,
+      (newV, oldV) => {
+        if (newV.id === oldV.id) {
+          return;
+        } else {
+          console.log("different");
+          const userId = newV.id;
+          this.fetchUser(userId);
+          this.fetchTweets(userId);
+          this.fetchLikes(userId);
+          this.fetchReplies(userId);
+          this.fetchFollowers(userId);
+          this.fetchFollowings(userId);
+        }
+      }
+    );
   },
-  //這不是一個好方法
-  beforeRouteUpdate(to, from, next) {
-    console.log(to.params.id);
-    const id = to.params.id;
-    this.fetchUser(id);
-    this.fetchTweets(id);
-    this.fetchLikes(id);
-    this.fetchReplies(id);
-    next();
-  },
+
   data() {
     return {
-      currentUser: {},
       currentStatus: {
         isIndex: false,
         isUser: true,
@@ -113,12 +120,6 @@ export default {
     };
   },
   methods: {
-    fetchCurrentUser() {
-      this.currentUser = {
-        ...this.currentUser,
-        ...dummyUser,
-      };
-    },
     async fetchUser(userId) {
       try {
         const { data } = await usersAPI.get({ userId });
@@ -149,9 +150,6 @@ export default {
           followersLength: Followers ? Followers.length : 0,
           followingsLength: Followings ? Followings.length : 0,
         };
-
-        this.Followers = Followers;
-        this.Followings = Followings;
       } catch (error) {
         console.log("error", error);
         Toast.fire({
@@ -201,6 +199,7 @@ export default {
     async fetchLikes(userId) {
       try {
         const { data } = await usersAPI.getLikes({ userId });
+        console.log(data);
         if (data.status === "error") {
           console.log("error", data.message);
           Toast.fire({
@@ -214,6 +213,36 @@ export default {
         Toast.fire({
           icon: "error",
           title: "無法取得該使用者喜愛資料，請稍後再試",
+        });
+      }
+    },
+    async fetchFollowers(userId) {
+      try {
+        const { data } = await usersAPI.getFollowers({ userId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.Followers = data;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得該Followers資料，請稍後再試",
+        });
+      }
+    },
+    async fetchFollowings(userId) {
+      try {
+        const { data } = await usersAPI.getFollowings({ userId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.Followings = data;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得該Followings資料，請稍後再試",
         });
       }
     },
@@ -282,6 +311,75 @@ export default {
         });
       }
     },
+    async handleRemoveFollowship(userId) {
+      try {
+        const { data } = await usersAPI.removeFollowship({ userId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.Followings = this.Followings.map((user) => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              isFollowed: false,
+            };
+          }
+          return user;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取消追蹤，請稍後再試",
+        });
+      }
+    },
+    async handleAddFollowship(userId) {
+      try {
+        const { data } = await usersAPI.addFollowship({ id: userId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.Followers = this.Followers.map((user) => {
+          if (user.followerId === userId) {
+            return {
+              ...user,
+              isFollowed: true,
+            };
+          }
+          return user;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法新增追蹤，請稍後再試",
+        });
+      }
+    },
+    async handleDelFollowship(userId) {
+      try {
+        const { data } = await usersAPI.removeFollowship({ userId });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
+        this.Followers = this.Followers.map((user) => {
+          if (user.followerId === userId) {
+            return {
+              ...user,
+              isFollowed: false,
+            };
+          }
+          return user;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取消追蹤，請稍後再試",
+        });
+      }
+    },
     handleUpdate(formData) {
       const { name, avatar, cover, introduction } = formData;
       this.user = {
@@ -292,6 +390,39 @@ export default {
         introduction,
       };
       this.fetchTweets(this.user.id);
+    },
+    handleRemovePop() {
+      this.user.followingsLength - 1;
+    },
+    handleAddPop() {
+      this.user.followingsLength + 1;
+    },
+    afterCreateTweetModal(payload) {
+      const {
+        UserId,
+        name,
+        image,
+        account,
+        description,
+        createdAt,
+        LikesCount,
+        RepliesCount,
+      } = payload;
+      const createaData = {
+        createdAt,
+        description,
+        image,
+        LikesCount,
+        RepliesCount,
+        User: {
+          id: UserId,
+          name,
+          account,
+          avatar: image,
+        },
+        isLiked: false,
+      };
+      this.tweets.unshift(createaData);
     },
   },
 };
@@ -307,17 +438,16 @@ export default {
 .main {
   width: 100%;
   height: auto;
-  border: {
-    left: 1px solid #e6ecf0;
-    right: 1px solid #e6ecf0;
-  }
-  border-bottom: 1px #e6ecf0 solid;
 }
 .header {
   width: 100%;
   height: 55px;
   display: flex;
   align-content: center;
+  border: {
+    left: 1px solid #e6ecf0;
+    right: 1px solid #e6ecf0;
+  }
   .previous-btn {
     width: 17px;
     height: 14px;

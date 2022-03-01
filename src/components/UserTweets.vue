@@ -1,6 +1,6 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :user="user" :current-user="currentUser" v-on="$listeners" />
+    <ProfileCard :user="user" v-on="$listeners" />
     <ProfileTabs :status="status" />
     <UserTweetsPosts :tweets="tweets" v-on="$listeners" />
   </div>
@@ -18,10 +18,7 @@ export default {
       type: Object,
       required: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
+
     tweets: {
       type: Array,
       required: true,

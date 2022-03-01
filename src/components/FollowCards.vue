@@ -1,10 +1,18 @@
 <template>
-  <div>
+  <div class="main">
     <div v-if="status.followings">
-      <div class="container" v-for="user in followings" :key="user.id">
-        <div class="avatar">
-          <img :src="user.avatar" alt="" class="avatar__pic" />
-        </div>
+      <div v-if="!followings[0]" class="empty">目前沒有追蹤者</div>
+      <div
+        class="container"
+        v-for="user in followings"
+        :key="user.followingId"
+        v-else
+      >
+        <router-link :to="{ name: 'user', params: { id: user.followingId } }">
+          <div class="avatar">
+            <img :src="user.avatar" alt="" class="avatar__pic" />
+          </div>
+        </router-link>
         <div class="tweet-content">
           <div class="title">
             <h4 class="title__name">{{ user.name }}</h4>
@@ -14,23 +22,30 @@
             {{ user.introduction }}
           </p>
           <div class="follow-btn">
-            <!-- 要換成等於currentUser的id -->
             <button
               class="follow-btn__follow"
-              v-if="user.Followship.followerId === 14"
+              @click.stop.prevent="removeFollowship(user.followingId)"
+              v-show="user.isFollowed"
             >
               正在跟隨
             </button>
-            <button class="follow-btn__unfollow" v-else>跟隨</button>
           </div>
         </div>
       </div>
     </div>
     <div v-else-if="status.followers">
-      <div class="container" v-for="user in followers" :key="user.id">
-        <div class="avatar">
-          <img :src="user.avatar" alt="" class="avatar__pic" />
-        </div>
+      <div v-if="!followers[0]" class="empty">目前沒有跟隨者</div>
+      <div
+        class="container"
+        v-for="user in followers"
+        :key="user.followerId"
+        v-else
+      >
+        <router-link :to="{ name: 'user', params: { id: user.followerId } }">
+          <div class="avatar">
+            <img :src="user.avatar" alt="" class="avatar__pic" />
+          </div>
+        </router-link>
         <div class="tweet-content">
           <div class="title">
             <h4 class="title__name">{{ user.name }}</h4>
@@ -40,14 +55,20 @@
             {{ user.introduction }}
           </p>
           <div class="follow-btn">
-            <!-- 要換成等於currentUser的id -->
             <button
               class="follow-btn__follow"
-              v-if="user.Followship.followerId === 14"
+              v-if="user.isFollowed"
+              @click.stop.prevent="deleteFollowship(user.followerId)"
             >
               正在跟隨
             </button>
-            <button class="follow-btn__unfollow" v-else>跟隨</button>
+            <button
+              class="follow-btn__unfollow"
+              v-else
+              @click.stop.prevent="addFollowship(user.followerId)"
+            >
+              跟隨
+            </button>
           </div>
         </div>
       </div>
@@ -72,12 +93,40 @@ export default {
       required: true,
     },
   },
+  methods: {
+    removeFollowship(userId) {
+      this.$emit("after-remove-followship", userId);
+    },
+    deleteFollowship(userId) {
+      this.$emit("after-del-followship", userId);
+    },
+    addFollowship(userId) {
+      this.$emit("after-add-followship", userId);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
-
+.main {
+  border: {
+    left: 1px solid #e6ecf0;
+    right: 1px solid #e6ecf0;
+    bottom: 1px solid #e6ecf0;
+  }
+}
+.empty {
+  height: 2rem;
+  border: {
+    top: 1px #e6ecf0 solid;
+    right: 1px #e6ecf0 solid;
+    left: 1px #e6ecf0 solid;
+  }
+  text-align: center;
+  font-size: 15px;
+  line-height: 2rem;
+}
 .container {
   width: 600px;
   min-height: 100px;
