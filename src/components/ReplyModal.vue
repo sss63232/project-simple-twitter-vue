@@ -70,7 +70,6 @@ import replyAPI from "./../apis/reply";
 import moment from "moment";
 moment.locale("zh-tw");
 import { emptyImageFilter } from "../utils/mixins";
-
 export default {
   mixins: [emptyImageFilter],
   props: {

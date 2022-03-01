@@ -13,7 +13,7 @@
           <label for="account">帳號</label>
           <input
             id="account"
-            v-model="user.account"
+            v-model="account"
             type="text"
             class="form-control"
             required
@@ -43,7 +43,7 @@
           <label for="password">密碼</label>
           <input
             id="password"
-            v-model="user.password"
+            v-model="password"
             type="text"
             class="form-control"
             required
@@ -82,6 +82,7 @@ export default {
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
+  created() {},
   data() {
     return {
       account: "",
@@ -129,6 +130,12 @@ export default {
           title: "無法設定帳戶資料，請稍後再試",
         });
       }
+    },
+    mapCurrentUser() {
+      const { account, name, email } = this.currentUser;
+      this.name = name;
+      this.account = account;
+      this.email = email;
     },
   },
 };

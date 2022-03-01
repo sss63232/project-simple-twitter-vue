@@ -59,7 +59,9 @@ export default {
     return apiHelper.post(
       "/followships",
       { id: userId },
-      { headers: { Authorization: `Bearer ${getToken()}` } }
+      {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      }
     );
   },
 };
