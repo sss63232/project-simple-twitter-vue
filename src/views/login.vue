@@ -76,7 +76,7 @@ export default {
           return;
         }
         this.isProcessing = true;
-        const { data } = await authorizationAPI.signIn({
+        const { data } = await authorizationAPI.login({
           account: this.account,
           password: this.password,
         });

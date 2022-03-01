@@ -21,7 +21,7 @@
 <script>
 import adminNavbar from "./../components/adminNavbar";
 import adminTweetList from "./../components/adminTweetList";
-import { Toast } from "../utils/helpers";
+import { Toast } from "../utils/helper";
 import tweetsAPI from "../apis/tweets";
 export default {
   name: "adminTweet",
@@ -38,14 +38,14 @@ export default {
     this.fetchTweet();
   },
   methods: {
-    async fetchTweet() {
+    async fetchTweet(tweetId) {
       try {
         const { data } = await tweetsAPI.deleteTweed({ tweetId });
         if (data.status !== "success") {
           throw new Error(data.message);
         }
 
-        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweedId);
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
       } catch (error) {
         Toast.fire({
           icon: "error",
