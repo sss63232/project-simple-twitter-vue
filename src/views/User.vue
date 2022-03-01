@@ -76,18 +76,25 @@ export default {
     this.fetchReplies(userId);
     this.fetchFollowers(userId);
     this.fetchFollowings(userId);
+    this.$watch(
+      () => this.$route.params,
+      (newV, oldV) => {
+        if (newV.id === oldV.id) {
+          return;
+        } else {
+          console.log("different");
+          const userId = newV.id;
+          this.fetchUser(userId);
+          this.fetchTweets(userId);
+          this.fetchLikes(userId);
+          this.fetchReplies(userId);
+          this.fetchFollowers(userId);
+          this.fetchFollowings(userId);
+        }
+      }
+    );
   },
-  //這不是一個好方法
-  beforeRouteUpdate(to, from, next) {
-    const id = to.params.id;
-    this.fetchUser(id);
-    this.fetchTweets(id);
-    this.fetchLikes(id);
-    this.fetchReplies(id);
-    this.fetchFollowers(id);
-    this.fetchFollowings(id);
-    next();
-  },
+
   data() {
     return {
       currentStatus: {
@@ -192,6 +199,7 @@ export default {
     async fetchLikes(userId) {
       try {
         const { data } = await usersAPI.getLikes({ userId });
+        console.log(data);
         if (data.status === "error") {
           console.log("error", data.message);
           Toast.fire({
