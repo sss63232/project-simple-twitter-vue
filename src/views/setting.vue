@@ -16,6 +16,7 @@
             v-model="user.account"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="form-label-group">
@@ -25,6 +26,7 @@
             v-model="user.name"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="form-label-group">
@@ -34,6 +36,7 @@
             v-model="user.email"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="form-label-group">
@@ -43,6 +46,7 @@
             v-model="user.password"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="form-label-group">
@@ -52,6 +56,7 @@
             v-model="checkPassword"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="setting-block">

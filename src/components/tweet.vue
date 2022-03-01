@@ -2,34 +2,43 @@
   <div class="container">
     <h1 class="home">首頁</h1>
     <form action="" class="form" @submit.stop.prevent="handleSubmit">
-      <img src="https://i.imgur.com/aVE1Jo0.png" alt="" class="avatar" />
-      <textarea
-        name="tweet"
-        id=""
-        cols="30"
-        rows="10"
-        placeholder="有什麼新鮮事?"
-        class="textarea"
-        v-model="text"
-      ></textarea>
-      <button type="submit" class="btn-tweet" :disabled="isLoading">
-        推文
-      </button>
+      <img :src="currentUser.image | emptyImage" alt="" class="avatar" />
+      <div class="right-place">
+        <textarea
+          name="tweet"
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="有什麼新鮮事?"
+          class="textarea"
+          v-model="text"
+        ></textarea>
+        <div class="submit-group">
+          <div class="warn" v-show="textToMuch">字數不可超過140字</div>
+          <div class="warn__2" v-show="noSpace">內容不可空白</div>
+          <button type="submit" class="btn-tweet" :disabled="isLoading">
+            推文
+          </button>
+        </div>
+      </div>
     </form>
     <div class="divide"></div>
   </div>
 </template>
 <script>
-// import { v4 as uuidv4 } from "uuid";
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
 import { mapState } from "vuex";
+import { emptyImageFilter } from "../utils/mixins";
 
 export default {
+  mixins: [emptyImageFilter],
   data() {
     return {
       text: "",
       isLoading: false,
+      textToMuch: false,
+      noSpace: false,
     };
   },
   computed: {
@@ -38,13 +47,13 @@ export default {
   methods: {
     async handleSubmit() {
       this.isLoading = true;
-      if (this.text.length > 140) {
+      if (this.text.trim().length > 140) {
         this.isLoading = false;
-        return alert("字數超過140個");
+        return (this.textToMuch = true);
       }
       if (this.text.trim().length === 0) {
         this.isLoading = false;
-        return alert("不可空白");
+        return (this.noSpace = true);
       }
       try {
         const { data } = await tweetsAPI.createTweet({
@@ -57,7 +66,6 @@ export default {
           throw new Error(data.message);
         }
         this.$emit("after-create-tweet", {
-          // tweetId: uuidv4(),
           UserId: this.currentUser.id,
           name: this.currentUser.name,
           image: this.currentUser.avatar,
@@ -73,7 +81,6 @@ export default {
           title: "無法推文",
         });
       }
-
       this.text = "";
     },
   },
@@ -105,7 +112,7 @@ export default {
     margin-top: 55px;
     position: relative;
     border: 1px solid #e6ecf0;
-    width: 600px;
+    width: 600x;
     height: 120px;
     display: flex;
     .avatar {
@@ -116,30 +123,59 @@ export default {
       margin-left: 15px;
       border-radius: 100%;
     }
-    textarea {
-      margin-top: 20px;
-      margin-left: 5px;
-      resize: none;
-      width: 600px;
-      height: 94px;
-      border: none;
-      font-size: 25px;
+    .right-place {
+      display: flex;
+      flex-direction: column;
+      textarea {
+        margin-top: 20px;
+        margin-left: 5px;
+        resize: none;
+        width: 530px;
+        height: 94px;
+        border: none;
+        font-size: 25px;
+      }
+      textarea::-webkit-input-placeholder {
+        font-size: 18px;
+        font: #9197a3;
+        font-family: "Noto Sans TC";
+      }
     }
-    textarea::-webkit-input-placeholder {
-      font-size: 18px;
-      font: #9197a3;
-      font-family: "Noto Sans TC";
-    }
-    .btn-tweet {
-      position: absolute;
-      height: 38px;
-      width: 66px;
-      font-size: 18px;
-      color: #ffffff;
-      background-color: #ff6600;
-      border-radius: 100px;
-      left: 520px;
-      top: 70px;
+    .submit-group {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      .warn {
+        margin-right: 10px;
+        margin-top: 8px;
+        width: 138px;
+        height: 15px;
+        font-size: 15px;
+        color: #fc5a5a;
+        font-weight: 500;
+      }
+      .warn__2 {
+        margin-right: 10px;
+        margin-top: 8px;
+        width: 100px;
+        height: 15px;
+        font-size: 15px;
+        color: #fc5a5a;
+        font-weight: 500;
+      }
+      .btn-tweet {
+        // position: absolute;
+        height: 38px;
+        width: 66px;
+        font-size: 18px;
+        color: #ffffff;
+        background-color: #ff6600;
+        border-radius: 100px;
+        // left: 520px;
+        // top: 70px;
+      }
     }
   }
   .divide {

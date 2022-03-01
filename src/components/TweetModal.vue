@@ -8,7 +8,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <img src="https://i.imgur.com/aVE1Jo0.png" alt="" class="avatar" />
+          <img :src="currentUser.image | emptyImage" alt="" class="avatar" />
           <textarea
             class="tweet"
             name="tweet"
@@ -33,6 +33,8 @@
 // import { v4 as uuidv4 } from "uuid";
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
+import { emptyImageFilter } from "../utils/mixins";
 
 const currentUser = {
   id: 14,
@@ -48,6 +50,7 @@ const currentUser = {
   updatedAt: "2022-02-26T03:59:35.000Z",
 };
 export default {
+  mixins: [emptyImageFilter],
   props: {
     show: Boolean,
   },
@@ -57,6 +60,9 @@ export default {
       currentUser: currentUser,
       isLoading: false,
     };
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
     async handleSubmit() {
@@ -74,6 +80,18 @@ export default {
           image: this.currentUser.avatar,
           description: this.text,
         });
+        this.$emit("after-create-tweet-modal", {
+          UserId: this.currentUser.id,
+          name: this.currentUser.name,
+          image: this.currentUser.avatar,
+          account: this.currentUser.account,
+          description: this.text,
+          RepliesCount: 0,
+          LikesCount: 0,
+          createdAt: new Date(),
+        });
+        this.text = "";
+        this.$emit("close");
         this.isLoading = false;
         if (data.status === "error") {
           this.isLoading = false;
@@ -85,25 +103,6 @@ export default {
           title: "目前無法推文",
         });
       }
-      if (this.text.length > 140) {
-        return alert("字數超過140個");
-      }
-      if (this.text.length === 0) {
-        return alert("不可空白");
-      }
-      this.$emit("after-create-tweet-modal", {
-        // tweetId: uuidv4(),
-        UserId: this.currentUser.id,
-        name: this.currentUser.name,
-        image: this.currentUser.avatar,
-        account: this.currentUser.account,
-        description: this.text,
-        RepliesCount: 0,
-        LikesCount: 0,
-        createdAt: new Date(),
-      });
-      this.text = "";
-      this.$emit("close");
     },
   },
 };
@@ -150,6 +149,7 @@ export default {
   margin: 20px 0;
   display: flex;
   .avatar {
+    border-radius: 100%;
     height: 50px;
     width: 50px;
     margin-right: 10px;
