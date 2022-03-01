@@ -11,7 +11,7 @@ const routes = [
   {
     path: "/",
     name: "root",
-    redirect: "/main",
+    redirect: "/login",
   },
   // 首頁
   // main

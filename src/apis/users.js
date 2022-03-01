@@ -55,13 +55,9 @@ export default {
     });
   },
   // 新增追蹤
-  addFollowship({ userId }) {
-    return apiHelper.post(
-      "/followships",
-      { id: userId },
-      {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      }
-    );
+  addFollowship({ formData }) {
+    return apiHelper.post("/followships", formData, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
   },
 };

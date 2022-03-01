@@ -42,6 +42,11 @@ import { emptyImageFilter } from "./../utils/mixins";
 export default {
   name: "PopularUsers",
   mixins: [emptyImageFilter],
+  props: {
+    changeTopUser: {
+      type: Array,
+    },
+  },
   created() {
     this.fetchTopUsers();
   },
@@ -89,7 +94,8 @@ export default {
     },
     async addFollowing(userId) {
       try {
-        const { data } = await usersAPI.addFollowship({ userId });
+        const formData = { id: userId };
+        const { data } = await usersAPI.addFollowship({ formData });
         if (data.status === "error") {
           throw new Error(data.message);
         }
@@ -110,6 +116,14 @@ export default {
           title: "無法新增追蹤，請稍後再試",
         });
       }
+    },
+  },
+  watch: {
+    changeTopUser() {
+      return (this.topUsers = {
+        ...this.topUsers,
+        ...this.changeTopUser,
+      });
     },
   },
 };
