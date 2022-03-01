@@ -12,10 +12,10 @@
         <p class="card-text">@{{ user.account }}</p>
         <div class="click-on-condition row">
           <div class="reply-count">
-            <i class="far fa-comment"></i> {{ user.tweetCount }}
+            <img src="../assets/reply2.png" alt="" class="reply__card" /> {{ user.tweetCount }}
           </div>
           <div class="like-count">
-            <i class="far fa-heart"></i> {{ user.likeCount }}
+            <img src="../assets/like2.png" alt="" class="like__card" /> {{ user.likeCount }}
           </div>
         </div>
         <div class="follow-condition row">
@@ -30,3 +30,20 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "adminUserCard",
+  props: {
+    User: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      user: this.User,
+    };
+  },
+};
+</script>
