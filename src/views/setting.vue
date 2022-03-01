@@ -77,13 +77,6 @@ export default {
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
-  created() {
-    const { account, name, email, password } = this.currentUser;
-    this.account = account;
-    this.name = name;
-    this.email = email;
-    this.password = password;
-  },
   data() {
     return {
       account: "",
