@@ -43,6 +43,7 @@
     </div>
     <div class="popular-users">
       <PopularUsers
+        :change-top-user="topUsers"
         @after-remove-pop="handleRemovePop"
         @after-add-pop="handleAddPop"
       />
@@ -82,7 +83,6 @@ export default {
         if (newV.id === oldV.id) {
           return;
         } else {
-          console.log("different");
           const userId = newV.id;
           this.fetchUser(userId);
           this.fetchTweets(userId);
@@ -117,6 +117,7 @@ export default {
       likes: [],
       Followers: [],
       Followings: [],
+      topUsers: [],
     };
   },
   methods: {
@@ -199,7 +200,6 @@ export default {
     async fetchLikes(userId) {
       try {
         const { data } = await usersAPI.getLikes({ userId });
-        console.log(data);
         if (data.status === "error") {
           console.log("error", data.message);
           Toast.fire({
@@ -243,6 +243,18 @@ export default {
         Toast.fire({
           icon: "error",
           title: "無法取得該Followings資料，請稍後再試",
+        });
+      }
+    },
+    async fetchTopUsers() {
+      try {
+        const { data } = await usersAPI.getTopUser();
+        this.topUsers = data;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得Top使用者資料，請稍後再試",
         });
       }
     },
@@ -317,15 +329,15 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
-        this.Followings = this.Followings.map((user) => {
-          if (user.id === userId) {
-            return {
-              ...user,
-              isFollowed: false,
-            };
-          }
-          return user;
+
+        // 從Followings清單中移除相同id的人
+        this.Followings = this.Followings.filter((user) => {
+          return user.followingId !== userId;
         });
+        // 正在追蹤人數變少
+        this.followingsLength - 1;
+        // 重整topuser資料
+        this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
         Toast.fire({
@@ -336,10 +348,12 @@ export default {
     },
     async handleAddFollowship(userId) {
       try {
-        const { data } = await usersAPI.addFollowship({ id: userId });
+        const formData = { id: userId };
+        const { data } = await usersAPI.addFollowship({ formData });
         if (data.status === "error") {
           throw new Error(data.message);
         }
+        // 對原本沒有追蹤的人追蹤
         this.Followers = this.Followers.map((user) => {
           if (user.followerId === userId) {
             return {
@@ -349,6 +363,11 @@ export default {
           }
           return user;
         });
+        this.fetchFollowings(this.user.id);
+        // 追蹤人數加1
+        this.followingsLength + 1;
+        // 重整topuser資料
+        this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
         Toast.fire({
@@ -363,6 +382,7 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
+        // 改變追蹤的狀態
         this.Followers = this.Followers.map((user) => {
           if (user.followerId === userId) {
             return {
@@ -372,6 +392,10 @@ export default {
           }
           return user;
         });
+        // 正在追蹤人數變少
+        this.followingsLength - 1;
+        // 重整topuser資料
+        this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
         Toast.fire({
