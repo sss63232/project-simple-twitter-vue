@@ -23,7 +23,7 @@
           <label for="name">名稱</label>
           <input
             id="name"
-            v-model="user.name"
+            v-model="name"
             type="text"
             class="form-control"
             required
@@ -33,7 +33,7 @@
           <label for="email">Email</label>
           <input
             id="email"
-            v-model="user.email"
+            v-model="email"
             type="text"
             class="form-control"
             required
@@ -82,7 +82,9 @@ export default {
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
-  created() {},
+  created() {
+    this.mapCurrentUser();
+  },
   data() {
     return {
       account: "",
@@ -103,7 +105,7 @@ export default {
       if (
         !this.account.trim() ||
         !this.name.trim() ||
-        !this.emain.trim() ||
+        !this.email.trim() ||
         !this.password.trim() ||
         !this.checkPassword.trim()
       ) {
