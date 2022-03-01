@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="modal-body">
-          <img src="https://i.imgur.com/aVE1Jo0.png" alt="" class="avatar" />
+          <img :src="currentUser.image | emptyImage" alt="" class="avatar" />
           <textarea
             class="tweet"
             name="tweet"
@@ -72,7 +72,7 @@ import replyAPI from "./../apis/reply";
 import moment from "moment";
 moment.locale("zh-tw");
 import { emptyImageFilter } from "../utils/mixins";
-
+import { mapState } from "vuex";
 export default {
   mixins: [emptyImageFilter],
   props: {
@@ -81,6 +81,9 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   data() {
     return {
@@ -265,6 +268,7 @@ export default {
     width: 50px;
     margin-right: 10px;
     display: flex;
+    border-radius: 100%;
   }
   .tweet {
     font-size: 25px;
