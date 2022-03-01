@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view @after-login="handleLogin" :current-user="currentUser" />
+    <router-view />
   </div>
 </template>
 

@@ -10,7 +10,7 @@
       >
         <router-link :to="{ name: 'user', params: { id: user.followingId } }">
           <div class="avatar">
-            <img :src="user.avatar" alt="" class="avatar__pic" />
+            <img :src="user.avatar | emptyImage" alt="" class="avatar__pic" />
           </div>
         </router-link>
         <div class="tweet-content">
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { emptyImageFilter } from "./../utils/mixins";
 export default {
   name: "FollowCards",
   props: {
@@ -93,6 +94,7 @@ export default {
       required: true,
     },
   },
+  mixins: [emptyImageFilter],
   methods: {
     removeFollowship(userId) {
       this.$emit("after-remove-followship", userId);
