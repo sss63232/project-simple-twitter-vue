@@ -54,6 +54,7 @@
           :initial-user="user"
           :is-processing="isProcessing"
           @after-submit="handleAfterSubmit"
+          @after-cancel-cover="handleCancelCover"
         />
       </div>
       <div class="user-info">
@@ -150,6 +151,9 @@ export default {
     },
     addFollowship(userId) {
       this.$emit("after-add-followship", userId);
+    },
+    handleCancelCover() {
+      this.$emit("after-cancel-cover");
     },
   },
 };
