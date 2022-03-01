@@ -336,7 +336,7 @@ export default {
     },
     async handleAddFollowship(userId) {
       try {
-        const { data } = await usersAPI.addFollowship({ userId });
+        const { data } = await usersAPI.addFollowship({ id: userId });
         if (data.status === "error") {
           throw new Error(data.message);
         }
