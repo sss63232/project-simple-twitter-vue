@@ -100,6 +100,30 @@ export default {
   },
   methods: {
     async formSubmit() {
+      if (
+        !this.account.trim() ||
+        !this.name.trim() ||
+        !this.emain.trim() ||
+        !this.password.trim() ||
+        !this.checkPassword.trim()
+      ) {
+        return Toast.fire({
+          icon: "error",
+          message: "不得留白",
+        });
+      }
+      if (this.password.trim() !== this.checkPassword.trim()) {
+        return Toast.fire({
+          icon: "error",
+          message: "密碼錯誤",
+        });
+      }
+      if (this.email.trim().indexOf("@") === -1) {
+        return Toast.fire({
+          icon: "error",
+          message: "email沒有@",
+        });
+      }
       try {
         const formData = {
           account: this.account ? this.account : this.currentUser.account,
