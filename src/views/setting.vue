@@ -16,15 +16,28 @@
             v-model="account"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="form-label-group">
           <label for="name">名稱</label>
-          <input id="name" v-model="name" type="text" class="form-control" />
+          <input
+            id="name"
+            v-model="user.name"
+            type="text"
+            class="form-control"
+            required
+          />
         </div>
         <div class="form-label-group">
           <label for="email">Email</label>
-          <input id="email" v-model="email" type="text" class="form-control" />
+          <input
+            id="email"
+            v-model="user.email"
+            type="text"
+            class="form-control"
+            required
+          />
         </div>
         <div class="form-label-group">
           <label for="password">密碼</label>
@@ -33,6 +46,7 @@
             v-model="password"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="form-label-group">
@@ -42,6 +56,7 @@
             v-model="checkPassword"
             type="text"
             class="form-control"
+            required
           />
         </div>
         <div class="setting-block">

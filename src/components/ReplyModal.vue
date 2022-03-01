@@ -9,7 +9,7 @@
         </div>
         <div class="reply-container">
           <div class="avatar">
-            <img :src="post.image" alt="" class="avatar__pic" />
+            <img :src="post.image | emptyImage" alt="" class="avatar__pic" />
             <div class="divider">
               <div class="divider__a"></div>
               <div class="divider__b"></div>
@@ -69,8 +69,9 @@ import { Toast } from "./../utils/helper";
 import replyAPI from "./../apis/reply";
 import moment from "moment";
 moment.locale("zh-tw");
-
+import { emptyImageFilter } from "../utils/mixins";
 export default {
+  mixins: [emptyImageFilter],
   props: {
     show: Boolean,
     post: {
@@ -138,29 +139,41 @@ export default {
   padding-bottom: 0;
   display: flex;
   .avatar {
+    position: relative;
     height: 50px;
     width: 50px;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
+    border-radius: 100%;
     &__pic {
       border-radius: 100%;
+      height: 50px;
+      width: 50px;
     }
-    .divider {
-      display: flex;
-      margin-top: 5px;
-      &__a {
-        width: 25px;
-        height: 1rem;
-        min-height: 2.5rem;
-        max-height: 6rem;
-        border-right: 2px #ccd6dd solid;
-      }
-      &__b {
-        width: 25px;
-        height: 100%;
-      }
+    .avatar::before {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 0;
+      left: 150px;
     }
+    // .divider {
+    //   display: flex;
+    //   margin-top: 5px;
+    //   &__a {
+    //     width: 25px;
+    //     height: 5px;
+    //     // min-height: 2.5rem;
+    //     max-height: 6rem;
+    //     border-right: 2px #ccd6dd solid;
+    //   }
+    //   &__b {
+    //     width: 25px;
+    //     height: 100%;
+    //   }
+    // }
   }
   .tweet-content {
     display: flex;
