@@ -1,11 +1,13 @@
 <template>
   <div class="main">
+    <div v-if="!likes[0]" class="empty">目前沒有喜歡的內容</div>
     <router-link
       class="router-to-reply"
       tag="div"
       :to="{ name: 'reply', params: { id: like.TweetId } }"
       v-for="like in likes"
       :key="like.TweetId"
+      v-else
     >
       <div class="container">
         <router-link
@@ -81,7 +83,6 @@ export default {
   props: {
     likes: {
       type: Array,
-      required: false,
     },
   },
   data() {
@@ -108,6 +109,17 @@ export default {
 <style lang="scss" scoped>
 .main {
   border-bottom: 1px solid #e6ecf0;
+}
+.empty {
+  height: 2rem;
+  border: {
+    top: 1px #e6ecf0 solid;
+    right: 1px #e6ecf0 solid;
+    left: 1px #e6ecf0 solid;
+  }
+  text-align: center;
+  font-size: 15px;
+  line-height: 2rem;
 }
 .router-to-reply {
   z-index: 1;

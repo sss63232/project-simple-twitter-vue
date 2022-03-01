@@ -1,7 +1,13 @@
 <template>
   <div class="main">
     <div v-if="status.followings">
-      <div class="container" v-for="user in followings" :key="user.followingId">
+      <div v-if="!followings[0]" class="empty">目前沒有追蹤者</div>
+      <div
+        class="container"
+        v-for="user in followings"
+        :key="user.followingId"
+        v-else
+      >
         <router-link :to="{ name: 'user', params: { id: user.followingId } }">
           <div class="avatar">
             <img :src="user.avatar" alt="" class="avatar__pic" />
@@ -28,7 +34,13 @@
       </div>
     </div>
     <div v-else-if="status.followers">
-      <div class="container" v-for="user in followers" :key="user.followerId">
+      <div v-if="!followers[0]" class="empty">目前沒有跟隨者</div>
+      <div
+        class="container"
+        v-for="user in followers"
+        :key="user.followerId"
+        v-else
+      >
         <router-link :to="{ name: 'user', params: { id: user.followerId } }">
           <div class="avatar">
             <img :src="user.avatar" alt="" class="avatar__pic" />
@@ -103,6 +115,17 @@ export default {
     right: 1px solid #e6ecf0;
     bottom: 1px solid #e6ecf0;
   }
+}
+.empty {
+  height: 2rem;
+  border: {
+    top: 1px #e6ecf0 solid;
+    right: 1px #e6ecf0 solid;
+    left: 1px #e6ecf0 solid;
+  }
+  text-align: center;
+  font-size: 15px;
+  line-height: 2rem;
 }
 .container {
   width: 600px;

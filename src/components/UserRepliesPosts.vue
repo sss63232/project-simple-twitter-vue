@@ -1,11 +1,13 @@
 <template>
   <div class="main">
+    <div v-if="!replies[0]" class="empty">目前沒有推文及回覆內容</div>
     <router-link
       class="router-to-reply"
       tag="div"
       :to="{ name: 'reply', params: { id: reply.Tweet.tweetId } }"
       v-for="reply in replies"
       :key="reply.replyId"
+      v-else
     >
       <div class="container">
         <div class="avatar">
@@ -70,6 +72,17 @@ export default {
 <style lang="scss" scoped>
 .main {
   border-bottom: 1px solid #e6ecf0;
+}
+.empty {
+  height: 2rem;
+  border: {
+    top: 1px #e6ecf0 solid;
+    right: 1px #e6ecf0 solid;
+    left: 1px #e6ecf0 solid;
+  }
+  text-align: center;
+  font-size: 15px;
+  line-height: 2rem;
 }
 .container {
   width: 600px;

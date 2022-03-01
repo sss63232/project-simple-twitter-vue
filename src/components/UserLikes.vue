@@ -1,6 +1,6 @@
 <template>
   <div class="profile-main">
-    <ProfileCard />
+    <ProfileCard :user="user" />
     <ProfileTabs :status="status" />
     <LikesContent :likes="likes" v-on="$listeners" />
   </div>
@@ -26,7 +26,6 @@ export default {
 
     likes: {
       type: Array,
-      required: true,
     },
   },
   data() {
