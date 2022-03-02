@@ -45,12 +45,13 @@ const routes = [
     component: () => import("../views/reply.vue"),
   },
 
-  // Settings
+  // 登入
   {
     path: "/login",
     name: "login",
     component: () => import("../views/login.vue"),
   },
+  // 註冊
   {
     path: "/register",
     name: "register",

@@ -102,7 +102,11 @@
                 字數超出上限！
               </div>
             </div>
-            <button class="save-btn" type="submit" :disabled="isProcessing">
+            <button
+              class="save-btn"
+              type="submit"
+              :disabled="isProcessing || isRunning"
+            >
               儲存
             </button>
           </form>
@@ -113,7 +117,10 @@
 </template>
 
 <script>
+import { Toast, Toast2 } from "../utils/helper";
 import { emptyImageFilter } from "./../utils/mixins";
+const axios = require("axios");
+
 export default {
   name: "ProfileEditModal",
   mixins: [emptyImageFilter],
@@ -142,6 +149,7 @@ export default {
         nameLength: false,
         introLength: false,
       },
+      isRunning: false,
     };
   },
   methods: {
@@ -195,29 +203,70 @@ export default {
       const formData = this.inputForm;
       this.$emit("after-submit", formData);
     },
-    // 沒有用?
-    handleCoverFileChange(e) {
-      console.log(e.target);
-      const { files } = e.target;
-      console.log(files);
-      if (files.length === 0) {
-        this.user.cover = "";
-        return;
-      } else {
-        const coverImageURL = window.URL.createObjectURL(files[0]);
-        this.user.cover = coverImageURL;
-        console.log("cover", coverImageURL);
+    // 用Imgur API作為cover上傳地址
+    async handleCoverFileChange(e) {
+      try {
+        const { files } = e.target;
+        if (files.length === 0) {
+          this.user.cover = "";
+          return;
+        } else {
+          this.isRunning = true;
+          const fileData = files[0];
+          const { data } = await axios.post(
+            "https://api.imgur.com/3/image",
+            fileData,
+            {
+              headers: { Authorization: "Client-ID d4db454956aa632" },
+            }
+          );
+
+          const coverImageURL = data.data.link;
+          this.user.cover = coverImageURL;
+          Toast.fire({
+            title: "成功更新 Cover！",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        Toast2.fire({
+          title: "暫時無法上傳照片，請稍後",
+        });
       }
     },
-    handleAvatarFileChange(e) {
-      const { files } = e.target;
+    // avatar 上傳
+    async handleAvatarFileChange(e) {
+      try {
+        const { files } = e.target;
+        if (files.length === 0) {
+          Toast2.fire({
+            title: "未選取任何檔案！",
+          });
+          return;
+        } else {
+          this.isRunning = true;
+          const fileData = files[0];
 
-      if (files.length === 0) {
-        this.user.avatar = "";
-        return;
-      } else {
-        const ImageURL = window.URL.createObjectURL(files[0]);
-        this.user.avatar = ImageURL;
+          const { data } = await axios.post(
+            "https://api.imgur.com/3/image",
+            fileData,
+            {
+              headers: { Authorization: "Client-ID d4db454956aa632" },
+            }
+          );
+          const avatarImageURL = data.data.link;
+          Toast.fire({
+            title: "成功更新個人頭貼！",
+          });
+          this.user.avatar = avatarImageURL;
+          this.isRunning = false;
+        }
+      } catch (error) {
+        this.isRunning = false;
+        console.log(error);
+        Toast2.fire({
+          title: "暫時無法上傳照片，請稍後",
+        });
       }
     },
 
@@ -385,6 +434,8 @@ export default {
   background-color: $white;
   border-radius: 50%;
   &__picture {
+    widows: 120px;
+    height: 120px;
     border: 4px solid $white;
     border-radius: 50%;
     opacity: 0.5;
@@ -525,6 +576,9 @@ textarea {
   position: absolute;
   right: 15px;
   top: -43px;
+  &:disabled {
+    opacity: 0.7;
+  }
 }
 .invalid {
   border-bottom: 2px solid #fc5a5a;
