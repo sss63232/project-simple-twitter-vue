@@ -492,14 +492,17 @@ export default {
     handleReplyModal({ id, status }) {
       if (status === "tweets") {
         this.tweets = this.tweets.map((tweet) => {
-          if (tweet.tweetId === id) {
-            tweet.RepliesCount++;
+          if (tweet.tweetId === id.tweetId) {
+            return {
+              ...tweet,
+              RepliesCount: tweet.RepliesCount + 1,
+            };
           }
           return tweet;
         });
       } else if (status === "likes") {
         this.likes = this.likes.map((like) => {
-          if (like.TweetId === id) {
+          if (like.TweetId === id.tweetId) {
             like.Tweet.repliesCount++;
           }
           return like;

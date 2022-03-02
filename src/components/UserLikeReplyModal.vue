@@ -9,7 +9,7 @@
         </div>
         <div class="reply-container">
           <div class="avatar">
-            <img :src="post.image | emptyImage" alt="" class="avatar__pic" />
+            <img :src="post[0].image | emptyImage" alt="" class="avatar__pic" />
             <div class="divider">
               <div class="divider__a"></div>
               <div class="divider__b"></div>
@@ -18,22 +18,22 @@
           <div class="tweet-content">
             <div class="title">
               <router-link to="" class="title__name">{{
-                post.Tweet.User.name
+                post[0].Tweet.User.name
               }}</router-link>
               <router-link to="" class="title__id"
-                >@{{ post.Tweet.User.account }}</router-link
+                >@{{ post[0].Tweet.User.account }}</router-link
               >
               <router-link to="" class="title__formNow"
-                >．{{ post.Tweet.createdAt | fromNow }}</router-link
+                >．{{ post[0].Tweet.createdAt | fromNow }}</router-link
               >
             </div>
             <p class="description">
-              {{ post.Tweet.description }}
+              {{ post[0].Tweet.description }}
             </p>
             <div class="hashtag">
               <router-link to="" class="hashtag__reply">回覆</router-link>
               <router-link to="" class="hashtag__userid"
-                >@{{ post.Tweet.User.account }}</router-link
+                >@{{ post[0].Tweet.User.account }}</router-link
               >
             </div>
           </div>
@@ -80,7 +80,7 @@ export default {
   props: {
     show: Boolean,
     post: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
@@ -115,7 +115,7 @@ export default {
       }
       try {
         const { data } = await replyAPI.createReply({
-          tweetId: this.post.TweetId,
+          tweetId: this.post[0].TweetId,
           comment: this.text,
         });
         if (data.status === "error") {
@@ -125,7 +125,7 @@ export default {
         this.noSpace = false;
         this.isLoading = false;
         this.$emit("after-create-reply-modal", {
-          tweetId: this.post.TweetId,
+          tweetId: this.post[0].TweetId,
         });
         this.text = "";
         this.$emit("close");

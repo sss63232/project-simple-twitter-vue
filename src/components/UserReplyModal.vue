@@ -10,7 +10,7 @@
         <div class="reply-container">
           <div class="avatar">
             <img
-              :src="post.User.avatar | emptyImage"
+              :src="post[0].User.avatar | emptyImage"
               alt=""
               class="avatar__pic"
             />
@@ -22,22 +22,22 @@
           <div class="tweet-content">
             <div class="title">
               <router-link to="" class="title__name">{{
-                post.User.name
+                post[0].User.name
               }}</router-link>
               <router-link to="" class="title__id"
-                >@{{ post.User.account }}</router-link
+                >@{{ post[0].User.account }}</router-link
               >
               <router-link to="" class="title__formNow"
-                >．{{ post.createdAt | fromNow }}</router-link
+                >．{{ post[0].createdAt | fromNow }}</router-link
               >
             </div>
             <p class="description">
-              {{ post.description }}
+              {{ post[0].description }}
             </p>
             <div class="hashtag">
               <router-link to="" class="hashtag__reply">回覆</router-link>
               <router-link to="" class="hashtag__userid"
-                >@{{ post.User.account }}</router-link
+                >@{{ post[0].User.account }}</router-link
               >
             </div>
           </div>
@@ -84,7 +84,7 @@ export default {
   props: {
     show: Boolean,
     post: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
@@ -119,7 +119,7 @@ export default {
       }
       try {
         const { data } = await replyAPI.createReply({
-          tweetId: this.post.tweetId,
+          tweetId: this.post[0].tweetId,
           comment: this.text,
         });
         if (data.status === "error") {
@@ -129,7 +129,7 @@ export default {
         this.noSpace = false;
         this.isLoading = false;
         this.$emit("after-create-reply-modal", {
-          tweetId: this.post.tweetId,
+          tweetId: this.post[0].tweetId,
         });
         this.text = "";
         this.$emit("close");

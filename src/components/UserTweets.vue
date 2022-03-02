@@ -5,6 +5,7 @@
     <UserTweetsPosts
       :tweets="tweets"
       @after-create-reply-modal="afterCreateReplyModal"
+      v-on="$listeners"
     />
   </div>
 </template>
@@ -43,6 +44,7 @@ export default {
   },
   methods: {
     afterCreateReplyModal(tweetId) {
+      console.log("reply1");
       this.$emit("after-create-reply-modal", {
         id: tweetId,
         status: "tweets",

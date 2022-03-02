@@ -80,7 +80,6 @@
 import moment from "moment";
 import Modal from "./UserReplyModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
-import { filter } from "./../utils/helper";
 
 export default {
   name: "UserTweetsPosts",
@@ -97,16 +96,16 @@ export default {
   data() {
     return {
       showModal: false,
-      replyingPost: {},
+      replyingPost: [],
     };
   },
   methods: {
+    // 把 modal 放在外面才不會重覆呼叫多次modal component
     clickOnReply(tweetId) {
       this.showModal = true;
-      (this.replyingPost = this.tweets),
-        filter((tweet) => {
-          tweet.tweetId = tweetId;
-        });
+      this.replyingPost = this.tweets.filter(
+        (tweet) => tweet.tweetId === tweetId
+      );
     },
     addLike(tweetId) {
       this.$emit("after-like", tweetId);
