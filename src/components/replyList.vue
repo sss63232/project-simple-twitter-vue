@@ -2,12 +2,24 @@
   <div>
     <div class="container">
       <div class="avatar">
-        <img :src="reply.avatar" alt="" class="avatar__pic" />
+        <router-link
+          :to="{ name: 'user-tweets', params: { id: reply.UserId } }"
+        >
+          <img :src="reply.avatar | emptyImage" alt="" class="avatar__pic" />
+        </router-link>
       </div>
       <div class="tweet-content">
         <div class="title">
-          <router-link to="" class="title__name">{{ reply.name }}</router-link>
-          <router-link to="" class="title__id">@{{ reply.UserId }}</router-link>
+          <router-link
+            :to="{ name: 'user-tweets', params: { id: reply.UserId } }"
+            class="title__name"
+            >{{ reply.name }}</router-link
+          >
+          <router-link
+            :to="{ name: 'user-tweets', params: { id: reply.UserId } }"
+            class="title__id"
+            >@{{ reply.UserId }}</router-link
+          >
           <router-link to="" class="title__formNow"
             >．{{ reply.createdAt | fromNow }}</router-link
           >
@@ -23,9 +35,11 @@
 </template>
 <script>
 import moment from "moment";
+import { emptyImageFilter } from "../utils/mixins";
 //換moment語言到中文
 moment.locale("zh-tw");
 export default {
+  mixins: [emptyImageFilter],
   props: {
     reply: {
       type: Object,
@@ -51,6 +65,7 @@ export default {
   border-top: 1px #e6ecf0 solid;
   margin-bottom: 5px;
   .description {
+    word-break: break-all;
     font-size: 15px;
   }
   .tweet-content {

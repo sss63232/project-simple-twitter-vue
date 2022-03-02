@@ -5,7 +5,7 @@
         class="avatar"
         :to="{ name: 'user-tweets', params: { id: tweet.UserId } }"
       >
-        <img :src="tweet.image" alt="" class="avatar__pic" />
+        <img :src="tweet.image | emptyImage" alt="" class="avatar__pic" />
         <div class="title">
           <h4 class="title__name">{{ tweet.name }}</h4>
           <h4 class="title__id">@{{ tweet.account }}</h4>
@@ -60,11 +60,12 @@ import Modal from "./ReplyModal.vue";
 import moment from "moment";
 import tweetAPI from "./../apis/tweets.js";
 import { Toast } from "./../utils/helper";
-// import replyAPI from "./../apis/reply";
-
+import { emptyImageFilter } from "../utils/mixins";
 //換moment語言到中文
 moment.locale("zh-tw");
+
 export default {
+  mixins: [emptyImageFilter],
   props: {
     initialTweet: {
       type: Object,
@@ -149,6 +150,7 @@ export default {
   border-top: 1px #e6ecf0 solid;
   margin-bottom: 5px;
   .description {
+    word-break: break-all;
     font-size: 1.3rem;
     font-weight: 500;
     line-height: 34px;
@@ -171,10 +173,12 @@ export default {
     .title {
       margin-top: 5px;
       &__name {
+        width: 200px;
         font-size: 15px;
         font-weight: bold;
       }
       &__id {
+        width: 200px;
         font-weight: 500;
         font-size: 15px;
         color: #657786;

@@ -23,7 +23,7 @@
           <label for="name">名稱</label>
           <input
             id="name"
-            v-model="user.name"
+            v-model="name"
             type="text"
             class="form-control"
             required
@@ -33,7 +33,7 @@
           <label for="email">Email</label>
           <input
             id="email"
-            v-model="user.email"
+            v-model="email"
             type="text"
             class="form-control"
             required
@@ -82,7 +82,9 @@ export default {
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
-  created() {},
+  created() {
+    this.mapCurrentUser();
+  },
   data() {
     return {
       account: "",
@@ -100,6 +102,30 @@ export default {
   },
   methods: {
     async formSubmit() {
+      if (
+        !this.account.trim() ||
+        !this.name.trim() ||
+        !this.email.trim() ||
+        !this.password.trim() ||
+        !this.checkPassword.trim()
+      ) {
+        return Toast.fire({
+          icon: "error",
+          message: "不得留白",
+        });
+      }
+      if (this.password.trim() !== this.checkPassword.trim()) {
+        return Toast.fire({
+          icon: "error",
+          message: "密碼錯誤",
+        });
+      }
+      if (this.email.trim().indexOf("@") === -1) {
+        return Toast.fire({
+          icon: "error",
+          message: "email沒有@",
+        });
+      }
       try {
         const formData = {
           account: this.account ? this.account : this.currentUser.account,

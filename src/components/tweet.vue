@@ -25,6 +25,7 @@
     <div class="divide"></div>
   </div>
 </template>
+
 <script>
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
@@ -49,9 +50,11 @@ export default {
       this.isLoading = true;
       if (this.text.trim().length > 140) {
         this.isLoading = false;
+        this.noSpace = false;
         return (this.textToMuch = true);
       }
       if (this.text.trim().length === 0) {
+        this.textToMuch = false;
         this.isLoading = false;
         return (this.noSpace = true);
       }

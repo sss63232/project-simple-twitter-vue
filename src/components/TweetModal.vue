@@ -20,6 +20,8 @@
           ></textarea>
         </div>
         <div class="modal-footer">
+          <div class="warn" v-show="textToMuch">字數不可超過140字</div>
+          <div class="warn__2" v-show="noSpace">內容不可空白</div>
           <button class="modal-default-button" :disabled="isLoading">
             推文
           </button>
@@ -30,9 +32,9 @@
 </template>
 
 <script>
-// import { v4 as uuidv4 } from "uuid";
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
+// import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 import { emptyImageFilter } from "../utils/mixins";
 
@@ -59,6 +61,8 @@ export default {
       text: "",
       currentUser: currentUser,
       isLoading: false,
+      textToMuch: false,
+      noSpace: false,
     };
   },
   computed: {
@@ -67,18 +71,23 @@ export default {
   methods: {
     async handleSubmit() {
       this.isLoading = true;
-      if (this.text.length > 140) {
+      if (this.text.trim().length > 140) {
         this.isLoading = false;
-        return alert("字數超過140個");
+        this.noSpace = false;
+        return (this.textToMuch = true);
       }
       if (this.text.trim().length === 0) {
+        this.textToMuch = false;
         this.isLoading = false;
-        return alert("不可空白");
+        return (this.noSpace = true);
       }
       try {
         const { data } = await tweetsAPI.createTweet({
           image: this.currentUser.avatar,
           description: this.text,
+        });
+        Toast.fire({
+          title: "推文發送成功",
         });
         this.$emit("after-create-tweet-modal", {
           UserId: this.currentUser.id,
@@ -90,6 +99,8 @@ export default {
           LikesCount: 0,
           createdAt: new Date(),
         });
+        this.textToMuch = false;
+        this.noSpace = false;
         this.text = "";
         this.$emit("close");
         this.isLoading = false;
@@ -118,7 +129,7 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: table;
-  /* transition: opacity 0.3s ease; */
+  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
@@ -131,10 +142,8 @@ export default {
   width: 600px;
   height: 300px;
   margin: 0 auto;
-  // padding: 15px;
   background-color: #ffffff;
   border-radius: 14px;
-  // transition: all 0.3s ease;
 }
 
 .modal-header {
@@ -167,6 +176,26 @@ export default {
   }
 }
 .modal-footer {
+  display: flex;
+  justify-content: end;
+  .warn {
+    margin-right: 10px;
+    margin-top: 8px;
+    width: 138px;
+    height: 15px;
+    font-size: 15px;
+    color: #fc5a5a;
+    font-weight: 500;
+  }
+  .warn__2 {
+    margin-right: 10px;
+    margin-top: 8px;
+    width: 100px;
+    height: 15px;
+    font-size: 15px;
+    color: #fc5a5a;
+    font-weight: 500;
+  }
   .modal-default-button {
     margin: 0 15px 20px 0;
     float: right;
@@ -178,18 +207,4 @@ export default {
     border-radius: 100px;
   }
 }
-
-/* .modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-} */
 </style>

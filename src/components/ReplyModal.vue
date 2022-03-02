@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="modal-body">
-          <img src="https://i.imgur.com/aVE1Jo0.png" alt="" class="avatar" />
+          <img :src="currentUser.image | emptyImage" alt="" class="avatar" />
           <textarea
             class="tweet"
             name="tweet"
@@ -51,6 +51,8 @@
           ></textarea>
         </div>
         <div class="modal-footer">
+          <div class="warn" v-show="textToMuch">字數不可超過140字</div>
+          <div class="warn__2" v-show="noSpace">內容不可空白</div>
           <button
             class="modal-default-button"
             @click.stop.prevent="handleSubmit"
@@ -70,6 +72,8 @@ import replyAPI from "./../apis/reply";
 import moment from "moment";
 moment.locale("zh-tw");
 import { emptyImageFilter } from "../utils/mixins";
+import { mapState } from "vuex";
+
 export default {
   mixins: [emptyImageFilter],
   props: {
@@ -79,10 +83,15 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+  },
   data() {
     return {
       text: "",
       isLoading: false,
+      textToMuch: false,
+      noSpace: false,
     };
   },
   filters: {
@@ -93,20 +102,30 @@ export default {
   methods: {
     async handleSubmit() {
       this.isLoading = true;
-      if (this.text.length > 140) {
+      if (this.text.trim().length > 140) {
         this.isLoading = false;
-        return alert("字數超過140個");
+        this.noSpace = false;
+        return (this.textToMuch = true);
       }
-      if (this.text.length === 0) {
+      if (this.text.trim().length === 0) {
+        this.textToMuch = false;
         this.isLoading = false;
-        return alert("不可空白");
+        return (this.noSpace = true);
       }
       try {
         const { data } = await replyAPI.createReply({
           tweetId: this.post.tweetId,
           comment: this.text,
         });
+        this.textToMuch = false;
+        this.noSpace = false;
         this.isLoading = false;
+        this.$emit("after-create-reply-modal", {
+          tweetId: this.post.tweetId,
+          comment: this.text,
+        });
+        this.text = "";
+        this.$emit("close");
         if (data.status === "error") {
           this.isLoading = false;
           throw new Error(data.message);
@@ -116,12 +135,6 @@ export default {
             title: "回覆成功",
           });
         }
-        this.$emit("after-create-reply-modal", {
-          tweetId: this.post.tweetId,
-          comment: this.text,
-        });
-        this.text = "";
-        this.$emit("close");
       } catch (error) {
         Toast.fire({
           icon: "error",
@@ -133,7 +146,13 @@ export default {
 };
 </script>
 
+
 <style lang="scss" scoped>
+.swal2-container.swal2-top-end > .swal2-popup {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: space-between !important;
+}
 .reply-container {
   padding: 15px;
   padding-bottom: 0;
@@ -179,6 +198,7 @@ export default {
     display: flex;
     flex-direction: column;
     .description {
+      word-break: break-all;
       width: 500px;
       margin-top: 5px;
       font-size: 15px;
@@ -255,6 +275,7 @@ export default {
     width: 50px;
     margin-right: 10px;
     display: flex;
+    border-radius: 100%;
   }
   .tweet {
     font-size: 25px;
@@ -268,17 +289,38 @@ export default {
     font: #9197a3;
   }
 }
-.modal-default-button {
-  margin: 0 15px 20px 0;
-  float: right;
-  width: 66px;
-  height: 38px;
-  font-size: 18px;
-  color: #ffffff;
-  background-color: #ff6600;
-  border-radius: 100px;
+.modal-footer {
+  display: flex;
+  justify-content: end;
+  .warn {
+    margin-right: 10px;
+    margin-top: 8px;
+    width: 138px;
+    height: 15px;
+    font-size: 15px;
+    color: #fc5a5a;
+    font-weight: 500;
+  }
+  .warn__2 {
+    margin-right: 10px;
+    margin-top: 8px;
+    width: 100px;
+    height: 15px;
+    font-size: 15px;
+    color: #fc5a5a;
+    font-weight: 500;
+  }
+  .modal-default-button {
+    margin: 0 15px 20px 0;
+    float: right;
+    width: 66px;
+    height: 38px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #ff6600;
+    border-radius: 100px;
+  }
 }
-
 /* .modal-enter-from {
   opacity: 0;
 }

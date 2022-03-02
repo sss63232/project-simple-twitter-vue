@@ -26,7 +26,7 @@ const routes = [
     name: "mainTweet",
     component: BlankPage,
   },
-  // navbar推文按鈕的的modal，怪怪的套不上去，之後再研究
+  // navbar推文按鈕的的modal
   {
     path: "/tweet",
     name: "tweet",
