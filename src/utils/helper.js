@@ -22,7 +22,7 @@ export default Toast
 export const Toast2 = Swal.mixin({
   toast: true,
   position: 'top-end',
-  timer: 3000,
+  // timer: 3000,
   showConfirmButton: false,
   imageUrl: 'https://i.imgur.com/Bc63ZDR.png',
 })
