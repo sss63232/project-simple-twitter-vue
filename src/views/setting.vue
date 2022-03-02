@@ -44,7 +44,7 @@
           <input
             id="password"
             v-model="password"
-            type="text"
+            type="password"
             class="form-control"
             required
           />
@@ -54,7 +54,7 @@
           <input
             id="password-check"
             v-model="checkPassword"
-            type="text"
+            type="password"
             class="form-control"
             required
           />

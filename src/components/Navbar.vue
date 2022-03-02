@@ -71,7 +71,6 @@ export default {
   methods: {
     afterCreateTweetModal(payload) {
       this.$emit("after-create-tweet-modal", payload);
-      console.log(payload);
     },
     logOut() {
       localStorage.removeItem("token");

@@ -22,19 +22,19 @@
 </template>
 
 <script>
-const dummyCurrentUser = {
-  id: 14,
-  name: "user1",
-  email: "user1@example.com",
-  avatar: "https://loremflickr.com/140/140/people?random=100",
-  introduction:
-    "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
-  role: "",
-  account: "user1",
-  cover: "https://loremflickr.com/600/200/nature?random=100",
-  createdAt: "2022-02-26T03:59:35.000Z",
-  updatedAt: "2022-02-26T03:59:35.000Z",
-};
+// const dummyCurrentUser = {
+//   id: 14,
+//   name: "user1",
+//   email: "user1@example.com",
+//   avatar: "https://loremflickr.com/140/140/people?random=100",
+//   introduction:
+//     "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
+//   role: "",
+//   account: "user1",
+//   cover: "https://loremflickr.com/600/200/nature?random=100",
+//   createdAt: "2022-02-26T03:59:35.000Z",
+//   updatedAt: "2022-02-26T03:59:35.000Z",
+// };
 
 import Post from "../components/post.vue";
 import ReplyList from "../components/replyList.vue";
@@ -42,6 +42,7 @@ import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
 import tweetAPI from "./../apis/tweets.js";
 import { Toast2 } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -52,7 +53,7 @@ export default {
   },
   data() {
     return {
-      currentUser: dummyCurrentUser,
+      // currentUser: dummyCurrentUser,
       reply: {},
       currentStatus: {
         isIndex: true,
@@ -60,6 +61,9 @@ export default {
         isSetting: false,
       },
     };
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   created() {
     const tweetId = this.$route.params.id;
@@ -113,7 +117,6 @@ export default {
     h4 {
       margin-right: 5rem;
       font-size: 18px;
-      // font-weight: bold;
     }
   }
 }

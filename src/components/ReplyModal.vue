@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="modal-body">
-          <img :src="currentUser.image | emptyImage" alt="" class="avatar" />
+          <img :src="currentUser.avatar | emptyImage" alt="" class="avatar" />
           <textarea
             class="tweet"
             name="tweet"
