@@ -8,7 +8,7 @@
         <h1>帳戶設定</h1>
       </div>
       <!--       form block -->
-      <form class="setting-form" @submit.stop.prevent="formSubmit()">
+      <form class="setting-form" @submit.stop.prevent="formSubmit()" novalidate>
         <div class="form-label-group">
           <label for="account">帳號</label>
           <input
@@ -17,7 +17,9 @@
             type="text"
             class="form-control"
             required
+            :class="{ invalid: error.account }"
           />
+          <div v-if="error.account" class="invalid-message">帳號不得空白！</div>
         </div>
         <div class="form-label-group">
           <label for="name">名稱</label>
@@ -27,7 +29,9 @@
             type="text"
             class="form-control"
             required
+            :class="{ invalid: error.name }"
           />
+          <div v-if="error.name" class="invalid-message">名稱不得空白！</div>
         </div>
         <div class="form-label-group">
           <label for="email">Email</label>
@@ -37,7 +41,14 @@
             type="text"
             class="form-control"
             required
+            :class="{ invalid: error.email.length || error.email.style }"
           />
+          <div v-if="error.email.length" class="invalid-message">
+            Email 不得空白！
+          </div>
+          <div v-if="error.email.style" class="invalid-message">
+            email沒有"@"！
+          </div>
         </div>
         <div class="form-label-group">
           <label for="password">密碼</label>
@@ -47,7 +58,11 @@
             type="password"
             class="form-control"
             required
+            :class="{ invalid: error.password }"
           />
+          <div v-if="error.password" class="invalid-message">
+            密碼不得空白！
+          </div>
         </div>
         <div class="form-label-group">
           <label for="password-check">密碼確認</label>
@@ -57,7 +72,11 @@
             type="password"
             class="form-control"
             required
+            :class="{ invalid: error.checkPassword }"
           />
+          <div v-if="error.pwchecked" class="invalid-message">
+            確認密碼不得空白！
+          </div>
         </div>
         <div class="setting-block">
           <button class="btn" type="submit" :disabled="isProcessing">
@@ -99,30 +118,23 @@ export default {
         isUser: false,
         isSetting: true,
       },
+      error: {
+        account: false,
+        name: false,
+        email: {
+          length: false,
+          style: false,
+        },
+        password: false,
+        checkPassword: false,
+        count: 0,
+      },
     };
   },
   methods: {
     async formSubmit() {
-      if (
-        !this.account.trim() ||
-        !this.name.trim() ||
-        !this.email.trim() ||
-        !this.password.trim() ||
-        !this.checkPassword.trim()
-      ) {
-        return Toast2.fire({
-          message: "不得留白",
-        });
-      }
-      if (this.password.trim() !== this.checkPassword.trim()) {
-        return Toast2.fire({
-          message: "密碼錯誤",
-        });
-      }
-      if (this.email.trim().indexOf("@") === -1) {
-        return Toast2.fire({
-          message: "email沒有@",
-        });
+      if (this.validiation()) {
+        return;
       }
       try {
         const formData = {
@@ -133,14 +145,30 @@ export default {
           checkPassword: this.checkPassword,
         };
         this.isProcessing = true;
-        console.log(formData);
+
         const { data } = await settingAPI.setUser({
           userId: this.currentUser.id,
           formData,
         });
         this.isProcessing = false;
-        if (data.status === "error") {
-          throw new Error(data.message);
+        //表單驗證，根據後端回傳的資料做不同的驗證
+        if (data.message === "Error: email 已重複註冊！") {
+          Toast2.fire({
+            title: "Email已重覆註冊",
+          });
+          return;
+        }
+        if (data.message === "Error: account 已重複註冊！") {
+          Toast2.fire({
+            title: "帳號已重覆註冊",
+          });
+          return;
+        }
+        if (data.message === "Error: Passwords do not match!") {
+          Toast2.fire({
+            title: "密碼不一致，請再試一次",
+          });
+          return;
         }
         Toast.fire({
           title: "成功更新帳戶資料！",
@@ -158,6 +186,43 @@ export default {
       this.name = name;
       this.account = account;
       this.email = email;
+    },
+    validiation() {
+      this.error.count = 0;
+      if (!this.account.trim()) {
+        this.error.account = true;
+        this.error.count += 1;
+      }
+      if (!this.name.trim()) {
+        this.error.name = true;
+        this.error.count += 1;
+      }
+      if (!this.email.trim()) {
+        this.error.email.length = true;
+        this.error.count += 1;
+      }
+      if (!this.password.trim()) {
+        this.error.password = true;
+        this.error.count += 1;
+      }
+      if (!this.checkPassword.trim()) {
+        this.error.checkPassword = true;
+        this.error.count += 1;
+      }
+      if (this.email.trim().indexOf("@") === -1) {
+        this.error.email.style = true;
+        this.error.count += 1;
+      }
+      if (this.password.trim() !== this.checkPassword.trim()) {
+        this.error.count += 1;
+        Toast2.fire({
+          title: "密碼不一致",
+        });
+      }
+      if (this.error.count) {
+        return true;
+      }
+      return false;
     },
   },
 };
@@ -250,5 +315,8 @@ h1 {
   margin-top: 0.625rem;
   padding: 0.625rem 2.5rem;
   border: none;
+  &:disabled {
+    opacity: 0.7;
+  }
 }
 </style>
