@@ -161,7 +161,7 @@ export default {
   .avatar {
     display: flex;
     width: auto;
-    max-width: 110px;
+    // max-width: 110px;
     .avatar__pic {
       margin-right: 10px;
       height: 50px;

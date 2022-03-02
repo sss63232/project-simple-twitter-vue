@@ -61,7 +61,6 @@ export default {
         });
       }
     },
-    //後端無法接收資料，原因未知
     async afterCreateTweet(payload) {
       const {
         UserId,
