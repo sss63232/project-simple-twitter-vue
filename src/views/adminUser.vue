@@ -1,5 +1,5 @@
 <template>
-  <div id="AdminUser">
+  <div id="adminUser">
     <template>
       <!-- adminNavbar.vue -->
       <adminNavbar />
@@ -16,8 +16,8 @@
   </div>
 </template>
 <script>
-import adminNavbar from "./../components/adminNavbar";
-import adminUserCard from "./../components/adminuserCard";
+import adminNavbar from "./../components/adminNavbar.vue";
+import adminUserCard from "./../components/adminUserCard.vue";
 import { Toast2 } from "./../utils/helper";
 import userAPI from "../apis/users";
 export default {
@@ -48,8 +48,10 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
-#AdminUser {
+@import "./../styles/variables.scss";
+#adminUser {
   display: flex;
   justify-content: center;
   min-height: 100vh;
