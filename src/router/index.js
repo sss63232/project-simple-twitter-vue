@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import NotFound from "@/views/NotFound.vue";
 import BlankPage from "@/views/BlankPage.vue";
 import adminLogin from "../views/admin.vue";
-
+import store from './../store'
 Vue.use(VueRouter);
 
 const routes = [
@@ -134,5 +134,11 @@ const routes = [
 const router = new VueRouter({
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
+})
+
 
 export default router;

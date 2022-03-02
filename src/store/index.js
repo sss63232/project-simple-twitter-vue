@@ -1,16 +1,24 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import usersAPI from './../apis/users'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     currentUser: {
-      id: -1,
-      name: "",
+      account: '',
+      avatar: '',
+      cover: '',
+      createdAt: '',
       email: "",
+      id: -1,
       image: "",
+      introduction: '',
       isAdmin: false,
+      name: "",
+      role: '',
+      updateAt: '',
     },
     isAuthenticated: false,
   },
@@ -25,6 +33,44 @@ export default new Vuex.Store({
       state.isAuthenticated = true;
     },
   },
-  actions: {},
+  actions: {
+    async fetchCurrentUser({ commit }) {
+      try {
+        // 呼叫 usersAPI.getCurrentUser() 方法，並將 response 顯示出來
+        const { data } = await usersAPI.getCurrentUser()
+        const {
+          account,
+          avatar,
+          cover,
+          createdAt,
+          email,
+          id,
+          image,
+          introduction,
+          isAdmin,
+          name,
+          role,
+          updateAt,
+        } = data
+        commit('setCurrentUser', {
+          account,
+          avatar,
+          cover,
+          createdAt,
+          email,
+          id,
+          image,
+          introduction,
+          isAdmin,
+          name,
+          role,
+          updateAt,
+        })
+      } catch (error) {
+        console.log('error', error)
+        console.error('can not fetch user information')
+      }
+    }
+  },
   modules: {},
 });
