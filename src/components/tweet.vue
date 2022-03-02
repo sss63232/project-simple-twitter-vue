@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="home">首頁</h1>
     <form action="" class="form" @submit.stop.prevent="handleSubmit">
-      <img :src="currentUser.image | emptyImage" alt="" class="avatar" />
+      <img :src="currentUser.avatar | emptyImage" alt="" class="avatar" />
       <div class="right-place">
         <textarea
           name="tweet"

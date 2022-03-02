@@ -30,7 +30,7 @@
             {{ post.description }}
           </p>
           <div class="icon">
-            <router-link to="/">
+            <router-link to="">
               <img
                 src="../assets/reply2.png"
                 class="icon__reply"
