@@ -21,7 +21,8 @@
 <script>
 import { fromNowFilter } from "../utils/mixins";
 import { emptyImageFilter } from "../utils/mixins";
-import { Toast } from "../utils/helpers";
+import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 export default {
   name: "AdminTweetItem",
   mixins: [fromNowFilter, emptyImageFilter],
@@ -41,12 +42,10 @@ export default {
       try {
         this.$emit("after-delete-tweet", tweetId);
         Toast.fire({
-          icon: "success",
           title: "刪除成功！",
         });
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法將餐廳移除最愛，請稍後再試",
         });
         console.log("error", error);

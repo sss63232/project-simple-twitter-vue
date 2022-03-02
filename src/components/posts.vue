@@ -30,7 +30,7 @@
             {{ post.description }}
           </p>
           <div class="icon">
-            <router-link to="/">
+            <router-link to="">
               <img
                 src="../assets/reply2.png"
                 class="icon__reply"
@@ -70,7 +70,7 @@
 <script>
 import moment from "moment";
 import Modal from "./ReplyModal.vue";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import tweetsAPI from "./../apis/tweets";
 import { emptyImageFilter } from "./../utils/mixins";
 
@@ -112,8 +112,7 @@ export default {
         };
         this.post.LikesCount += 1;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "目前無法加入愛心",
         });
       }
@@ -130,8 +129,7 @@ export default {
         };
         this.post.LikesCount -= 1;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "目前無法移除愛心",
         });
       }

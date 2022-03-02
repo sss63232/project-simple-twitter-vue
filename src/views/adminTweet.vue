@@ -21,7 +21,8 @@
 <script>
 import adminNavbar from "./../components/adminNavbar";
 import adminTweetList from "./../components/adminTweetList";
-import { Toast } from "../utils/helper";
+import { Toast2 } from "./../utils/helper";
+
 import tweetsAPI from "../apis/tweets";
 export default {
   name: "adminTweet",
@@ -47,8 +48,7 @@ export default {
 
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法將此推文移除，請稍候再試",
         });
       }

@@ -18,7 +18,7 @@ import Posts from "../components/posts.vue";
 import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
 import tweetsAPI from "../apis/tweets.js";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 
 export default {
@@ -56,8 +56,7 @@ export default {
         }
         this.posts = data;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該推文資料，請稍後再試",
         });
       }
@@ -112,8 +111,7 @@ export default {
           createdAt,
         });
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "目前無法推文，請稍後再試",
         });
       }

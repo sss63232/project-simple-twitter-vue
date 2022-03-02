@@ -68,6 +68,7 @@
 
 <script>
 import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import replyAPI from "./../apis/reply";
 import moment from "moment";
 moment.locale("zh-tw");
@@ -131,14 +132,12 @@ export default {
           throw new Error(data.message);
         } else {
           Toast.fire({
-            icon: "success",
             title: "回覆成功",
           });
         }
       } catch (error) {
-        Toast.fire({
-          icon: "error",
-          title: "目前無法回覆，請稍後再試",
+        Toast2.fire({
+          title: "回覆失敗，請稍後再試",
         });
       }
     },

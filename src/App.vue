@@ -5,6 +5,5 @@
 </template>
 
 <style lang="scss">
-@import './styles/toast.scss';
-
+@import "./styles/toast.scss";
 </style>

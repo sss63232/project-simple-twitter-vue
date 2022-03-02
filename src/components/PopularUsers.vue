@@ -36,7 +36,7 @@
 </template>
 <script>
 import usersAPI from "./../apis/users";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { emptyImageFilter } from "./../utils/mixins";
 
 export default {
@@ -62,8 +62,7 @@ export default {
         this.topUsers = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得Top使用者資料，請稍後再試",
         });
       }
@@ -86,8 +85,7 @@ export default {
         this.$emit("after-remove-pop", userId);
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取消追蹤，請稍後再試",
         });
       }
@@ -111,8 +109,7 @@ export default {
         this.$emit("after-add-pop", userId);
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法新增追蹤，請稍後再試",
         });
       }

@@ -18,7 +18,7 @@
 <script>
 import adminNavbar from "./../components/adminNavbar";
 import adminUserCard from "./../components/adminuserCard";
-import { Toast } from "../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import userAPI from "../apis/users";
 export default {
   name: "AdminUser",
@@ -40,8 +40,7 @@ export default {
         const { data } = await userAPI.getTotalUser();
         this.users = data;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得使用者資料，請稍後再試",
         });
       }
