@@ -85,6 +85,8 @@
 <script>
 import authorization from "./../apis/authorization";
 import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
+
 export default {
   data() {
     return {
@@ -107,16 +109,14 @@ export default {
           !this.password ||
           !this.checkPassword
         ) {
-          Toast.fire({
-            icon: "warning",
+          Toast2.fire({
             title: "請確認已填寫所有欄位",
           });
           this.isProcessing = false;
           return;
         }
         if (this.password !== this.checkPassword) {
-          Toast.fire({
-            icon: "Warning",
+          Toast2.fire({
             title: "兩次輸入的密碼不同",
           });
           this.password = "";
@@ -135,7 +135,6 @@ export default {
           throw new Error(data.message);
         }
         Toast.fire({
-          icon: "success",
           title: "註冊成功",
         });
         //成功登入後跳轉到登入頁
@@ -144,30 +143,26 @@ export default {
         const { data } = error.response;
         if (data.message.length === 1) {
           if (data.message[0].error === "Account is exists.") {
-            Toast.fire({
-              icon: "warning",
+            Toast2.fire({
               title: "帳號已重覆註冊",
             });
             this.isProcessing = false;
             return;
           } else if (data.message[0].error === "Email is exists.") {
-            Toast.fire({
-              icon: "warning",
+            Toast2.fire({
               title: "Email 已重覆註冊",
             });
             this.isProcessing = false;
             return;
           }
         } else if (data.message.length === 2) {
-          Toast.fire({
-            icon: "warning",
+          Toast2.fire({
             title: "帳號及 Email 皆已重覆註冊",
           });
           this.isProcessing = false;
           return;
         } else {
-          Toast.fire({
-            icon: "warning",
+          Toast2.fire({
             title: `無法註冊 - ${error.message}`,
           });
         }

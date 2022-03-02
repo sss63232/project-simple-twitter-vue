@@ -52,7 +52,7 @@
 
 <script>
 import authorization from "./../apis/authorization";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 export default {
   data() {
     return {
@@ -66,8 +66,7 @@ export default {
     async handleSubmit() {
       try {
         if (!this.account || !this.password) {
-          Toast.fire({
-            icon: "warning",
+          Toast2.fire({
             title: "請填入 email 和 password",
           });
           return;
@@ -87,8 +86,7 @@ export default {
 
         localStorage.setItem("token", data.token);
       } catch (error) {
-        Toast.fire({
-          icon: "warning",
+        Toast2.fire({
           title: "請確認您輸入的帳號密碼",
         });
         this.isProcessing = false;

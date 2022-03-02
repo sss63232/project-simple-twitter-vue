@@ -97,6 +97,8 @@ import ProfileEditModal from "./ProfileEditModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
+
 import { mapState } from "vuex";
 
 export default {
@@ -132,7 +134,6 @@ export default {
           throw new Error(data.message);
         }
         Toast.fire({
-          icon: "success",
           title: "成功更新使用者資料",
         });
         this.showModal = false;
@@ -140,8 +141,7 @@ export default {
       } catch (error) {
         this.isProcessing = false;
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法更新個人資料，請稍後再試",
         });
       }

@@ -59,7 +59,7 @@
 import Modal from "./ReplyModal.vue";
 import moment from "moment";
 import tweetAPI from "./../apis/tweets.js";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { emptyImageFilter } from "../utils/mixins";
 //換moment語言到中文
 moment.locale("zh-tw");
@@ -112,8 +112,7 @@ export default {
         };
         this.tweet.LikesCount += 1;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "目前無法like",
         });
       }
@@ -130,8 +129,7 @@ export default {
         };
         this.tweet.LikesCount -= 1;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "目前無法unlike",
         });
       }

@@ -72,6 +72,7 @@
 import Navbar from "../components/Navbar.vue";
 import settingAPI from "./../apis/setting";
 import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 
 export default {
@@ -109,20 +110,17 @@ export default {
         !this.password.trim() ||
         !this.checkPassword.trim()
       ) {
-        return Toast.fire({
-          icon: "error",
+        return Toast2.fire({
           message: "不得留白",
         });
       }
       if (this.password.trim() !== this.checkPassword.trim()) {
-        return Toast.fire({
-          icon: "error",
+        return Toast2.fire({
           message: "密碼錯誤",
         });
       }
       if (this.email.trim().indexOf("@") === -1) {
-        return Toast.fire({
-          icon: "error",
+        return Toast2.fire({
           message: "email沒有@",
         });
       }
@@ -145,14 +143,12 @@ export default {
           throw new Error(data.message);
         }
         Toast.fire({
-          icon: "success",
           title: "成功更新帳戶資料！",
         });
       } catch (error) {
         this.isProcessing = false;
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法設定帳戶資料，請稍後再試",
         });
       }

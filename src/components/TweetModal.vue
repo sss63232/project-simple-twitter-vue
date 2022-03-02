@@ -34,7 +34,7 @@
 <script>
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
-// import { Toast2 } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 import { emptyImageFilter } from "../utils/mixins";
 
@@ -109,8 +109,7 @@ export default {
           throw new Error(data.message);
         }
       } catch (error) {
-        Toast({
-          icon: "error",
+        Toast2({
           title: "目前無法推文",
         });
       }

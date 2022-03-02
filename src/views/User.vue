@@ -57,7 +57,7 @@ import Navbar from "../components/Navbar.vue";
 import PopularUsers from "../components/PopularUsers.vue";
 import usersAPI from "./../apis/users";
 import tweetsAPI from "./../apis/tweets";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 
 export default {
@@ -129,8 +129,7 @@ export default {
         const { data } = await usersAPI.get({ userId });
         if (data.status === "error") {
           console.log("error", data.message);
-          Toast.fire({
-            icon: "error",
+          Toast2.fire({
             title: "無法取得該使用者資料，請稍後再試",
           });
         }
@@ -157,8 +156,7 @@ export default {
         this.isLoading = false;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該使用者資料，請稍後再試",
         });
       }
@@ -168,16 +166,14 @@ export default {
         const { data } = await usersAPI.getTweets({ userId });
         if (data.status === "error") {
           console.log("error", data.message);
-          Toast.fire({
-            icon: "error",
+          Toast2.fire({
             title: "無法取得該使用者推文資料，請稍後再試",
           });
         }
         this.tweets = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該使用者推文資料，請稍後再試",
         });
       }
@@ -187,16 +183,14 @@ export default {
         const { data } = await usersAPI.getReplies({ userId });
         if (data.status === "error") {
           console.log("error", data.message);
-          Toast.fire({
-            icon: "error",
+          Toast2.fire({
             title: "無法取得該使用者回覆資料，請稍後再試",
           });
         }
         this.replyTweets = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該使用者回覆資料，請稍後再試",
         });
       }
@@ -206,16 +200,14 @@ export default {
         const { data } = await usersAPI.getLikes({ userId });
         if (data.status === "error") {
           console.log("error", data.message);
-          Toast.fire({
-            icon: "error",
+          Toast2.fire({
             title: "無法取得該使用者喜愛資料，請稍後再試",
           });
         }
         this.likes = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該使用者喜愛資料，請稍後再試",
         });
       }
@@ -229,8 +221,7 @@ export default {
         this.Followers = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該Followers資料，請稍後再試",
         });
       }
@@ -244,8 +235,7 @@ export default {
         this.Followings = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得該Followings資料，請稍後再試",
         });
       }
@@ -256,8 +246,7 @@ export default {
         this.topUsers = data;
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取得Top使用者資料，請稍後再試",
         });
       }
@@ -280,8 +269,7 @@ export default {
         });
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法新增喜歡，請稍後再試",
         });
       }
@@ -304,8 +292,7 @@ export default {
         });
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取消喜歡，請稍後再試",
         });
       }
@@ -321,8 +308,7 @@ export default {
         });
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取消喜歡，請稍後再試",
         });
       }
@@ -344,8 +330,7 @@ export default {
         this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取消追蹤，請稍後再試",
         });
       }
@@ -374,8 +359,7 @@ export default {
         this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法新增追蹤，請稍後再試",
         });
       }
@@ -402,8 +386,7 @@ export default {
         this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法取消追蹤，請稍後再試",
         });
       }

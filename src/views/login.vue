@@ -50,7 +50,7 @@
 
 <script>
 import authorizationAPI from "./../apis/authorization";
-import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 
 export default {
   name: "login",
@@ -92,8 +92,7 @@ export default {
       } catch (error) {
         this.isProcessing = false;
         this.password = "";
-        Toast.fire({
-          icon: "warning",
+        Toast2.fire({
           title: "輸入的帳號密碼有誤",
         });
       }

@@ -41,8 +41,7 @@ import ReplyList from "../components/replyList.vue";
 import Navbar from "../components/Navbar.vue";
 import Popular from "../components/PopularUsers.vue";
 import tweetAPI from "./../apis/tweets.js";
-import { Toast } from "./../utils/helper";
-// import replyAPI from "./../apis/reply.js";
+import { Toast2 } from "./../utils/helper";
 
 export default {
   components: {
@@ -75,8 +74,7 @@ export default {
         }
         this.reply = data;
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "目前無法取得貼文資訊",
         });
       }

@@ -29,6 +29,7 @@
 <script>
 import tweetsAPI from "../apis/tweets.js";
 import { Toast } from "./../utils/helper";
+import { Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 import { emptyImageFilter } from "../utils/mixins";
 
@@ -63,6 +64,9 @@ export default {
           image: this.currentUser.avatar,
           description: this.text,
         });
+        Toast.fire({
+          title: "發文成功",
+        });
         this.isLoading = false;
         if (data.status === "error") {
           this.isLoading = false;
@@ -79,8 +83,7 @@ export default {
           createdAt: new Date(),
         });
       } catch (error) {
-        Toast.fire({
-          icon: "error",
+        Toast2.fire({
           title: "無法推文",
         });
       }
