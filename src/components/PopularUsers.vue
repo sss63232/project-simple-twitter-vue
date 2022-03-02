@@ -110,7 +110,6 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          icon: "error",
           title: "無法新增追蹤，請稍後再試",
         });
       }

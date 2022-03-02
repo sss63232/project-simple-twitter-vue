@@ -248,6 +248,7 @@ export default {
       margin-top: 10px;
       color: $black;
       font-size: 14px;
+      word-break: break-all;
     }
     .user-network {
       margin-top: 10px;
