@@ -9,7 +9,11 @@
         </div>
         <div class="reply-container">
           <div class="avatar">
-            <img :src="post.image | emptyImage" alt="" class="avatar__pic" />
+            <img
+              :src="post.User.avatar | emptyImage"
+              alt=""
+              class="avatar__pic"
+            />
             <div class="divider">
               <div class="divider__a"></div>
               <div class="divider__b"></div>
@@ -18,10 +22,10 @@
           <div class="tweet-content">
             <div class="title">
               <router-link to="" class="title__name">{{
-                post.name
+                post.User.name
               }}</router-link>
               <router-link to="" class="title__id"
-                >@{{ post.account }}</router-link
+                >@{{ post.User.account }}</router-link
               >
               <router-link to="" class="title__formNow"
                 >．{{ post.createdAt | fromNow }}</router-link
@@ -33,7 +37,7 @@
             <div class="hashtag">
               <router-link to="" class="hashtag__reply">回覆</router-link>
               <router-link to="" class="hashtag__userid"
-                >@{{ post.account }}</router-link
+                >@{{ post.User.account }}</router-link
               >
             </div>
           </div>
@@ -75,6 +79,7 @@ import { emptyImageFilter } from "../utils/mixins";
 import { mapState } from "vuex";
 
 export default {
+  name: "UserReplyModal",
   mixins: [emptyImageFilter],
   props: {
     show: Boolean,
@@ -117,26 +122,25 @@ export default {
           tweetId: this.post.tweetId,
           comment: this.text,
         });
+        if (data.status === "error") {
+          throw new Error(data.message);
+        }
         this.textToMuch = false;
         this.noSpace = false;
         this.isLoading = false;
         this.$emit("after-create-reply-modal", {
           tweetId: this.post.tweetId,
-          comment: this.text,
         });
         this.text = "";
         this.$emit("close");
-        if (data.status === "error") {
-          this.isLoading = false;
-          throw new Error(data.message);
-        } else {
-          Toast.fire({
-            title: "回覆成功",
-          });
-        }
+
+        Toast.fire({
+          title: "回覆成功",
+        });
       } catch (error) {
+        console.log("error", error);
         Toast2.fire({
-          title: "回覆失敗，請稍後再試",
+          title: "目前無法回覆，請稍後再試",
         });
       }
     },
@@ -317,6 +321,9 @@ export default {
     color: #ffffff;
     background-color: #ff6600;
     border-radius: 100px;
+    &:disabled {
+      opacity: 0.7;
+    }
   }
 }
 /* .modal-enter-from {

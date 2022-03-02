@@ -38,21 +38,22 @@
             {{ like.Tweet.description }}
           </p>
           <div class="icon">
-            <router-link
+            <!-- <router-link
               :to="{ name: 'user-likes', params: { id: like.userId } }"
-            >
-              <img
-                src="../assets/reply2.png"
-                class="icon__reply"
-                alt=""
-                @click="showModal = true"
-              />
-              <Modal
-                :show="showModal"
-                @close="showModal = false"
-                @after-create-reply-modal="afterCreateReplyModal"
-              />
-            </router-link>
+            > -->
+            <img
+              src="../assets/reply2.png"
+              class="icon__reply"
+              alt=""
+              @click="showModal = true"
+            />
+            <Modal
+              :post="like"
+              :show="showModal"
+              @close="showModal = false"
+              v-on="$listeners"
+            />
+            <!-- </router-link> -->
             <h5>{{ like.Tweet.repliesCount }}</h5>
 
             <img
@@ -71,7 +72,7 @@
 
 <script>
 import moment from "moment";
-import Modal from "./ReplyModal.vue";
+import Modal from "./UserLikeReplyModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
 
 export default {

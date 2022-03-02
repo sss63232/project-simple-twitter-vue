@@ -38,17 +38,12 @@
             {{ tweet.description }}
           </p>
           <div class="icon">
-            <router-link :to="{ name: 'user', params: { id: tweet.User.id } }">
+            <router-link to="">
               <img
                 src="../assets/reply2.png"
                 class="icon__reply"
                 alt=""
-                @click="showModal = true"
-              />
-              <Modal
-                :show="showModal"
-                @close="showModal = false"
-                @after-create-reply-modal="afterCreateReplyModal"
+                @click.stop.prevent="clickOnReply(tweet.tweetId)"
               />
             </router-link>
             <h5>{{ tweet.RepliesCount }}</h5>
@@ -72,13 +67,20 @@
         </div>
       </div>
     </router-link>
+    <Modal
+      :post="replyingPost"
+      :show="showModal"
+      @close="showModal = false"
+      v-on="$listeners"
+    />
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import Modal from "./ReplyModal.vue";
+import Modal from "./UserReplyModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
+import { filter } from "./../utils/helper";
 
 export default {
   name: "UserTweetsPosts",
@@ -95,11 +97,16 @@ export default {
   data() {
     return {
       showModal: false,
+      replyingPost: {},
     };
   },
   methods: {
-    afterCreateReplyModal(payload) {
-      console.log(payload);
+    clickOnReply(tweetId) {
+      this.showModal = true;
+      (this.replyingPost = this.tweets),
+        filter((tweet) => {
+          tweet.tweetId = tweetId;
+        });
     },
     addLike(tweetId) {
       this.$emit("after-like", tweetId);

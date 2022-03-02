@@ -9,8 +9,7 @@
     <div class="main">
       <header class="header">
         <button>
-          <router-link
-            :to="{ name: 'user', params: { id: this.$route.params.id } }"
+          <router-link to="/main"
             ><img
               src="./../assets/arrow.png"
               alt="backarrow"
@@ -39,6 +38,7 @@
           @after-add-followship="handleAddFollowship"
           @after-del-followship="handleDelFollowship"
           @after-cancel-cover="handleCancelCover"
+          @after-create-reply-modal="handleReplyModal"
         />
       </div>
     </div>
@@ -57,7 +57,7 @@ import Navbar from "../components/Navbar.vue";
 import PopularUsers from "../components/PopularUsers.vue";
 import usersAPI from "./../apis/users";
 import tweetsAPI from "./../apis/tweets";
-import { Toast2 } from "./../utils/helper";
+import { Toast, Toast2 } from "./../utils/helper";
 import { mapState } from "vuex";
 
 export default {
@@ -127,10 +127,10 @@ export default {
       try {
         this.isLoading = true;
         const { data } = await usersAPI.get({ userId });
-        if (data.status === "error") {
+        if (data.message === "Error: 帳號不存在！") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "無法取得該使用者資料，請稍後再試",
+            title: "無此帳號，請稍後再試",
           });
         }
         const {
@@ -157,80 +157,91 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取得該使用者資料，請稍後再試",
+          title: "無法取得資料，請稍後再試",
         });
       }
     },
     async fetchTweets(userId) {
       try {
         const { data } = await usersAPI.getTweets({ userId });
-        if (data.status === "error") {
+        if (data.message === "Error: User has no tweets") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "無法取得該使用者推文資料，請稍後再試",
+            title: "目前沒有推文內容",
           });
+          this.tweets = [];
+          return;
         }
         this.tweets = data;
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取得該使用者推文資料，請稍後再試",
+          title: "無法取得資料，請稍後再試",
         });
       }
     },
     async fetchReplies(userId) {
       try {
         const { data } = await usersAPI.getReplies({ userId });
-        if (data.status === "error") {
+        if (data.message === "Error: No replies") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "無法取得該使用者回覆資料，請稍後再試",
+            title: "目前沒有推文及回覆內容",
           });
+          this.replyTweets = [];
+          return;
         }
         this.replyTweets = data;
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取得該使用者回覆資料，請稍後再試",
+          title: "無法取得資料，請稍後再試",
         });
       }
     },
+    // empty ?
     async fetchLikes(userId) {
       try {
         const { data } = await usersAPI.getLikes({ userId });
-        if (data.status === "error") {
+        if (data.isEmpty) {
           console.log("error", data.message);
           Toast2.fire({
-            title: "無法取得該使用者喜愛資料，請稍後再試",
+            title: "目前沒有喜歡的內容",
           });
+          this.likes = [];
+          return;
         }
         this.likes = data;
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取得該使用者喜愛資料，請稍後再試",
+          title: "無法取得資料，請稍後再試",
         });
       }
     },
     async fetchFollowers(userId) {
       try {
         const { data } = await usersAPI.getFollowers({ userId });
-        if (data.status === "error") {
-          throw new Error(data.message);
+        if (data.isEmpty) {
+          console.log("error", data.isEmpty);
+          this.Followers = [];
+          return;
         }
         this.Followers = data;
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取得該Followers資料，請稍後再試",
+          title: "無法取得資料，請稍後再試",
         });
       }
     },
     async fetchFollowings(userId) {
       try {
         const { data } = await usersAPI.getFollowings({ userId });
-        if (data.status === "error") {
-          throw new Error(data.message);
+        if (data.isEmpty) {
+          console.log("error", data.isEmpty);
+          this.Followings = [];
+          return;
         }
         this.Followings = data;
       } catch (error) {
@@ -247,7 +258,7 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取得Top使用者資料，請稍後再試",
+          title: "無法取得資料，請稍後再試",
         });
       }
     },
@@ -293,6 +304,7 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
+          icon: "error",
           title: "無法取消喜歡，請稍後再試",
         });
       }
@@ -309,6 +321,7 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
+          icon: "error",
           title: "無法取消喜歡，請稍後再試",
         });
       }
@@ -316,9 +329,23 @@ export default {
     async handleRemoveFollowship(userId) {
       try {
         const { data } = await usersAPI.removeFollowship({ userId });
-        if (data.status === "error") {
-          throw new Error(data.message);
+        if (data.message === "Error: Cannot unfollow yourself!") {
+          console.log("error", data.message);
+          Toast2.fire({
+            title: "不能取消追蹤自己",
+          });
+          return;
         }
+        if (data.message === "Error: You have not followed this user.!") {
+          console.log("error", data.message);
+          Toast2.fire({
+            title: "已經取消追蹤",
+          });
+          return;
+        }
+        Toast.fire({
+          title: "成功取消追蹤！",
+        });
 
         // 從Followings清單中移除相同id的人
         this.Followings = this.Followings.filter((user) => {
@@ -331,6 +358,7 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
+          icon: "error",
           title: "無法取消追蹤，請稍後再試",
         });
       }
@@ -339,8 +367,16 @@ export default {
       try {
         const formData = { id: userId };
         const { data } = await usersAPI.addFollowship({ formData });
-        if (data.status === "error") {
-          throw new Error(data.message);
+        if (data.message === "Error: You are already following this user.") {
+          Toast2.fire({
+            title: "已經追蹤該用戶",
+          });
+          return;
+        }
+        if (data.message === "Error: Cannot follow yourself!") {
+          Toast2.fire({
+            title: "無法追蹤此用戶",
+          });
         }
         // 對原本沒有追蹤的人追蹤
         this.Followers = this.Followers.map((user) => {
@@ -367,9 +403,24 @@ export default {
     async handleDelFollowship(userId) {
       try {
         const { data } = await usersAPI.removeFollowship({ userId });
-        if (data.status === "error") {
-          throw new Error(data.message);
+        if (data.message === "Error: Cannot unfollow yourself!") {
+          console.log("error", data.message);
+          Toast2.fire({
+            title: "不能取消追蹤自己",
+          });
+          return;
         }
+        if (data.message === "Error: You have not followed this user.!") {
+          console.log("error", data.message);
+          Toast2.fire({
+            title: "已經取消追蹤",
+          });
+          return;
+        }
+        Toast.fire({
+          title: "成功取消追蹤！",
+        });
+
         // 改變追蹤的狀態
         this.Followers = this.Followers.map((user) => {
           if (user.followerId === userId) {
@@ -437,6 +488,23 @@ export default {
     },
     handleCancelCover() {
       this.user.cover = "";
+    },
+    handleReplyModal({ id, status }) {
+      if (status === "tweets") {
+        this.tweets = this.tweets.map((tweet) => {
+          if (tweet.tweetId === id) {
+            tweet.RepliesCount++;
+          }
+          return tweet;
+        });
+      } else if (status === "likes") {
+        this.likes = this.likes.map((like) => {
+          if (like.TweetId === id) {
+            like.Tweet.repliesCount++;
+          }
+          return like;
+        });
+      }
     },
   },
 };
