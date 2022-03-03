@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div id="logo">
-      <router-link to="/admin/signin">
+      <router-link to="/admin/main">
         <img src="../assets/Logo.png" alt="logo" />
       </router-link>
     </div>
@@ -9,7 +9,7 @@
       <div class="menu__item">
         <img src="../assets/atIndex@2x.png" alt="index" class="index" />
 
-        <router-link to="/admin/tweets" class="menu__item__title">
+        <router-link to="/admin/main" class="menu__item__title">
           <p :class="{ active: tweets }" id="routerTweets">推文清單</p>
         </router-link>
       </div>
@@ -17,7 +17,7 @@
       <div class="menu__item">
         <img src="../assets/atUser.png" alt="index" class="user" />
 
-        <router-link to="/admin/user" class="menu__item__title">
+        <router-link to="/admin/users" class="menu__item__title">
           <p :class="{ active: users }" id="routerUsers">使用者列表</p>
         </router-link>
       </div>
