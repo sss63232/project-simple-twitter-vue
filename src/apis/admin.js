@@ -10,13 +10,11 @@ export default {
     },
   },
   tweets: {
-    get({ page }) {
+    // 取得使用者清單
+    get() {
       return apiHelper.get("/admin/tweets", {
         headers: {
           Authorization: `Bearer ${getToken()}`,
-        },
-        params: {
-          page,
         },
       });
     },

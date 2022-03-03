@@ -51,7 +51,7 @@
 
 <script>
 import authorization from "./../apis/authorization";
-import { Toast2 } from "./../utils/helper";
+import { Toast, Toast2 } from "./../utils/helper";
 export default {
   name: "admin",
   data() {
@@ -91,6 +91,9 @@ export default {
         if (data.status === "error") {
           throw new Error(data.message);
         }
+        Toast.fire({
+          title: "管理員，歡迎您！",
+        });
 
         localStorage.setItem("token", data.token);
         this.$router.push("/admin/main");

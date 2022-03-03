@@ -1,102 +1,104 @@
 <template>
-  <div class="container">
-    <div class="avatar">
-      <img :src="tweet.user.avatar | emptyImage" alt="" />
-    </div>
-    <div class="tweet-info">
-      <div class="title__formNow">
-        <span>{{ tweet.user.name }}</span> @{{ tweet.user.account }}・{{
-          tweet.createdAt | fromNow
-        }}
+  <div class="main">
+    <div class="item" v-for="tweet in tweets" :key="tweet.tweetId">
+      <div class="avatar">
+        <img :src="tweet.userAvatar | emptyImage" alt="avatar" />
       </div>
-      <p>
-        {{ tweet.description | slice }}
-      </p>
-    </div>
-    <div class="delete" @click.stop.prevent="handleDeleteButtonClick(tweet.id)">
-      <img src="../assets/delete_list.png" alt="" class="delete__list" />
+      <div class="tweet-info">
+        <div class="title__formNow">
+          {{ tweet.User.name }}
+          <span
+            >@{{ tweet.User.account }}・{{ tweet.createdAt | fromNow }}</span
+          >
+        </div>
+        <p>{{ tweet.description }}</p>
+      </div>
+      <div class="delete" @click.stop.prevent="onClickDel(tweet.tweetId)">
+        <img src="../assets/delete_list.png" alt="" class="delete__list" />
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { fromNowFilter } from "../utils/mixins";
-import { emptyImageFilter } from "../utils/mixins";
-import { Toast } from "./../utils/helper";
-import { Toast2 } from "./../utils/helper";
+import moment from "moment";
+import { emptyImageFilter } from "./../utils/mixins";
+moment.locale("zh-tw");
 export default {
-  name: "adminTweetList",
-  mixins: [fromNowFilter, emptyImageFilter],
+  name: "AdminTweetItem",
+  mixins: [emptyImageFilter],
   props: {
-    Tweet: {
-      type: Object,
-      required: true,
+    tweets: {
+      type: Array,
     },
   },
-  data() {
-    return {
-      tweet: this.Tweet,
-    };
-  },
   methods: {
-    async handleDeleteButtonClick(tweetId) {
-      try {
-        this.$emit("after-delete-tweet", tweetId);
-        Toast.fire({
-          title: "刪除成功！",
-        });
-      } catch (error) {
-        Toast2.fire({
-          title: "無法將餐廳移除最愛，請稍後再試",
-        });
-        console.log("error", error);
-      }
+    onClickDel(tweetId) {
+      console.log("1");
+      this.$emit("after-delete-tweet", tweetId);
     },
   },
   filters: {
-    slice(description) {
-      if (!description) return "-";
-      return description.slice(0, 50);
+    fromNow(dateTime) {
+      return dateTime ? moment(dateTime).fromNow() : "-";
     },
   },
 };
 </script>
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
-.container {
-  display: flex;
-  height: auto;
-  min-height: 120px;
-  padding: 15px 15px 25px;
-  border-bottom: 1px solid $borderColor;
-  margin: 5px;
-  min-width: 1062px;
-  max-width: 1062px;
-}
-.tweet-info {
+
+.item {
   width: 100%;
-}
-.tweet-info span {
-  font-weight: 900;
-  height: auto;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid $borderColor;
 }
 .avatar {
-  min-width: 50px;
+  margin-left: 15px;
   width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 50px;
+    border-radius: 50%;
+  }
 }
-.avatar img {
-  min-width: 50px;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-size: cover;
-  object-fit: cover;
-}
-.title {
-  color: $notiWords;
+.tweet-info {
+  margin-left: 1rem;
+  .title__formNow {
+    font: {
+      weight: 700;
+      size: 15px;
+    }
+    span {
+      font-weight: 500;
+
+      color: $secondaryTextColor;
+    }
+  }
+  p {
+    margin-top: 6px;
+    font: {
+      weight: 700;
+      size: 15px;
+    }
+    word-break: break-all;
+  }
 }
 .delete {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   cursor: pointer;
+  &:hover {
+    filter: invert(4%) sepia(4%) saturate(6670%) hue-rotate(22deg)
+      brightness(89%) contrast(88%);
+  }
 }
 </style>
