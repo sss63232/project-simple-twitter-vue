@@ -25,7 +25,6 @@
             <button
               class="follow-btn__follow"
               @click.stop.prevent="removeFollowship(user.followingId)"
-              v-show="user.isFollowed"
             >
               正在跟隨
             </button>

@@ -164,6 +164,10 @@ export default {
     async fetchTweets(userId) {
       try {
         const { data } = await usersAPI.getTweets({ userId });
+        if (data.isEmpty) {
+          this.tweets = [];
+          return;
+        }
         if (data.message === "Error: User has no tweets") {
           console.log("error", data.message);
           Toast2.fire({
@@ -183,6 +187,10 @@ export default {
     async fetchReplies(userId) {
       try {
         const { data } = await usersAPI.getReplies({ userId });
+        if (data.isEmpty) {
+          this.replyTweets = [];
+          return;
+        }
         if (data.message === "Error: No replies") {
           console.log("error", data.message);
           Toast2.fire({
@@ -199,10 +207,20 @@ export default {
         });
       }
     },
-    // empty ?
+    // empty:處理面對空值的回傳方法
     async fetchLikes(userId) {
       try {
         const { data } = await usersAPI.getLikes({ userId });
+        if (
+          data.message ===
+          "TypeError: Cannot read properties of null (reading 'Likes')"
+        ) {
+          Toast2.fire({
+            title: "目前沒有喜歡的內容",
+          });
+          this.likes = [];
+          return;
+        }
         if (data.isEmpty) {
           console.log("error", data.message);
           Toast2.fire({
@@ -217,6 +235,7 @@ export default {
         Toast2.fire({
           title: "無法取得資料，請稍後再試",
         });
+        this.likes = [];
       }
     },
     async fetchFollowers(userId) {
@@ -239,7 +258,6 @@ export default {
       try {
         const { data } = await usersAPI.getFollowings({ userId });
         if (data.isEmpty) {
-          console.log("error", data.isEmpty);
           this.Followings = [];
           return;
         }
