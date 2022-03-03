@@ -1,43 +1,43 @@
 <template>
   <div id="adminUser">
     <template>
-      <!-- adminNavbar.vue -->
-      <adminNavbar />
-      <!-- adminTweetList.vue -->
-      <div class="AdminUserPanel">
+      <AdminNavbar />
+      <div class="adminUserPanel">
         <div class="title">
           <h1>使用者列表</h1>
         </div>
         <div class="admin-user-card">
-          <adminUserCard v-for="user in users" :key="user.id" :user="user" />
+          <AdminUserCard v-for="user in users" :key="user.id" :user="user" />
         </div>
       </div>
     </template>
   </div>
 </template>
 <script>
-import adminNavbar from "./../components/adminNavbar.vue";
-import adminUserCard from "./../components/adminUserCard.vue";
+import AdminNavbar from "./../components/adminNavbar";
+import AdminUserCard from "./../components/adminUserCard";
 import { Toast2 } from "./../utils/helper";
-import userAPI from "../apis/users";
+import adminAPI from "../apis/admin";
+
 export default {
   name: "AdminUser",
   components: {
-    adminNavbar,
-    adminUserCard,
+    AdminNavbar,
+    AdminUserCard,
   },
   data() {
     return {
-      user: [],
+      users: [],
     };
   },
   created() {
     this.fetchUser();
   },
   methods: {
+    //抓所有user的資料
     async fetchUser() {
       try {
-        const { data } = await userAPI.getTotalUser();
+        const { data } = await adminAPI.users.get();
         this.users = data;
       } catch (error) {
         Toast2.fire({
@@ -48,31 +48,31 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 #adminUser {
   display: flex;
-  justify-content: center;
+  width: 80%;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+.adminUserPanel {
+  margin-left: 100px;
+  flex: 1;
   min-height: 100vh;
 }
-
-.adminUserPanel {
-  flex: 1;
-}
-
 .admin-user-card {
+  padding: 15px;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 5px;
+  border: 1px solid $borderColor;
 }
-
 .title {
   height: 55px;
-  border-bottom: 1px solid $borderColor;
+  border: 1px solid $borderColor;
 }
-
 .title h1 {
+  display: flex;
   font-size: 18px;
   font-weight: 700;
   padding: 13px 0 14px 26px;

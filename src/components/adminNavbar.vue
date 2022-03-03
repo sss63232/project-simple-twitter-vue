@@ -1,85 +1,42 @@
 <template>
   <nav>
     <div id="logo">
-      <router-link to="/login">
+      <router-link to="/admin/signin">
         <img src="../assets/Logo.png" alt="logo" />
       </router-link>
     </div>
     <div class="menu">
-      <div class="adminItem index">
-        <div class="menu__item">
-          <img
-            v-if="tweets"
-            src="../assets/atIndex@2x.png"
-            alt="index"
-            class="index"
-          />
-          <img
-            v-else
-            src="../assets/icon_index.png"
-            alt="index"
-            class="index"
-          />
-        </div>
-        <button class="menu__item__title">
-          <router-link to="/admin/tweets">
-            <p :class="{ active: tweets }" id="routerTweets">推文清單</p>
-          </router-link>
-        </button>
+      <div class="menu__item">
+        <img src="../assets/atIndex@2x.png" alt="index" class="index" />
+
+        <router-link to="/admin/tweets" class="menu__item__title">
+          <p :class="{ active: tweets }" id="routerTweets">推文清單</p>
+        </router-link>
       </div>
-      <div class="adminItem userProfile">
-        <div class="menu__item">
-          <img
-            v-if="users"
-            src="../assets/atUser.png"
-            alt="index"
-            class="user"
-          />
-          <img v-else src="../assets/icon_user.png" alt="index" class="user" />
-        </div>
-        <button class="menu__item__title">
-          <router-link to="/admin/user">
-            <p :class="{ active: users }" id="routerUsers">使用者列表</p>
-          </router-link>
-        </button>
+
+      <div class="menu__item">
+        <img src="../assets/atUser.png" alt="index" class="user" />
+
+        <router-link to="/admin/user" class="menu__item__title">
+          <p :class="{ active: users }" id="routerUsers">使用者列表</p>
+        </router-link>
       </div>
     </div>
-    <div id="log-out">
+    <div id="log-out" @click.stop.prevent="onLogOut">
       <div>
         <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
       </div>
       <p>登出</p>
     </div>
-    atIndex@2x
   </nav>
 </template>
 <script>
 export default {
   name: "adminNavbar",
-  created() {
-    const location = this.$route.path.split("/")[2];
-    this.setCurrentLocation(location);
-  },
-  data() {
-    return {
-      tweets: false,
-      users: false,
-    };
-  },
   methods: {
-    logout() {
-      this.$store.commit("revokeAuthentication");
-      this.$router.push("/admin/singin");
-    },
-    setCurrentLocation(location) {
-      console.log("location: " + location);
-      if (location === "tweets") {
-        this.tweets = true;
-        this.users = false;
-      } else {
-        this.tweets = false;
-        this.users = true;
-      }
+    onLogOut() {
+      localStorage.removeItem("token");
+      this.$router.push("/admin/signin");
     },
   },
 };
@@ -87,37 +44,29 @@ export default {
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 nav {
-  margin-right: 2rem;
-  margin-top: 0.7rem;
   position: relative;
-  // width:378px;
   height: 100%;
+  margin-top: 1rem;
   #logo {
     width: 50px;
     height: 50px;
   }
   .menu {
-    margin-top: 47.78px;
+    margin-top: 51px;
     &__item {
       display: flex;
       align-items: center;
-      color: $mainColor;
+      margin-bottom: 30px;
+    }
+    p {
+      margin-left: 1rem;
       font-weight: 700;
-      margin-top: 35px;
-      &__title {
-        margin-left: 20px;
-      }
     }
   }
-  .adminItem .menu_item_title .active p {
-    color: $orange;
-  }
-
   .index,
   .user {
-    width: 22.75px;
+    width: 24px;
   }
-
   #log-out {
     position: fixed;
     bottom: 1rem;
