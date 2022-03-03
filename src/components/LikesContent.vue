@@ -141,6 +141,7 @@ export default {
   border-left: 1px #e6ecf0 solid;
   .description {
     font-size: 15px;
+    word-break: break-all;
   }
   .tweet-content {
     display: flex;
