@@ -1,7 +1,7 @@
 <template>
   <div id="adminUser">
     <template>
-      <AdminNewNavbar />
+      <AdminNewNavbar :status="status" />
       <div class="adminUserPanel">
         <div class="title">
           <h1>使用者列表</h1>
@@ -28,6 +28,10 @@ export default {
   data() {
     return {
       users: [],
+      status: {
+        tweets: false,
+        users: true,
+      },
     };
   },
   created() {

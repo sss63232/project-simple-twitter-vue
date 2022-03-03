@@ -13,10 +13,6 @@
           class="index"
           :class="{ 'active-img': status.tweets }"
         />
-
-        <router-link to="/admin/main" class="menu__item__title">
-          <p :class="{ active: tweets }" id="routerTweets">推文清單</p>
-        </router-link>
         <p
           :class="{ active: status.tweets }"
           id="routerTweets"
@@ -34,9 +30,6 @@
           :class="{ 'active-img': status.users }"
         />
 
-        <router-link to="/admin/users" class="menu__item__title">
-          <p :class="{ active: users }" id="routerUsers">使用者列表</p>
-        </router-link>
         <p
           :class="{ active: status.users }"
           id="routerUsers"
@@ -57,15 +50,16 @@
 <script>
 export default {
   name: "adminNewNavbar",
+  props: {
+    status: {
+      type: Object,
+    },
+  },
   data() {
     return {
       logo: require("@/assets/Logo.png"),
       index: require("@/assets/icon_index.png"),
       user: require("@/assets/icon_user.png"),
-      status: {
-        tweets: true,
-        users: false,
-      },
     };
   },
   methods: {
@@ -74,16 +68,10 @@ export default {
       this.$router.push("/admin/signin");
     },
     onClickTweets() {
-      this.status.tweets = true;
-      this.status.users = false;
       this.$router.push({ path: "/admin/main" });
-      console.log("e");
     },
     onClickUsers() {
-      this.status.tweets = false;
-      this.status.users = true;
       this.$router.push({ path: "/admin/users" });
-      console.log("u");
     },
   },
 };

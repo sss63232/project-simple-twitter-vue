@@ -2,10 +2,14 @@
   <div class="container">
     <div class="card">
       <div class="background-img">
-        <img :src="user.cover" class="card-img-background" alt="" />
+        <img
+          :src="user.cover | emptyImage"
+          class="card-img-background"
+          alt=""
+        />
       </div>
       <div class="avatar">
-        <img :src="user.avatar" class="card-img-avatar" alt="" />
+        <img :src="user.avatar | emptyImage" class="card-img-avatar" alt="" />
       </div>
       <div class="card-body">
         <h5 class="card-title">{{ user.name }}</h5>
@@ -38,6 +42,7 @@
 </template>
 
 <script>
+import { emptyImageFilter } from "./../utils/mixins";
 export default {
   // name: "adminUserCard",
   props: {
@@ -46,6 +51,7 @@ export default {
       required: true,
     },
   },
+  mixins: [emptyImageFilter],
   data() {
     return {
       user: this.User,

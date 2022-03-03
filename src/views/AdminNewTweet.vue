@@ -2,7 +2,7 @@
   <div id="AdminTweet">
     <!-- adminNavbar.vue -->
     <div class="admin-navbar">
-      <AdminNewNavbar />
+      <AdminNewNavbar :status="status" />
     </div>
     <!-- adminTweetList.vue -->
     <div class="adminTweetPanel">
@@ -24,7 +24,7 @@ import { Toast2 } from "@/utils/helper";
 import { Toast } from "./../utils/helper";
 
 export default {
-  name: "adminTweet",
+  name: "adminNewTweet",
   components: {
     AdminNewNavbar,
     adminTweetList,
@@ -35,6 +35,10 @@ export default {
   data() {
     return {
       tweets: [],
+      status: {
+        tweets: true,
+        users: false,
+      },
     };
   },
   methods: {
