@@ -59,6 +59,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
+  border-left: 1px #e6ecf0 solid;
+  border-right: 1px #e6ecf0 solid;
   width: 600px;
   min-height: 100px;
   display: flex;

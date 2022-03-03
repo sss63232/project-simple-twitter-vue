@@ -140,6 +140,8 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  border-left: 1px #e6ecf0 solid;
+  border-right: 1px #e6ecf0 solid;
   padding: 10px;
   width: 600px;
   min-height: 100px;
