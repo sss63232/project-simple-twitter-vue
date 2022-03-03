@@ -8,8 +8,8 @@ export default {
       password,
     });
   },
-  register(data) {
-    return apiHelper.post("/users", { ...data });
+  register(formData) {
+    return apiHelper.post("/users", formData);
   },
   adminLogin({ account, password }) {
     return apiHelper.post("/admin/signin", {

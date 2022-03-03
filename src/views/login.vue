@@ -13,7 +13,6 @@
           type="text"
           class="form-control"
           autocomplete="username"
-          placeholder="帳號"
           required
           autofocus
           :class="{ invalid: error.account }"
@@ -29,7 +28,6 @@
           type="password"
           class="form-control"
           autocomplete="new-password"
-          placeholder="密碼"
           required
           :class="{ invalid: error.password }"
         />
@@ -162,7 +160,13 @@ h1 {
   position: relative;
 }
 label {
-  display: none;
+  position: absolute;
+  color: $secondaryTextColor;
+  font-size: 15px;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  padding-left: 11px;
 }
 .placeholder {
   position: absolute;
