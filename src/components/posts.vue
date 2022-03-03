@@ -10,7 +10,7 @@
           class="avatar"
           :to="{ name: 'user-tweets', params: { id: post.UserId } }"
         >
-          <img :src="post.image | emptyImage" alt="" class="avatar__pic" />
+          <img :src="post.userAvatar | emptyImage" alt="" class="avatar__pic" />
         </router-link>
         <div class="tweet-content">
           <div class="title">

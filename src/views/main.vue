@@ -71,6 +71,7 @@ export default {
         RepliesCount,
         LikesCount,
         createdAt,
+        userAvatar,
       } = payload;
       this.posts.unshift({
         UserId,
@@ -81,6 +82,7 @@ export default {
         RepliesCount,
         LikesCount,
         createdAt,
+        userAvatar,
       });
     },
     async afterCreateTweetModal(tweet) {
@@ -97,6 +99,7 @@ export default {
           RepliesCount,
           LikesCount,
           createdAt,
+          userAvatar,
         } = tweet;
         this.posts.unshift({
           tweetId,
@@ -108,6 +111,7 @@ export default {
           RepliesCount,
           LikesCount,
           createdAt,
+          userAvatar,
         });
       } catch (error) {
         Toast2.fire({

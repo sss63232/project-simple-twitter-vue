@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="title">
+      <h1>使用者列表</h1>
+    </div>
     <div class="card">
       <div class="background-img">
         <img :src="user.cover" class="card-img-top" alt="" />
@@ -12,10 +15,12 @@
         <p class="card-text">@{{ user.account }}</p>
         <div class="click-on-condition row">
           <div class="reply-count">
-            <img src="../assets/reply2.png" alt="" class="reply__card" /> {{ user.tweetCount }}
+            <img src="../assets/reply2.png" alt="" class="reply__card" />
+            {{ user.tweetCount }}
           </div>
           <div class="like-count">
-            <img src="../assets/like2.png" alt="" class="like__card" /> {{ user.likeCount }}
+            <img src="../assets/like2.png" alt="" class="like__card" />
+            {{ user.likeCount }}
           </div>
         </div>
         <div class="follow-condition row">
@@ -33,7 +38,7 @@
 
 <script>
 export default {
-  name: "adminUserCard",
+  // name: "adminUserCard",
   props: {
     User: {
       type: Object,
@@ -47,3 +52,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "./../styles/variables.scss";
+.title {
+  height: 55px;
+  border-bottom: 1px solid $borderColor;
+}
+.title h1 {
+  display: flex;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 13px 0 14px 26px;
+  margin: 0;
+}
+</style>

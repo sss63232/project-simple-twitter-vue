@@ -73,6 +73,7 @@ export default {
           throw new Error(data.message);
         }
         this.$emit("after-create-tweet", {
+          userAvatar: this.currentUser.avatar,
           UserId: this.currentUser.id,
           name: this.currentUser.name,
           image: this.currentUser.avatar,

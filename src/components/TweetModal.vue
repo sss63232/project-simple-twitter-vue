@@ -76,6 +76,7 @@ export default {
           title: "推文發送成功",
         });
         this.$emit("after-create-tweet-modal", {
+          userAvatar: this.currentUser.avatar,
           UserId: this.currentUser.id,
           name: this.currentUser.name,
           image: this.currentUser.avatar,
