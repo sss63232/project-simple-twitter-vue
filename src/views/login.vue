@@ -88,7 +88,7 @@ export default {
           account: this.account,
           password: this.password,
         });
-        console.log(data);
+
         // 錯誤驗證：無帳號密碼
         if (data.message === "Error: 帳號不存在！") {
           this.isProcessing = false;

@@ -9,16 +9,24 @@
       <div class="menu__item">
         <img src="../assets/atIndex@2x.png" alt="index" class="index" />
 
-        <router-link to="/admin/tweets" class="menu__item__title">
-          <p :class="{ active: tweets }" id="routerTweets">推文清單</p>
+        <router-link
+          to="/admin/main"
+          class="menu__item__title"
+          @click.stop.prevent="onClickTweets"
+        >
+          <p :class="{ active: status.tweets }" id="routerTweets">推文清單</p>
         </router-link>
       </div>
 
       <div class="menu__item">
         <img src="../assets/atUser.png" alt="index" class="user" />
 
-        <router-link to="/admin/user" class="menu__item__title">
-          <p :class="{ active: users }" id="routerUsers">使用者列表</p>
+        <router-link
+          to="/admin/users"
+          class="menu__item__title"
+          @click.stop.prevent="onClickUsers"
+        >
+          <p :class="{ active: status.users }" id="routerUsers">使用者列表</p>
         </router-link>
       </div>
     </div>
@@ -33,11 +41,31 @@
 <script>
 export default {
   name: "adminNavbar",
+  data() {
+    return {
+      status: {
+        tweet: true,
+        users: false,
+      },
+    };
+  },
   methods: {
     onLogOut() {
       localStorage.removeItem("token");
       this.$router.push("/admin/signin");
     },
+    onClickTweets() {
+      this.status.tweet = true;
+      this.status.users = false;
+    },
+    onClickUsers() {
+      this.status.tweet = false;
+      this.status.users = true;
+    },
+  },
+  beforeRouterUpdate(to, from, next) {
+    console.log({ to, from });
+    next();
   },
 };
 </script>
@@ -63,10 +91,12 @@ nav {
       font-weight: 700;
     }
   }
+
   .index,
   .user {
     width: 24px;
   }
+
   #log-out {
     position: fixed;
     bottom: 1rem;
