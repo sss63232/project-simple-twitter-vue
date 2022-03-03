@@ -1,27 +1,28 @@
 <template>
   <nav>
     <div id="logo">
-      <router-link to="admin/signin">
+      <router-link to="/admin/signin">
         <img src="../assets/Logo.png" alt="logo" />
       </router-link>
     </div>
     <div class="menu">
-      <ul>
-        <li :class="{ active: currentStatus.isIndex }">
-          <router-link to="/admin/tweets" class="menu__item">
-            <img src="../assets/icon_index.png" alt="index" class="tweet" />
-            <span class="menu__item__title">推文清單</span>
-          </router-link>
-        </li>
-        <li :class="{ active: currentStatus.isUser }">
-          <router-link to="/admin/users" class="menu__item">
-            <img src="../assets/icon_user.png" alt="index" class="user" />
-            <span class="menu__item__title">使用者列表</span>
-          </router-link>
-        </li>
-      </ul>
+      <div class="menu__item">
+        <img src="../assets/atIndex@2x.png" alt="index" class="index" />
+
+        <router-link to="/admin/tweets" class="menu__item__title">
+          <p :class="{ active: tweets }" id="routerTweets">推文清單</p>
+        </router-link>
+      </div>
+
+      <div class="menu__item">
+        <img src="../assets/atUser.png" alt="index" class="user" />
+
+        <router-link to="/admin/user" class="menu__item__title">
+          <p :class="{ active: users }" id="routerUsers">使用者列表</p>
+        </router-link>
+      </div>
     </div>
-    <div id="log-out" @click.stop.prevent="logOut">
+    <div id="log-out" @click.stop.prevent="onLogOut">
       <div>
         <img src="./../assets/Vector.png" alt="logoOut" class="icon" />
       </div>
@@ -30,42 +31,12 @@
   </nav>
 </template>
 <script>
-import { mapState } from "vuex";
-
 export default {
   name: "adminNavbar",
-  created() {
-    const location = this.$route.path.split("/")[2];
-    this.setCurrentLocation(location);
-  },
-  computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
-  },
-  data() {
-    return {
-      tweets: false,
-      users: false,
-      currentStatus: {
-        isIndex: true,
-        isUser: false,
-      },
-    };
-  },
   methods: {
-    logout() {
-      // delete token => log out
-      this.$store.commit("revokeAuthentication");
+    onLogOut() {
+      localStorage.removeItem("token");
       this.$router.push("/admin/signin");
-    },
-    setCurrentLocation(location) {
-      console.log("location: " + location);
-      if (location === "tweets") {
-        this.tweets = true; // at tweets
-        this.users = false;
-      } else {
-        this.tweets = false;
-        this.users = true; // at users
-      }
     },
   },
 };
@@ -73,36 +44,28 @@ export default {
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
 nav {
-  margin-right: 2rem;
-  margin-top: 0.7rem;
   position: relative;
   height: 100%;
+  margin-top: 1rem;
   #logo {
     width: 50px;
     height: 50px;
   }
   .menu {
-    margin-top: 47.78px;
+    margin-top: 51px;
     &__item {
       display: flex;
-      width: 22.2px;
-      height: 20.25px;
-      display: flex;
       align-items: center;
-      color: $mainColor;
-      font-weight: 700;
-      margin-top: 35px;
-      &__title {
-        margin-left: 20px;
-      }
+      margin-bottom: 30px;
     }
-  }
-  .adminItem .menu_item_title .active p {
-    color: $orange;
+    p {
+      margin-left: 1rem;
+      font-weight: 700;
+    }
   }
   .index,
   .user {
-    width: 22.75px;
+    width: 24px;
   }
   #log-out {
     position: fixed;

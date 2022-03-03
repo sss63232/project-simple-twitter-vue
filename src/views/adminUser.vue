@@ -1,9 +1,11 @@
 <template>
-  <div id="AdminUser">
+  <div id="adminUser">
     <template>
       <AdminNavbar />
-      <div class="AdminUserPanel">
-
+      <div class="adminUserPanel">
+        <div class="title">
+          <h1>使用者列表</h1>
+        </div>
         <div class="admin-user-card">
           <AdminUserCard v-for="user in users" :key="user.id" :user="user" />
         </div>
@@ -48,18 +50,32 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "./../styles/variables.scss";
-#AdminUser {
+#adminUser {
   display: flex;
-  justify-content: center;
+  width: 80%;
   min-height: 100vh;
+  margin: 0 auto;
 }
 .adminUserPanel {
+  margin-left: 100px;
   flex: 1;
+  min-height: 100vh;
 }
 .admin-user-card {
+  padding: 15px;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 5px;
+  border: 1px solid $borderColor;
 }
-
+.title {
+  height: 55px;
+  border: 1px solid $borderColor;
+}
+.title h1 {
+  display: flex;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 13px 0 14px 26px;
+  margin: 0;
+}
 </style>
