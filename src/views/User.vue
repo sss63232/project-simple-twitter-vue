@@ -334,26 +334,26 @@ export default {
         if (data.message === "Error: Cannot unfollow yourself!") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "不能取消追蹤自己",
+            title: "不能取消跟隨自己",
           });
           return;
         }
         if (data.message === "Error: You have not followed this user.!") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "已經取消追蹤",
+            title: "已經取消跟隨",
           });
           return;
         }
         Toast.fire({
-          title: "成功取消追蹤！",
+          title: "成功取消跟隨！",
         });
 
         // 從Followings清單中移除相同id的人
         this.Followings = this.Followings.filter((user) => {
           return user.followingId !== userId;
         });
-        // 正在追蹤人數變少
+        // 正在跟隨人數變少
         this.followingsLength - 1;
         // 重整topuser資料
         this.fetchTopUsers();
@@ -361,7 +361,7 @@ export default {
         console.log("error", error);
         Toast2.fire({
           icon: "error",
-          title: "無法取消追蹤，請稍後再試",
+          title: "無法取消跟隨，請稍後再試",
         });
       }
     },
@@ -371,16 +371,16 @@ export default {
         const { data } = await usersAPI.addFollowship({ formData });
         if (data.message === "Error: You are already following this user.") {
           Toast2.fire({
-            title: "已經追蹤該用戶",
+            title: "已經跟隨該用戶",
           });
           return;
         }
         if (data.message === "Error: Cannot follow yourself!") {
           Toast2.fire({
-            title: "無法追蹤此用戶",
+            title: "無法跟隨此用戶",
           });
         }
-        // 對原本沒有追蹤的人追蹤
+        // 對原本沒有跟隨的人跟隨
         this.Followers = this.Followers.map((user) => {
           if (user.followerId === userId) {
             return {
@@ -390,15 +390,18 @@ export default {
           }
           return user;
         });
+        Toast.fire({
+          title: "成功跟隨此用戶",
+        });
         this.fetchFollowings(this.user.id);
-        // 追蹤人數加1
+        // 跟隨人數加1
         this.followingsLength + 1;
         // 重整topuser資料
         this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法新增追蹤，請稍後再試",
+          title: "無法新增跟隨，請稍後再試",
         });
       }
     },
@@ -408,22 +411,22 @@ export default {
         if (data.message === "Error: Cannot unfollow yourself!") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "不能取消追蹤自己",
+            title: "不能取消跟隨自己",
           });
           return;
         }
         if (data.message === "Error: You have not followed this user.!") {
           console.log("error", data.message);
           Toast2.fire({
-            title: "已經取消追蹤",
+            title: "已經取消跟隨",
           });
           return;
         }
         Toast.fire({
-          title: "成功取消追蹤！",
+          title: "成功取消跟隨！",
         });
 
-        // 改變追蹤的狀態
+        // 改變跟隨的狀態
         this.Followers = this.Followers.map((user) => {
           if (user.followerId === userId) {
             return {
@@ -433,14 +436,14 @@ export default {
           }
           return user;
         });
-        // 正在追蹤人數變少
+        // 正在跟隨人數變少
         this.followingsLength - 1;
         // 重整topuser資料
         this.fetchTopUsers();
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          title: "無法取消追蹤，請稍後再試",
+          title: "無法取消跟隨，請稍後再試",
         });
       }
     },

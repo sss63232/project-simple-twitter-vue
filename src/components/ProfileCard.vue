@@ -31,21 +31,32 @@
             class="user-edit__followCtrl__message"
           />
           <img
+            src="./../assets/btn_noti_or.png"
+            alt="avatar"
+            class="user-edit__followCtrl__noti"
+            v-if="isNotified"
+            @click.stop.prevent="unNotified"
+          />
+          <img
             src="./../assets/btn_noti.png"
             alt="avatar"
             class="user-edit__followCtrl__noti"
+            v-else
+            @click.stop.prevent="onNotified"
           />
           <button
-            class="user-edit__followCtrl__btn d-none"
+            class="user-edit__followCtrl__btn"
             @click.stop.prevent="deleteFollowship(user.id)"
+            v-if="isFollowing"
           >
-            正在追蹤
+            正在跟隨
           </button>
           <button
             class="user-edit__followCtrl__btn1"
             @click.stop.prevent="addFollowship(user.id)"
+            v-else
           >
-            追蹤
+            跟隨
           </button>
         </div>
         <ProfileEditModal
@@ -112,14 +123,29 @@ export default {
       type: Object,
       require: true,
     },
+    followers: {
+      type: Array,
+    },
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
+    isFollowing() {
+      let follower = this.followers.filter((follower) => {
+        return follower.followerId === this.currentUser.id;
+      });
+
+      if (follower.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   data() {
     return {
       showModal: false,
       isProcessing: false,
+      isNotified: false,
     };
   },
   methods: {
@@ -154,6 +180,12 @@ export default {
     },
     handleCancelCover() {
       this.$emit("after-cancel-cover");
+    },
+    unNotified() {
+      this.isNotified = false;
+    },
+    onNotified() {
+      this.isNotified = true;
     },
   },
 };
@@ -209,7 +241,7 @@ export default {
         border-radius: 100px;
         background-color: $orange;
         font: {
-          weight: 500;
+          weight: 700;
           size: 15px;
         }
         color: $white;

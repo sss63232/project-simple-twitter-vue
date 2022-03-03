@@ -1,6 +1,6 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :user="user" v-on="$listeners" />
+    <ProfileCard :user="user" v-on="$listeners" :followers="followers" />
     <ProfileTabs :status="status" />
     <UserRepliesPosts :replies="replies" />
   </div>
@@ -27,6 +27,9 @@ export default {
     replies: {
       type: Array,
       required: true,
+    },
+    followers: {
+      type: Array,
     },
   },
   data() {
