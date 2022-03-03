@@ -5,6 +5,7 @@
     <LikesContent
       :likes="likes"
       @after-create-reply-modal="afterCreateReplyModal"
+      v-on="$listeners"
     />
   </div>
 </template>
