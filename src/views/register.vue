@@ -1,6 +1,10 @@
 <template>
   <div id="register">
-    <form class="w-100 text-align" @submit.prevent.stop="handleSubmit">
+    <form
+      class="w-100 text-align"
+      @submit.prevent.stop="handleSubmit"
+      novalidate
+    >
       <!-- @submit.prevent.stop="handleSubmit" -->
       <div class="register-top d-flex flex-column align-items-center">
         <img class="register-logo" src="../assets/Logo.png" />

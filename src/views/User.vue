@@ -304,7 +304,6 @@ export default {
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          icon: "error",
           title: "無法取消喜歡，請稍後再試",
         });
       }
@@ -318,10 +317,13 @@ export default {
         this.likes = this.likes.filter((like) => {
           return like.TweetId !== tweetId;
         });
+
+        Toast.fire({
+          title: "成功取消喜歡！",
+        });
       } catch (error) {
         console.log("error", error);
         Toast2.fire({
-          icon: "error",
           title: "無法取消喜歡，請稍後再試",
         });
       }
