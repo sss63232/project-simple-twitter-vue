@@ -34,9 +34,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    //把currentUser放到vuex用
     async fetchCurrentUser({ commit }) {
       try {
-        // 呼叫 usersAPI.getCurrentUser() 方法，並將 response 顯示出來
         const { data } = await usersAPI.getCurrentUser()
         const {
           account,
