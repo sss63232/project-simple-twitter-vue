@@ -475,6 +475,10 @@ export default {
         introduction,
       };
       this.fetchTweets(this.user.id);
+      this.fetchUser(this.user.id);
+      this.fetchTopUsers();
+      this.fetchLikes(this.user.id);
+      this.fetchReplies(this.user.id);
     },
     handleRemovePop() {
       this.user.followingsLength - 1;

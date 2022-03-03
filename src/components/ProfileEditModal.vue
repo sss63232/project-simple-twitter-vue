@@ -222,10 +222,12 @@ export default {
           );
 
           const coverImageURL = data.data.link;
-          this.user.cover = coverImageURL;
+
           Toast.fire({
             title: "成功更新 Cover！",
           });
+          this.user.cover = coverImageURL;
+          this.isRunning = false;
         }
       } catch (error) {
         console.log(error);
