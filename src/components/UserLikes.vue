@@ -1,6 +1,6 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :user="user" />
+    <ProfileCard :user="user" v-on="$listeners" />
     <ProfileTabs :status="status" />
     <LikesContent
       :likes="likes"
