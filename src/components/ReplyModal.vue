@@ -168,28 +168,21 @@ export default {
       height: 50px;
       width: 50px;
     }
-    // .avatar::before {
-    //   content: "";
-    //   position: absolute;
-    //   width: 100px;
-    //   height: 100px;
-    //   top: 0;
-    //   left: 150px;
-    // }
     .divider {
       display: flex;
-      // margin-top: 5px;
+      margin-top: 5px;
       &__a {
+        z-index: 3;
+        position: absolute;
         width: 25px;
-        // height: 5px;
-        min-height: 2.5rem;
-        max-height: 6rem;
+        height: 5em;
+        // max-height: 6em;
         border-right: 2px #ccd6dd solid;
       }
-      &__b {
-        width: 25px;
-        height: 100%;
-      }
+      // &__b {
+      //   width: 25px;
+      //   height: 100%;
+      // }
     }
   }
   .tweet-content {
@@ -237,7 +230,6 @@ export default {
   // Ally: bgc 修正透明度，原本0.4 在user頁面會呈現全黑，現在調成0.1
   background-color: rgba(0, 0, 0, 0.4);
   display: table;
-  /* transition: opacity 0.3s ease; */
 }
 
 .modal-wrapper {
@@ -250,10 +242,8 @@ export default {
   width: 600px;
   min-height: 300px;
   margin: 0 auto;
-  // padding: 15px;
   background-color: #ffffff;
   border-radius: 14px;
-  // transition: all 0.3s ease;
 }
 
 .modal-header {
@@ -263,12 +253,13 @@ export default {
   color: #42b983;
   border-bottom: 1px #e6ecf0 solid;
 }
-
 .modal-body {
+  z-index: 999;
   padding: 0 10px 0 10px;
   margin: 20px 0;
   display: flex;
   .avatar {
+    z-index: 999;
     height: 50px;
     width: 50px;
     margin-right: 10px;
@@ -319,17 +310,4 @@ export default {
     border-radius: 100px;
   }
 }
-/* .modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-} */
 </style>

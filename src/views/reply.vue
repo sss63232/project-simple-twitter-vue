@@ -22,20 +22,6 @@
 </template>
 
 <script>
-// const dummyCurrentUser = {
-//   id: 14,
-//   name: "user1",
-//   email: "user1@example.com",
-//   avatar: "https://loremflickr.com/140/140/people?random=100",
-//   introduction:
-//     "Sint amet reprehenderit et eligendi est harum. Quis facere placeat. Quia molestiae error optio dolor",
-//   role: "",
-//   account: "user1",
-//   cover: "https://loremflickr.com/600/200/nature?random=100",
-//   createdAt: "2022-02-26T03:59:35.000Z",
-//   updatedAt: "2022-02-26T03:59:35.000Z",
-// };
-
 import Post from "../components/post.vue";
 import ReplyList from "../components/replyList.vue";
 import Navbar from "../components/Navbar.vue";
@@ -53,7 +39,6 @@ export default {
   },
   data() {
     return {
-      // currentUser: dummyCurrentUser,
       reply: {},
       currentStatus: {
         isIndex: true,
@@ -105,6 +90,8 @@ export default {
   justify-content: center;
   width: 600px;
   .previous-page {
+    border-left: 1px #e6ecf0 solid;
+    border-right: 1px #e6ecf0 solid;
     display: flex;
     align-items: center;
     padding: 10px;
