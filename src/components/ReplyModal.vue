@@ -168,29 +168,29 @@ export default {
       height: 50px;
       width: 50px;
     }
-    .avatar::before {
-      content: "";
-      position: absolute;
-      width: 100px;
-      height: 100px;
-      top: 0;
-      left: 150px;
-    }
-    // .divider {
-    //   display: flex;
-    //   margin-top: 5px;
-    //   &__a {
-    //     width: 25px;
-    //     height: 5px;
-    //     // min-height: 2.5rem;
-    //     max-height: 6rem;
-    //     border-right: 2px #ccd6dd solid;
-    //   }
-    //   &__b {
-    //     width: 25px;
-    //     height: 100%;
-    //   }
+    // .avatar::before {
+    //   content: "";
+    //   position: absolute;
+    //   width: 100px;
+    //   height: 100px;
+    //   top: 0;
+    //   left: 150px;
     // }
+    .divider {
+      display: flex;
+      // margin-top: 5px;
+      &__a {
+        width: 25px;
+        // height: 5px;
+        min-height: 2.5rem;
+        max-height: 6rem;
+        border-right: 2px #ccd6dd solid;
+      }
+      &__b {
+        width: 25px;
+        height: 100%;
+      }
+    }
   }
   .tweet-content {
     display: flex;
@@ -235,7 +235,7 @@ export default {
   width: 100%;
   height: 100%;
   // Ally: bgc 修正透明度，原本0.4 在user頁面會呈現全黑，現在調成0.1
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.4);
   display: table;
   /* transition: opacity 0.3s ease; */
 }

@@ -64,6 +64,8 @@ export default {
           image: this.currentUser.avatar,
           description: this.text,
         });
+        this.textToMuch = false;
+        this.noSpace = false;
         Toast.fire({
           title: "發文成功",
         });
