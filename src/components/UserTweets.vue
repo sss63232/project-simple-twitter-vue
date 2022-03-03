@@ -2,7 +2,11 @@
   <div class="profile-main">
     <ProfileCard :user="user" v-on="$listeners" />
     <ProfileTabs :status="status" />
-    <UserTweetsPosts :tweets="tweets" v-on="$listeners" />
+    <UserTweetsPosts
+      :tweets="tweets"
+      @after-create-reply-modal="afterCreateReplyModal"
+      v-on="$listeners"
+    />
   </div>
 </template>
 
@@ -37,6 +41,15 @@ export default {
         likes: false,
       },
     };
+  },
+  methods: {
+    afterCreateReplyModal(tweetId) {
+      console.log("reply1");
+      this.$emit("after-create-reply-modal", {
+        id: tweetId,
+        status: "tweets",
+      });
+    },
   },
 };
 </script>

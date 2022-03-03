@@ -19,8 +19,8 @@
   </div>
 </template>
 <script>
-import adminNavbar from "./../components/adminNavbar";
-import adminTweetList from "./../components/adminTweetList";
+import adminNavbar from "./../components/adminNavbar.vue";
+import adminTweetList from "./../components/adminUserCard.vue";
 import { Toast2 } from "./../utils/helper";
 
 import tweetsAPI from "../apis/tweets";
@@ -57,6 +57,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "./../styles/variables.scss";
 #adminTweet {
   display: flex;
   justify-content: center;

@@ -3,7 +3,7 @@
     <img class="login-logo" src="../assets/Icon.png" alt="" />
     <h1>登入Alphitter</h1>
 
-    <form class="login-form" @submit.prevent.stop="handleSubmit">
+    <form class="login-form" @submit.prevent.stop="handleSubmit" novalidate>
       <div class="form-label-group">
         <label for="account">帳號</label>
         <input
@@ -50,7 +50,7 @@
 
 <script>
 import authorizationAPI from "./../apis/authorization";
-import { Toast2 } from "./../utils/helper";
+import { Toast, Toast2 } from "./../utils/helper";
 
 export default {
   name: "login",
@@ -68,29 +68,60 @@ export default {
   methods: {
     async handleSubmit() {
       try {
+        // 等待中登錄btn disable
+        this.isProcessing = true;
+        // 表單驗證
         if (!this.account) {
           this.error.account = true;
+          this.isProcessing = false;
           return;
-        } else if (!this.password) {
-          this.error.password = true;
-          return;
+        } else {
+          this.error.account = false;
         }
-        this.isProcessing = true;
+        if (!this.password) {
+          this.error.password = true;
+          this.isProcessing = false;
+          return;
+        } else {
+          this.error.password = false;
+        }
+
         const { data } = await authorizationAPI.login({
           account: this.account,
           password: this.password,
         });
-        if (data.status === "error") {
-          throw new Error(data.message);
+        console.log(data);
+        // 錯誤驗證：無帳號密碼
+        if (data.message === "Error: 帳號不存在！") {
+          this.isProcessing = false;
+          this.password = "";
+          Toast2.fire({
+            title: "此帳號不存在，歡迎進行註冊！",
+          });
+          this.$router.push("/register");
+          return;
+        }
+        // 錯誤驗證：密碼錯誤
+        if (data.message === "Error: password incorrect!") {
+          this.password = "";
+          Toast2.fire({
+            title: "密碼錯誤！",
+          });
+          this.isProcessing = false;
+          return;
         }
         // 將 token 放到 localStorage
         localStorage.setItem("token", data.token);
         // 將資料傳到 Vuex
         this.$store.commit("setCurrentUser", data.user);
         // 成功登入後轉址到餐廳首頁
+        Toast.fire({
+          title: "登入成功！",
+        });
         this.$router.push("/main");
       } catch (error) {
         this.isProcessing = false;
+        console.log(error, "error");
         this.password = "";
         Toast2.fire({
           title: "輸入的帳號密碼有誤",
@@ -191,6 +222,9 @@ input {
   margin-top: 2em;
   padding: 0.625rem 2.5rem;
   border: none;
+  &:disabled {
+    opacity: 0.7;
+  }
 }
 .text-link {
   position: absolute;

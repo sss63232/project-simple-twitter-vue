@@ -10,11 +10,16 @@
         <div class="menu__item">
           <img
             v-if="tweets"
-            src="../assets/icon_atIndex.png"
+            src="../assets/atIndex@2x.png"
             alt="index"
             class="index"
           />
-          <img v-else src="../assets/index.png" alt="index" class="index" />
+          <img
+            v-else
+            src="../assets/icon_index.png"
+            alt="index"
+            class="index"
+          />
         </div>
         <button class="menu__item__title">
           <router-link to="/admin/tweets">
@@ -26,11 +31,11 @@
         <div class="menu__item">
           <img
             v-if="users"
-            src="../assets/icon_atUser.png"
+            src="../assets/atUser.png"
             alt="index"
             class="user"
           />
-          <img v-else src="../assets/user.png" alt="index" class="user" />
+          <img v-else src="../assets/icon_user.png" alt="index" class="user" />
         </div>
         <button class="menu__item__title">
           <router-link to="/admin/user">
@@ -45,6 +50,7 @@
       </div>
       <p>登出</p>
     </div>
+    atIndex@2x
   </nav>
 </template>
 <script>

@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import NotFound from "@/views/NotFound.vue";
 import BlankPage from "@/views/BlankPage.vue";
 import adminLogin from "../views/admin.vue";
-import store from './../store'
+import store from "./../store";
 Vue.use(VueRouter);
 
 const routes = [
@@ -45,12 +45,13 @@ const routes = [
     component: () => import("../views/reply.vue"),
   },
 
-  // Settings
+  // 登入
   {
     path: "/login",
     name: "login",
     component: () => import("../views/login.vue"),
   },
+  // 註冊
   {
     path: "/register",
     name: "register",
@@ -115,14 +116,12 @@ const routes = [
   {
     path: "/admin/main",
     name: "admin-main",
-    component: BlankPage,
-    //     component: () => import('../views/adminTweet.vue')
+    component: () => import("../views/adminTweet.vue"),
   },
   {
     path: "/admin/users",
     name: "admin-users",
-    component: BlankPage,
-    //       component: () => import('../views/adminUser.vue')
+    component: () => import("../views/adminUser.vue"),
   },
   {
     path: "*",
@@ -136,9 +135,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  store.dispatch('fetchCurrentUser')
-  next()
-})
-
+  store.dispatch("fetchCurrentUser");
+  next();
+});
 
 export default router;

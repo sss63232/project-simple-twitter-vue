@@ -45,12 +45,7 @@
                 src="../assets/reply2.png"
                 class="icon__reply"
                 alt=""
-                @click="showModal = true"
-              />
-              <Modal
-                :show="showModal"
-                @close="showModal = false"
-                @after-create-reply-modal="afterCreateReplyModal"
+                @click.stop.prevent="clickOnReply(like.TweetId)"
               />
             </router-link>
             <h5>{{ like.Tweet.repliesCount }}</h5>
@@ -66,12 +61,18 @@
         </div>
       </div>
     </router-link>
+    <Modal
+      :post="replyingPost"
+      :show="showModal"
+      @close="showModal = false"
+      v-on="$listeners"
+    />
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import Modal from "./ReplyModal.vue";
+import Modal from "./UserLikeReplyModal.vue";
 import { emptyImageFilter } from "./../utils/mixins";
 
 export default {
@@ -88,9 +89,15 @@ export default {
   data() {
     return {
       showModal: false,
+      replyingPost: [],
     };
   },
   methods: {
+    // 把 modal 放在外面才不會重覆呼叫多次modal component
+    clickOnReply(tweetId) {
+      this.showModal = true;
+      this.replyingPost = this.likes.filter((like) => like.TweetId === tweetId);
+    },
     afterCreateReplyModal(payload) {
       console.log(payload);
     },
