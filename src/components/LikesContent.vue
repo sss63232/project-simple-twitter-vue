@@ -15,7 +15,7 @@
           :to="{ name: 'user', params: { id: like.Tweet.User.id } }"
         >
           <img
-            :src="like.Tweet.image | emptyImage"
+            :src="like.Tweet.User.avatar | emptyImage"
             alt=""
             class="avatar__pic"
           />
@@ -98,9 +98,7 @@ export default {
       this.showModal = true;
       this.replyingPost = this.likes.filter((like) => like.TweetId === tweetId);
     },
-    afterCreateReplyModal(payload) {
-      console.log(payload);
-    },
+
     deleteLike(tweetId) {
       this.$emit("after-delete-on-like", tweetId);
     },
@@ -143,6 +141,7 @@ export default {
   border-left: 1px #e6ecf0 solid;
   .description {
     font-size: 15px;
+    word-break: break-all;
   }
   .tweet-content {
     display: flex;

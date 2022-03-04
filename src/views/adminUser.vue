@@ -1,7 +1,7 @@
 <template>
   <div id="adminUser">
     <template>
-      <AdminNavbar />
+      <AdminNewNavbar :status="status" />
       <div class="adminUserPanel">
         <div class="title">
           <h1>使用者列表</h1>
@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-import AdminNavbar from "./../components/adminNavbar";
+import AdminNewNavbar from "./../components/AdminNewNavbar";
 import AdminUserCard from "./../components/adminUserCard";
 import { Toast2 } from "./../utils/helper";
 import adminAPI from "../apis/admin";
@@ -22,12 +22,16 @@ import adminAPI from "../apis/admin";
 export default {
   name: "AdminUser",
   components: {
-    AdminNavbar,
+    AdminNewNavbar,
     AdminUserCard,
   },
   data() {
     return {
       users: [],
+      status: {
+        tweets: false,
+        users: true,
+      },
     };
   },
   created() {

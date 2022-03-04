@@ -2,7 +2,7 @@
   <div id="AdminTweet">
     <template>
       <!-- adminNavbar.vue -->
-      <AdminNewNavbar />
+      <AdminNewNavbar :status="status" />
       <!-- adminTweetList.vue -->
       <div class="adminTweetPanel">
         <div class="title">
@@ -22,6 +22,14 @@ export default {
   components: {
     AdminNewNavbar,
     adminTweetList,
+  },
+  data() {
+    return {
+      status: {
+        tweets: true,
+        users: false,
+      },
+    };
   },
 };
 </script>

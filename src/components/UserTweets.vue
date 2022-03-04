@@ -1,6 +1,6 @@
 <template>
   <div class="profile-main">
-    <ProfileCard :user="user" v-on="$listeners" />
+    <ProfileCard :user="user" v-on="$listeners" :followers="followers" />
     <ProfileTabs :status="status" />
     <UserTweetsPosts
       :tweets="tweets"
@@ -26,6 +26,9 @@ export default {
     tweets: {
       type: Array,
       required: true,
+    },
+    followers: {
+      type: Array,
     },
   },
   components: {

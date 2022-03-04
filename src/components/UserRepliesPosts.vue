@@ -96,6 +96,7 @@ export default {
   padding-bottom: 5px;
   .description {
     font-size: 15px;
+    word-break: break-all;
   }
   .tweet-content {
     display: flex;
