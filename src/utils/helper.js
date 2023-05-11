@@ -1,7 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "https://mighty-ridge-02983.herokuapp.com/api";
+const baseURL = "https://twitter-api-2020-s63232.vercel.app/api";
 
 export const apiHelper = axios.create({
   baseURL,
