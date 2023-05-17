@@ -3,7 +3,7 @@
     <ProfileCard :user="user" v-on="$listeners" :followers="followers" />
     <ProfileTabs :status="status" />
     <LikesContent
-      :likes="likes"
+      :userLikes="likes"
       @after-create-reply-modal="afterCreateReplyModal"
       v-on="$listeners"
     />

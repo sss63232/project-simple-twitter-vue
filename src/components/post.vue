@@ -1,11 +1,8 @@
 <template>
   <div>
     <div class="container">
-      <router-link
-        class="avatar"
-        :to="{ name: 'user-tweets', params: { id: tweet.UserId } }"
-      >
-        <img :src="tweet.image | emptyImage" alt="" class="avatar__pic" />
+      <router-link class="avatar" :to="{ name: 'user-tweets', params: { id: tweet.UserId } }">
+        <img :src="tweet.avatar | emptyImage" alt="" class="avatar__pic" />
         <div class="title">
           <h4 class="title__name">{{ tweet.name }}</h4>
           <h4 class="title__id">@{{ tweet.account }}</h4>
@@ -23,12 +20,7 @@
           <div class="count__unit">喜歡次數</div>
         </div>
         <div class="icon">
-          <img
-            src="./../assets/reply2.png"
-            class="icon__reply"
-            alt=""
-            @click="showModal = true"
-          />
+          <img src="./../assets/reply2.png" class="icon__reply" alt="" @click="showModal = true" />
           <Modal
             :show="showModal"
             :post="tweet"
@@ -217,6 +209,11 @@ export default {
       height: 25px;
       width: 25px;
       margin-top: 3px;
+
+      &:hover {
+        filter: brightness(50%); /* 滑鼠移到上面時變亮度 */
+        cursor: pointer; /* 光標變為手掌 shape */
+      }
     }
   }
 }

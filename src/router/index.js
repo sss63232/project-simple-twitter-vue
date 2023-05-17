@@ -135,7 +135,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  store.dispatch("fetchCurrentUser");
+  if (to.name !== 'login') {
+    store.dispatch("fetchCurrentUser");
+  }
   next();
 });
 

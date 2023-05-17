@@ -12,11 +12,7 @@
       <div class="container">
         <div class="avatar">
           <router-link :to="{ name: 'user', params: { id: reply.User.id } }">
-            <img
-              :src="reply.User.avatar | emptyImage"
-              alt=""
-              class="avatar__pic"
-            />
+            <img :src="reply.User.avatar | emptyImage" alt="" class="avatar__pic" />
           </router-link>
         </div>
         <div class="tweet-content">
@@ -26,9 +22,7 @@
               class="title__name"
               >{{ reply.User.name }}</router-link
             >
-            <router-link
-              :to="{ name: 'user', params: { id: reply.User.id } }"
-              class="title__id"
+            <router-link :to="{ name: 'user', params: { id: reply.User.id } }" class="title__id"
               >@{{ reply.User.account }}</router-link
             >
             <div class="title__formNow">．{{ reply.createdAt | fromNow }}</div>
@@ -57,9 +51,14 @@ export default {
   name: "UserRepliesPosts",
   mixins: [emptyImageFilter],
   props: {
-    replies: {
+    userReplies: {
       type: Array,
       required: true,
+    },
+  },
+  computed: {
+    replies: function () {
+      return this.userReplies.filter((reply) => !!reply.Tweet);
     },
   },
   filters: {

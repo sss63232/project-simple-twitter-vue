@@ -4,10 +4,7 @@
     <div class="users-list">
       <div class="item" v-for="user in topUsers" :key="user.id">
         <!-- 點頭像可以連結至該使用者頁面 -->
-        <router-link
-          :to="{ name: 'user', params: { id: user.id } }"
-          class="image"
-        >
+        <router-link :to="{ name: 'user', params: { id: user.id } }" class="image">
           <!-- 缺少頭像 -->
           <img :src="user.avatar | emptyImage" alt="avatar" />
         </router-link>
@@ -23,13 +20,7 @@
         >
           正在跟隨
         </button>
-        <button
-          class="follow-btn"
-          v-else
-          @click.stop.prevent="addFollowing(user.id)"
-        >
-          跟隨
-        </button>
+        <button class="follow-btn" v-else @click.stop.prevent="addFollowing(user.id)">跟隨</button>
       </div>
     </div>
   </div>
@@ -144,7 +135,10 @@ export default {
     margin-top: 20px;
   }
   .item {
-    margin-top: 10px;
+    &:hover {
+      background-color: rgb(240, 240, 240);
+    }
+    padding: 10px 0;
     width: 100%;
     height: 70px;
     position: relative;

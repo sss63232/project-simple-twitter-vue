@@ -2,7 +2,7 @@
   <div class="profile-main">
     <ProfileCard :user="user" v-on="$listeners" :followers="followers" />
     <ProfileTabs :status="status" />
-    <UserRepliesPosts :replies="replies" />
+    <UserRepliesPosts :userReplies="replies" />
   </div>
 </template>
 
