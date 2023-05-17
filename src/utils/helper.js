@@ -1,8 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const baseURL = "https://twitter-api-2020-s63232.vercel.app/api";
-
+const baseURL = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_URL : 'http://localhost:3000/api'
 export const apiHelper = axios.create({
   baseURL,
 });
