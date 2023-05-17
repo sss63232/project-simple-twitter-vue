@@ -1,20 +1,13 @@
 <template>
   <div class="container">
     <div class="navbar">
-      <Navbar
-        :current-status="currentStatus"
-        @after-create-tweet-modal="afterCreateTweetModal"
-      />
+      <Navbar :current-status="currentStatus" @after-create-tweet-modal="afterCreateTweetModal" />
     </div>
     <div class="main">
       <header class="header">
         <button>
           <router-link to="/main"
-            ><img
-              src="./../assets/arrow.png"
-              alt="backarrow"
-              class="previous-btn"
-            />
+            ><img src="./../assets/arrow.png" alt="backarrow" class="previous-btn" />
           </router-link>
         </button>
         <div class="title">
@@ -133,16 +126,7 @@ export default {
             title: "無此帳號，請稍後再試",
           });
         }
-        const {
-          id,
-          name,
-          avatar,
-          introduction,
-          account,
-          cover,
-          Followers,
-          Followings,
-        } = data;
+        const { id, name, avatar, introduction, account, cover, Followers, Followings } = data;
         this.user = {
           id,
           name,
@@ -211,10 +195,7 @@ export default {
     async fetchLikes(userId) {
       try {
         const { data } = await usersAPI.getLikes({ userId });
-        if (
-          data.message ===
-          "TypeError: Cannot read properties of null (reading 'Likes')"
-        ) {
+        if (data.message === "TypeError: Cannot read properties of null (reading 'Likes')") {
           Toast2.fire({
             title: "目前沒有喜歡的內容",
           });
@@ -487,16 +468,8 @@ export default {
       this.user.followingsLength + 1;
     },
     afterCreateTweetModal(payload) {
-      const {
-        UserId,
-        name,
-        image,
-        account,
-        description,
-        createdAt,
-        LikesCount,
-        RepliesCount,
-      } = payload;
+      const { UserId, name, image, account, description, createdAt, LikesCount, RepliesCount } =
+        payload;
       const createaData = {
         createdAt,
         description,

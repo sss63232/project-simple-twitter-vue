@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <Navbar
-      @after-create-tweet-modal="afterCreateTweetModal"
-      :current-status="currentStatus"
-    />
+    <Navbar @after-create-tweet-modal="afterCreateTweetModal" :current-status="currentStatus" />
     <div class="main-page">
       <Tweet @after-create-tweet="afterCreateTweet" />
       <Posts :initial-post="post" v-for="post in posts" :key="post.tweetId" />

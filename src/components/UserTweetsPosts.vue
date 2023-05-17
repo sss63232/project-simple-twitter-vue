@@ -10,15 +10,8 @@
       v-else
     >
       <div class="container">
-        <router-link
-          class="avatar"
-          :to="{ name: 'user', params: { id: tweet.User.id } }"
-        >
-          <img
-            :src="tweet.User.avatar | emptyImage"
-            alt=""
-            class="avatar__pic"
-          />
+        <router-link class="avatar" :to="{ name: 'user', params: { id: tweet.User.id } }">
+          <img :src="tweet.User.avatar | emptyImage" alt="" class="avatar__pic" />
         </router-link>
         <div class="tweet-content">
           <div class="title">
@@ -27,9 +20,7 @@
               class="title__name"
               >{{ tweet.User.name }}</router-link
             >
-            <router-link
-              :to="{ name: 'user', params: { id: tweet.User.id } }"
-              class="title__id"
+            <router-link :to="{ name: 'user', params: { id: tweet.User.id } }" class="title__id"
               >@{{ tweet.User.account }}．</router-link
             >
             <h4 class="title__formNow">{{ tweet.createdAt | fromNow }}</h4>
@@ -67,12 +58,7 @@
         </div>
       </div>
     </router-link>
-    <Modal
-      :post="replyingPost"
-      :show="showModal"
-      @close="showModal = false"
-      v-on="$listeners"
-    />
+    <Modal :post="replyingPost" :show="showModal" @close="showModal = false" v-on="$listeners" />
   </div>
 </template>
 
@@ -103,9 +89,7 @@ export default {
     // 把 modal 放在外面才不會重覆呼叫多次modal component
     clickOnReply(tweetId) {
       this.showModal = true;
-      this.replyingPost = this.tweets.filter(
-        (tweet) => tweet.tweetId === tweetId
-      );
+      this.replyingPost = this.tweets.filter((tweet) => tweet.tweetId === tweetId);
     },
     addLike(tweetId) {
       this.$emit("after-like", tweetId);
@@ -206,8 +190,7 @@ export default {
     &__reply,
     &__like {
       &:hover {
-        filter: invert(4%) sepia(4%) saturate(6670%) hue-rotate(22deg)
-          brightness(89%) contrast(88%);
+        filter: invert(4%) sepia(4%) saturate(6670%) hue-rotate(22deg) brightness(89%) contrast(88%);
       }
       z-index: 5;
       height: 15px;
