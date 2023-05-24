@@ -135,7 +135,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login') {
+  if (to.name !== 'login' && to.name !== 'register') {
     store.dispatch("fetchCurrentUser");
   }
   next();
