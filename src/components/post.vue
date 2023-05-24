@@ -21,7 +21,7 @@
         </div>
         <div class="icon">
           <img src="./../assets/reply2.png" class="icon__reply" alt="" @click="showModal = true" />
-          <Modal
+          <ReplyModal
             :show="showModal"
             :post="tweet"
             @close="showModal = false"
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import Modal from "./ReplyModal.vue";
+import ReplyModal from "./ReplyModal.vue";
 import moment from "moment";
 import tweetAPI from "./../apis/tweets.js";
 import { Toast2 } from "./../utils/helper";
@@ -65,7 +65,7 @@ export default {
     },
   },
   components: {
-    Modal,
+    ReplyModal,
   },
   data() {
     return {

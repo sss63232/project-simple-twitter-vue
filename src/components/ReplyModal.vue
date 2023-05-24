@@ -9,7 +9,7 @@
         </div>
         <div class="reply-container">
           <div class="avatar">
-            <img :src="post.image | emptyImage" alt="" class="avatar__pic" />
+            <img :src="post.userAvatar | emptyImage" alt="" class="avatar__pic" />
             <div class="divider">
               <div class="divider__a"></div>
               <div class="divider__b"></div>
@@ -17,12 +17,8 @@
           </div>
           <div class="tweet-content">
             <div class="title">
-              <router-link to="" class="title__name">{{
-                post.name
-              }}</router-link>
-              <router-link to="" class="title__id"
-                >@{{ post.account }}</router-link
-              >
+              <router-link to="" class="title__name">{{ post.name }}</router-link>
+              <router-link to="" class="title__id">@{{ post.account }}</router-link>
               <router-link to="" class="title__formNow"
                 >．{{ post.createdAt | fromNow }}</router-link
               >
@@ -32,9 +28,7 @@
             </p>
             <div class="hashtag">
               <router-link to="" class="hashtag__reply">回覆</router-link>
-              <router-link to="" class="hashtag__userid"
-                >@{{ post.account }}</router-link
-              >
+              <router-link to="" class="hashtag__userid">@{{ post.account }}</router-link>
             </div>
           </div>
         </div>
@@ -75,6 +69,7 @@ import { emptyImageFilter } from "../utils/mixins";
 import { mapState } from "vuex";
 
 export default {
+  name: "ReplyModal",
   mixins: [emptyImageFilter],
   props: {
     show: Boolean,
@@ -143,7 +138,6 @@ export default {
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 .swal2-container.swal2-top-end > .swal2-popup {
