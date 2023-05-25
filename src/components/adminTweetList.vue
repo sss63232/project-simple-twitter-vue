@@ -2,14 +2,12 @@
   <div class="main">
     <div class="item" v-for="tweet in tweets" :key="tweet.tweetId">
       <div class="avatar">
-        <img :src="tweet.userAvatar | emptyImage" alt="avatar" />
+        <img :src="tweet.User.avatar | emptyImage" alt="avatar" />
       </div>
       <div class="tweet-info">
         <div class="title__formNow">
           {{ tweet.User.name }}
-          <span
-            >@{{ tweet.User.account }}・{{ tweet.createdAt | fromNow }}</span
-          >
+          <span>@{{ tweet.User.account }}・{{ tweet.createdAt | fromNow }}</span>
         </div>
         <p>{{ tweet.description }}</p>
       </div>
@@ -97,8 +95,7 @@ export default {
   right: 1rem;
   cursor: pointer;
   &:hover {
-    filter: invert(4%) sepia(4%) saturate(6670%) hue-rotate(22deg)
-      brightness(89%) contrast(88%);
+    filter: invert(4%) sepia(4%) saturate(6670%) hue-rotate(22deg) brightness(89%) contrast(88%);
   }
 }
 </style>
