@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    gh-pages version
+    gh-pages version!
     <router-view />
   </div>
 </template>
